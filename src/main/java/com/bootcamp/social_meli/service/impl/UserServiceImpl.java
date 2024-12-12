@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -87,5 +88,20 @@ public class UserServiceImpl implements IUserService {
         userToUnfollowFollowersList.remove(user);
         return "¡El usuario " + user.getUsername() + " ha dejado de seguir a " + userToUnfollow.getUsername() + " exitosamente!";
 
+    }
+
+    @Override
+    public FollowerCountResponse getFollowerCount(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()) {
+            throw new UserNotFoundException("No se ha encontrado al usuario: " + userId);
+        }
+        User user = optionalUser.get();
+        Long followersCount = (long) user.getFollowers().size();
+        FollowerCountResponse followerCountResponse = new FollowerCountResponse();
+        followerCountResponse.setUser_id(userId);
+        followerCountResponse.setUser_name(user.getUsername());
+        followerCountResponse.setFollowers_count(followersCount);
+        return followerCountResponse;
     }
 }
