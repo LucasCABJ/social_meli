@@ -58,4 +58,34 @@ public class UserServiceImpl implements IUserService {
 
         return "¡El usuario " + user.getUsername() + " ha comenzado a seguir a " + userToFollow.getUsername() + " exitosamente!";
     }
+
+    @Override
+    public String unfollowUser(Long userId, Long userToFollowId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<User> optionalUserToFollow = userRepository.findById(userToFollowId);
+
+        if(optionalUser.isEmpty()) {
+            throw new UserNotFoundException("No se ha encontrado al usuario: " + userId);
+        }
+
+        if(optionalUserToFollow.isEmpty()) {
+            throw new UserNotFoundException("No se ha encontrado al usuario: " + userToFollowId);
+        }
+
+        User user = optionalUser.get();
+        User userToUnfollow = optionalUserToFollow.get();
+        List<User> userFollowedList = user.getFollowed();
+        List<User> userToUnfollowFollowersList = userToUnfollow.getFollowers();
+
+        if(userFollowedList.stream().noneMatch(u -> u.getId().equals(userToFollowId))) {
+            throw new BadRequestException("El usuario " + user.getUsername() + " no sigue al usuario " + userToUnfollow.getUsername());
+        } else if (userToUnfollowFollowersList.stream().noneMatch(u -> u.getId().equals(userId))) {
+            throw new BadRequestException("El usuario " + user.getUsername() + " no se encuentra en la lista de seguidores de: " + userToUnfollow.getUsername());
+        }
+
+        userFollowedList.remove(userToUnfollow);
+        userToUnfollowFollowersList.remove(user);
+        return "¡El usuario " + user.getUsername() + " ha dejado de seguir a " + userToUnfollow.getUsername() + " exitosamente!";
+
+    }
 }

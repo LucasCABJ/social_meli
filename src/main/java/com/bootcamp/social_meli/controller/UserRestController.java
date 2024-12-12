@@ -30,4 +30,9 @@ public class UserRestController {
     public ResponseEntity<SimpleMessageDTO> followUser(@PathVariable Long userId, @PathVariable Long userToFollowId) {
         return ResponseEntity.ok(new SimpleMessageDTO(userService.followUser(userId, userToFollowId)));
     }
+
+    @PostMapping("{userId}/unfollow/{userToFollowId}")
+    public ResponseEntity<SimpleMessageDTO> unfollowUser(@PathVariable Long userId, @PathVariable Long userToFollowId) {
+        return ResponseEntity.ok(new SimpleMessageDTO(userService.unfollowUser(userId, userToFollowId)));
+    }
 }

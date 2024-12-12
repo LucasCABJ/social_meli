@@ -7,4 +7,5 @@ import java.util.List;
 public interface IUserService {
     List<UserDTO> findAll();
     String followUser(Long userId, Long userToFollowId);
+    String unfollowUser(Long userId, Long userToFollowId);
 }
