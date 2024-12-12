@@ -3,6 +3,7 @@ package com.bootcamp.social_meli.service.impl;
 import com.bootcamp.social_meli.dto.UserDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.SimpleUserDTO;
+import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -32,6 +33,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String followUser(Long userId, Long userToFollowId) {
+        if(userId.equals(userToFollowId)) {
+            throw new BadRequestException("El usuario no puede seguirse a si mismo.");
+        }
+
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<User> optionalUserToFollow = userRepository.findById(userToFollowId);
 
@@ -63,6 +68,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String unfollowUser(Long userId, Long userToFollowId) {
+        if(userId.equals(userToFollowId)) {
+            throw new BadRequestException("El usuario no puede dejarse de seguir a si mismo.");
+        }
+
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<User> optionalUserToFollow = userRepository.findById(userToFollowId);
 
@@ -119,5 +128,20 @@ public class UserServiceImpl implements IUserService {
         followersDTO.setFollowers(followersDtos);
 
         return followersDTO;
+    
+    }
+      
+    public FollowerCountResponse getFollowerCount(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()) {
+            throw new UserNotFoundException("No se ha encontrado al usuario: " + userId);
+        }
+        User user = optionalUser.get();
+        Long followersCount = (long) user.getFollowers().size();
+        FollowerCountResponse followerCountResponse = new FollowerCountResponse();
+        followerCountResponse.setUser_id(userId);
+        followerCountResponse.setUser_name(user.getUsername());
+        followerCountResponse.setFollowers_count(followersCount);
+        return followerCountResponse;
     }
 }
