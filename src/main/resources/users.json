@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "first_name": "Lucas",
+    "last_name": "Caraballo",
+    "username": "LucasCABJ"
+  },
+  {
+    "id": 2,
+    "first_name": "Martín",
+    "last_name": "Gómez",
+    "username": "MartinG23"
+  },
+  {
+    "id": 3,
+    "first_name": "Ana",
+    "last_name": "Pérez",
+    "username": "AnaPerezzz"
+  },
+  {
+    "id": 4,
+    "first_name": "Carlos",
+    "last_name": "Sánchez",
+    "username": "CarlosSan_15"
+  },
+  {
+    "id": 5,
+    "first_name": "Laura",
+    "last_name": "López",
+    "username": "LauLopez87"
+  },
+  {
+    "id": 6,
+    "first_name": "Ricardo",
+    "last_name": "Fernández",
+    "username": "Ricardo_Fern"
+  },
+  {
+    "id": 7,
+    "first_name": "Patricia",
+    "last_name": "Martínez",
+    "username": "PatriMart90"
+  },
+  {
+    "id": 8,
+    "first_name": "José",
+    "last_name": "Ramírez",
+    "username": "JoseRam16"
+  },
+  {
+    "id": 9,
+    "first_name": "Miguel",
+    "last_name": "Hernández",
+    "username": "MiguelHernan"
+  },
+  {
+    "id": 10,
+    "first_name": "Elena",
+    "last_name": "García",
+    "username": "ElenaGarcia_"
+  },
+  {
+    "id": 11,
+    "first_name": "David",
+    "last_name": "Vázquez",
+    "username": "DavidVazquez77"
+  },
+  {
+    "id": 12,
+    "first_name": "Sofía",
+    "last_name": "González",
+    "username": "Sofia_Gonz93"
+  },
+  {
+    "id": 13,
+    "first_name": "Antonio",
+    "last_name": "Ruiz",
+    "username": "AntonioRuiz22"
+  },
+  {
+    "id": 14,
+    "first_name": "Marta",
+    "last_name": "Díaz",
+    "username": "MartaDiaz44"
+  },
+  {
+    "id": 15,
+    "first_name": "Fernando",
+    "last_name": "Torres",
+    "username": "FerTorres_55"
+  },
+  {
+    "id": 16,
+    "first_name": "Carmen",
+    "last_name": "Álvarez",
+    "username": "Carmen_Alv"
+  },
+  {
+    "id": 17,
+    "first_name": "Javier",
+    "last_name": "Molina",
+    "username": "Javi_Molina"
+  },
+  {
+    "id": 18,
+    "first_name": "Beatriz",
+    "last_name": "Jiménez",
+    "username": "Bea_Jimenez"
+  },
+  {
+    "id": 19,
+    "first_name": "Ricardo",
+    "last_name": "Castro",
+    "username": "Ricardo_Castr"
+  },
+  {
+    "id": 20,
+    "first_name": "Isabel",
+    "last_name": "Gutiérrez",
+    "username": "Isabel_Gtz"
+  }
+]
