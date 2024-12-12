@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.controller;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,10 @@ public class UserRestController {
     public ResponseEntity<SimpleMessageDTO> unfollowUser(@PathVariable Long userId, @PathVariable Long userToFollowId) {
         return ResponseEntity.ok(new SimpleMessageDTO(userService.unfollowUser(userId, userToFollowId)));
     }
+
+    @GetMapping("/{userId}/followers/list")
+    public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId){
+        return ResponseEntity.ok(userService.findFollowersList(userId));
 
     @GetMapping("{userId}/followers/count")
     public ResponseEntity<FollowerCountResponse> getFollowersCount(@PathVariable Long userId) {
