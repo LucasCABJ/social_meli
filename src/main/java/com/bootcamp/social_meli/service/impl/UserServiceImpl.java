@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import com.bootcamp.social_meli.exception.UserNotFoundException;
@@ -43,8 +44,17 @@ public class UserServiceImpl implements IUserService {
         User user = optionalUser.get();
         User userToFollow = optionalUserToFollow.get();
 
-        user.getFollowed().add(userToFollow);
-        userToFollow.getFollowers().add(user);
+        List<User> userFollowedList = user.getFollowed();
+        List<User> userToFollowFollowersList = userToFollow.getFollowers();
+
+        if(userFollowedList.stream().anyMatch(u -> u.getId().equals(userToFollowId))) {
+            throw new BadRequestException("El usuario " + user.getUsername() + " ya sigue al usuario " + userToFollow.getUsername());
+        } else if (userToFollowFollowersList.stream().anyMatch(u -> u.getId().equals(userId))) {
+            throw new BadRequestException("El usuario " + user.getUsername() + " ya se encuentra en la lista de seguidores de: " + userToFollow.getUsername());
+        }
+
+        userFollowedList.add(userToFollow);
+        userToFollowFollowersList.add(user);
 
         return "¡El usuario " + user.getUsername() + " ha comenzado a seguir a " + userToFollow.getUsername() + " exitosamente!";
     }
