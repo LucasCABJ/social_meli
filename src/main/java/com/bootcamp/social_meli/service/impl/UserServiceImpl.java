@@ -31,6 +31,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String followUser(Long userId, Long userToFollowId) {
+        if(userId.equals(userToFollowId)) {
+            throw new BadRequestException("El usuario no puede seguirse a si mismo.");
+        }
+
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<User> optionalUserToFollow = userRepository.findById(userToFollowId);
 
@@ -62,6 +66,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String unfollowUser(Long userId, Long userToFollowId) {
+        if(userId.equals(userToFollowId)) {
+            throw new BadRequestException("El usuario no puede dejarse de seguir a si mismo.");
+        }
+
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<User> optionalUserToFollow = userRepository.findById(userToFollowId);
 
