@@ -1,9 +1,19 @@
 package com.bootcamp.social_meli.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.bootcamp.social_meli.service.IProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/products")
 public class ProductRestController {
+
+    @Autowired
+    private IProductService userService;
+
+    @GetMapping("/products/promo-post/count")
+    public ResponseEntity<?> getAmountOfPromosByUser(@RequestParam Integer user_id){
+        return ResponseEntity.ok(userService.getAmountOfPromosByUser(user_id));
+    }
 }
