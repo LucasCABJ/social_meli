@@ -1,6 +1,8 @@
 package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.response.FollowersListDTO;
+import com.bootcamp.social_meli.dto.response.SimpleUserDTO;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -87,5 +89,35 @@ public class UserServiceImpl implements IUserService {
         userToUnfollowFollowersList.remove(user);
         return "¡El usuario " + user.getUsername() + " ha dejado de seguir a " + userToUnfollow.getUsername() + " exitosamente!";
 
+    }
+
+    @Override
+    public FollowersListDTO findFollowersList(String userId) {
+        Long idLong;
+
+        try {
+            idLong = Long.parseLong(userId);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("El ID del usuario debe ser un número entero");
+        }
+
+        Optional<User> user = userRepository.findById(idLong);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("El usuario no existe");
+        }
+
+        List<User> followersList = user.get().getFollowers();
+
+        List<SimpleUserDTO> followersDtos = followersList.stream()
+                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+                .toList();
+
+        FollowersListDTO followersDTO = new FollowersListDTO();
+
+        followersDTO.setUser_id(user.get().getId());
+        followersDTO.setUser_name(user.get().getUsername());
+        followersDTO.setFollowers(followersDtos);
+
+        return followersDTO;
     }
 }
