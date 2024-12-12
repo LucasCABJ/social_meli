@@ -20,7 +20,9 @@ class Post {
     - createDate: LocalDate
     - product: Product
     - category: Integer
-    - price: double
+    - price: Double
+    - has_promo: Boolean
+    - discount: Double
 }
 
 Product <-- Post
