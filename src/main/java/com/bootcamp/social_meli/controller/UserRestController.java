@@ -42,8 +42,9 @@ public class UserRestController {
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId){
+    public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId) {
         return ResponseEntity.ok(userService.findFollowersList(userId));
+    }
 
     @GetMapping("{userId}/followers/count")
     public ResponseEntity<FollowerCountResponse> getFollowersCount(@PathVariable Long userId) {
