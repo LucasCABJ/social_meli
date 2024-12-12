@@ -3,120 +3,160 @@
     "id": 1,
     "first_name": "Lucas",
     "last_name": "Caraballo",
-    "username": "LucasCABJ"
+    "username": "LucasCABJ",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 2,
     "first_name": "Martín",
     "last_name": "Gómez",
-    "username": "MartinG23"
+    "username": "MartinG23",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 3,
     "first_name": "Ana",
     "last_name": "Pérez",
-    "username": "AnaPerezzz"
+    "username": "AnaPerezzz",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 4,
     "first_name": "Carlos",
     "last_name": "Sánchez",
-    "username": "CarlosSan_15"
+    "username": "CarlosSan_15",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 5,
     "first_name": "Laura",
     "last_name": "López",
-    "username": "LauLopez87"
+    "username": "LauLopez87",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 6,
     "first_name": "Ricardo",
     "last_name": "Fernández",
-    "username": "Ricardo_Fern"
+    "username": "Ricardo_Fern",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 7,
     "first_name": "Patricia",
     "last_name": "Martínez",
-    "username": "PatriMart90"
+    "username": "PatriMart90",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 8,
     "first_name": "José",
     "last_name": "Ramírez",
-    "username": "JoseRam16"
+    "username": "JoseRam16",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 9,
     "first_name": "Miguel",
     "last_name": "Hernández",
-    "username": "MiguelHernan"
+    "username": "MiguelHernan",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 10,
     "first_name": "Elena",
     "last_name": "García",
-    "username": "ElenaGarcia_"
+    "username": "ElenaGarcia_",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 11,
     "first_name": "David",
     "last_name": "Vázquez",
-    "username": "DavidVazquez77"
+    "username": "DavidVazquez77",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 12,
     "first_name": "Sofía",
     "last_name": "González",
-    "username": "Sofia_Gonz93"
+    "username": "Sofia_Gonz93",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 13,
     "first_name": "Antonio",
     "last_name": "Ruiz",
-    "username": "AntonioRuiz22"
+    "username": "AntonioRuiz22",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 14,
     "first_name": "Marta",
     "last_name": "Díaz",
-    "username": "MartaDiaz44"
+    "username": "MartaDiaz44",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 15,
     "first_name": "Fernando",
     "last_name": "Torres",
-    "username": "FerTorres_55"
+    "username": "FerTorres_55",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 16,
     "first_name": "Carmen",
     "last_name": "Álvarez",
-    "username": "Carmen_Alv"
+    "username": "Carmen_Alv",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 17,
     "first_name": "Javier",
     "last_name": "Molina",
-    "username": "Javi_Molina"
+    "username": "Javi_Molina",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 18,
     "first_name": "Beatriz",
     "last_name": "Jiménez",
-    "username": "Bea_Jimenez"
+    "username": "Bea_Jimenez",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 19,
     "first_name": "Ricardo",
     "last_name": "Castro",
-    "username": "Ricardo_Castr"
+    "username": "Ricardo_Castr",
+    "followed": [],
+    "followers": []
   },
   {
     "id": 20,
     "first_name": "Isabel",
     "last_name": "Gutiérrez",
-    "username": "Isabel_Gtz"
+    "username": "Isabel_Gtz",
+    "followed": [],
+    "followers": []
   }
 ]

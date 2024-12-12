@@ -25,7 +25,8 @@ public class UserServiceImpl implements IUserService {
                 .stream()
                 .map(user -> objectMapper.convertValue(user, UserDTO.class))
                 .toList();
-                
+    }
+
     @Override
     public String followUser(Long userId, Long userToFollowId) {
         Optional<User> optionalUser = userRepository.findById(userId);
