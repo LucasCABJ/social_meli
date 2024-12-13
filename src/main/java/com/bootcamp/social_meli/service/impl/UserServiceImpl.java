@@ -91,6 +91,60 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public FollowersListDTO findFollowersList(String userId) {
+        Long idLong;
+
+        try {
+            idLong = Long.parseLong(userId);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("El ID del usuario debe ser un número entero");
+        }
+
+        User user = userRepository.findById(idLong)
+                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+
+        List<User> followersList = user.getFollowers();
+
+        List<SimpleUserDTO> followersDtos = followersList.stream()
+                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+                .toList();
+
+        FollowersListDTO followersDTO = new FollowersListDTO();
+        followersDTO.setUser_id(user.getId());
+        followersDTO.setUser_name(user.getUsername());
+        followersDTO.setFollowers(followersDtos);
+
+        return followersDTO;
+    }
+    @Override
+    public FollowedListDTO findFollowedList(String userId) {
+        Long idLong;
+
+        try {
+            idLong = Long.parseLong(userId);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("El ID del usuario debe ser un número entero");
+        }
+
+        User user = userRepository.findById(idLong)
+                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+
+        List<User> followedList = user.getFollowed();
+
+        List<SimpleUserDTO> followedDtos = followedList.stream()
+                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+                .toList();
+
+        FollowedListDTO followedDTO = new FollowedListDTO();
+
+        followedDTO.setUser_id(user.getId());
+        followedDTO.setUser_name(user.getUsername());
+        followedDTO.setFollowed(followedDtos);
+
+        return followedDTO;
+
+    }
+    @Override
     public FollowersListDTO findFollowersList(String userId, String order) {
         Long idLong;
 
