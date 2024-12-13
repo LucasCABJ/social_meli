@@ -1,5 +1,6 @@
 package com.bootcamp.social_meli.repository.impl;
 
+import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -48,5 +49,10 @@ public class UserRepositoryImpl implements IUserRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<User> findFollowsByUserId(Long id) {
+        return findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + id)).getFollowed();
     }
 }

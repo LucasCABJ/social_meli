@@ -5,6 +5,7 @@ import com.bootcamp.social_meli.dto.SimpleMessageDTO;
 import com.bootcamp.social_meli.dto.response.FollowedListDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
+import com.bootcamp.social_meli.model.User;
 
 import java.util.List;
 
