@@ -13,4 +13,9 @@ public class GlobalExceptionController {
     public ResponseEntity<ExceptionDTO> handleUserNotFoundException(UserNotFoundException e) {
         return new ResponseEntity<>(new ExceptionDTO("404", e.getMessage()), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ExceptionDTO> handleBadRequestException(BadRequestException e) {
+        return new ResponseEntity<>(new ExceptionDTO("400", e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 public class ProductRestController {
 
     @Autowired
-    private IProductService userService;
+    private IProductService productService;
 
-    @GetMapping("/products/promo-post/count")
-    public ResponseEntity<?> getAmountOfPromosByUser(@RequestParam Integer user_id){
-        return ResponseEntity.ok(userService.getAmountOfPromosByUser(user_id));
+    @GetMapping("/promo-post/count")
+    public ResponseEntity<?> getAmountOfPromosByUser(@RequestParam Long user_id){
+        return ResponseEntity.ok(productService.getAmountOfPromosByUser(user_id));
     }
 }
