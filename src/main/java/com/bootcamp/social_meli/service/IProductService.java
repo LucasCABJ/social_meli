@@ -1,5 +1,7 @@
 package com.bootcamp.social_meli.service;
 
+import com.bootcamp.social_meli.dto.response.AmountOfPromosDTO;
+
 public interface IProductService {
-    Integer getAmountOfPromosByUser(Long user_id);
+    AmountOfPromosDTO getAmountOfPromosByUser(Long user_id);
 }

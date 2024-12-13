@@ -1,12 +1,15 @@
 package com.bootcamp.social_meli.repository.impl;
 
 import com.bootcamp.social_meli.model.Post;
+import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class PostRepositoryImpl implements IPostRepository {
 
     private final List<Post> postsList = new ArrayList<>();
@@ -29,5 +32,10 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public Post delete(Post obj) {
         return null;
+    }
+
+    @Override
+    public List<Post> findPostsByUserId(User user) {
+        return List.of();
     }
 }
