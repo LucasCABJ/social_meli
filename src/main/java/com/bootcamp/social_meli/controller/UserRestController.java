@@ -20,8 +20,6 @@ public class UserRestController {
 
     @Autowired
     private IUserService userService;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
