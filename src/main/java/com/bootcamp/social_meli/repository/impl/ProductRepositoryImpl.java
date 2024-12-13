@@ -33,8 +33,4 @@ public class ProductRepositoryImpl implements IProductRepository {
         return null;
     }
 
-    @Override
-    public void save(Product obj) {
-        productList.add(obj);
-    }
 }

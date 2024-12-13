@@ -42,8 +42,11 @@ public class PostServiceImpl implements IPostService {
         Post post = objectMapper.convertValue(postDTO,Post.class);
         post.setCreatorUser(optionalUser.get());
 
-        postRepository.save(post);
-        productRepository.save(postDTO.getProduct());
+        if(productRepository.findAll().stream().noneMatch(product -> product.getId().equals(post.getProduct().getId()))){
+            productRepository.create(post.getProduct());
+        }
+
+        postRepository.create(post);
 
         UserPostResponse createPostResponse = new UserPostResponse();
         createPostResponse.setMessage("Post creado exitosamente!");

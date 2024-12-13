@@ -15,6 +15,7 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public Post create(Post obj) {
+        postsList.add(obj);
         return obj;
     }
 
@@ -31,11 +32,6 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public Post delete(Post obj) {
         return null;
-    }
-
-    @Override
-    public void save(Post obj) {
-        postsList.add(obj);
     }
 
 }

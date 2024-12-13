@@ -17,7 +17,6 @@ public class ProductRestController {
 
     @PostMapping("/post")
     public ResponseEntity<?> postProduct(@Valid @RequestBody PostDTO postDTO) {
-        UserPostResponse createPostResponse = postService.createPost(postDTO);
-        return ResponseEntity.ok(createPostResponse);
+        return ResponseEntity.ok(postService.createPost(postDTO));
     }
 }
