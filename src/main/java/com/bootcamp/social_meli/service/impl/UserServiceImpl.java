@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.response.FollowedListDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.SimpleUserDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
@@ -130,7 +131,38 @@ public class UserServiceImpl implements IUserService {
         return followersDTO;
     
     }
-      
+
+    @Override
+    public FollowedListDTO findFollowedList(String userId) {
+        Long idLong;
+
+        try {
+            idLong = Long.parseLong(userId);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("El ID del usuario debe ser un número entero");
+        }
+
+        Optional<User> user = userRepository.findById(idLong);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("El usuario no existe");
+        }
+
+        List<User> followedList = user.get().getFollowed();
+
+        List<SimpleUserDTO> followedDtos = followedList.stream()
+                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+                .toList();
+
+        FollowedListDTO followedDTO = new FollowedListDTO();
+
+        followedDTO.setUser_id(user.get().getId());
+        followedDTO.setUser_name(user.get().getUsername());
+        followedDTO.setFollowed(followedDtos);
+
+        return followedDTO;
+
+    }
+
     public FollowerCountResponse getFollowerCount(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isEmpty()) {

@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.controller;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.response.FollowedListDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +45,11 @@ public class UserRestController {
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId) {
         return ResponseEntity.ok(userService.findFollowersList(userId));
+    }
+
+    @GetMapping("/{userId}/followed/list")
+    public ResponseEntity<FollowedListDTO> findFollowedList(@PathVariable String userId) {
+        return ResponseEntity.ok(userService.findFollowedList(userId));
     }
 
     @GetMapping("{userId}/followers/count")
