@@ -1,5 +1,6 @@
 package com.bootcamp.social_meli.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class User {
     @JsonProperty("last_name")
     private String lastName;
     private String username;
+    @JsonIgnore
     private List<User> followed;
+    @JsonIgnore
     private List<User> followers;
 }
