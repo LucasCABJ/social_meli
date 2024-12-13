@@ -2,6 +2,7 @@ package com.bootcamp.social_meli.repository.impl;
 
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IUserRepository;
+import com.bootcamp.social_meli.repository.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -38,6 +39,26 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public User delete(User user) {
         return null;
+    }
+
+    @Override
+    public List<User> getFollowedById(Long id) {
+        User user = usersList
+                .stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("No se ha encontrado al usuario: " + id));
+        return user.getFollowed();
+    }
+
+    @Override
+    public List<User> getFollowersById(Long id) {
+        User user = usersList
+                .stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("No se ha encontrado al usuario: " + id));
+        return user.getFollowers();
     }
 
     @PostConstruct
