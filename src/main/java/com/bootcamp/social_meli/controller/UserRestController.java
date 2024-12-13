@@ -39,13 +39,22 @@ public class UserRestController {
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId,
                                                              @RequestParam(required = false) String order) {
-        return ResponseEntity.ok(userService.findFollowersList(userId, order));
+        if (order != null && !order.isEmpty()) {
+            return ResponseEntity.ok(userService.findFollowersList(userId, order));
+        } else {
+            return ResponseEntity.ok(userService.findFollowersList(userId));
+        }
+
     }
 
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<FollowedListDTO> findFollowedList(@PathVariable String userId,
                                                             @RequestParam(required = false) String order) {
-        return ResponseEntity.ok(userService.findFollowedList(userId, order));
+        if (order != null && !order.isEmpty()) {
+            return ResponseEntity.ok(userService.findFollowedList(userId, order));
+        } else {
+            return ResponseEntity.ok(userService.findFollowedList(userId));
+        }
     }
 
     @GetMapping("{userId}/followers/count")
