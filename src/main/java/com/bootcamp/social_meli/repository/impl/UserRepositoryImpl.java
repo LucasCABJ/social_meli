@@ -53,10 +53,6 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public List<User> findFollowsByUserId(Long id) {
-        Optional<User> user = findById(id);
-        if (user.isEmpty()) {
-            new NotFoundException("No existe el usuario con id: " + id);
-        }
-        return user.get().getFollowed();
+        return findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + id)).getFollowed();
     }
 }
