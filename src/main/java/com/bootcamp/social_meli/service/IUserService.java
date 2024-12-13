@@ -5,6 +5,7 @@ import com.bootcamp.social_meli.dto.SimpleMessageDTO;
 import com.bootcamp.social_meli.dto.response.FollowedListDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
+import com.bootcamp.social_meli.model.User;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface IUserService {
     FollowersListDTO findFollowersList(String userId);
     FollowedListDTO findFollowedList(String userId);
     FollowerCountResponse getFollowerCount(Long userId);
+    List<User> findFollowedUserList(Long userId);
 }

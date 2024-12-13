@@ -27,6 +27,11 @@ public class PostRepositoryImpl implements IPostRepository {
     }
 
     @Override
+    public List<Post> findByUserId(Long id) {
+        return postsList.stream().filter(p -> p.getCreatorUser().getId().equals(id)).toList();
+    }
+
+    @Override
     public Post delete(Post obj) {
         return null;
     }

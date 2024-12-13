@@ -162,6 +162,17 @@ public class UserServiceImpl implements IUserService {
         return followedDTO;
 
     }
+    @Override
+    public List<User> findFollowedUserList(Long userId) {
+
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("El usuario no existe");
+        }
+
+        List<User> followedList = user.get().getFollowed();
+        return followedList;
+    }
 
     public FollowerCountResponse getFollowerCount(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);

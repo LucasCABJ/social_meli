@@ -2,4 +2,8 @@ package com.bootcamp.social_meli.repository;
 
 import com.bootcamp.social_meli.model.Post;
 
-public interface IPostRepository extends ICrudRepository<Post, Long> { }
+import java.util.List;
+
+public interface IPostRepository extends ICrudRepository<Post, Long> {
+    List<Post> findByUserId(Long id);
+}
