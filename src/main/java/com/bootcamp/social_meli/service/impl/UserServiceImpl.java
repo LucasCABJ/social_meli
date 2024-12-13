@@ -7,13 +7,17 @@ import com.bootcamp.social_meli.dto.response.SimpleUserDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Comparator;
 import java.util.List;
+
 import com.bootcamp.social_meli.exception.UserNotFoundException;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -34,28 +38,20 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String followUser(Long userId, Long userToFollowId) {
-        if(userId.equals(userToFollowId)) {
+        if (userId.equals(userToFollowId)) {
             throw new BadRequestException("El usuario no puede seguirse a si mismo.");
         }
 
-        Optional<User> optionalUser = userRepository.findById(userId);
-        Optional<User> optionalUserToFollow = userRepository.findById(userToFollowId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
 
-        if(optionalUser.isEmpty()) {
-            throw new UserNotFoundException("No se ha encontrado al usuario: " + userId);
-        }
-
-        if(optionalUserToFollow.isEmpty()) {
-            throw new UserNotFoundException("No se ha encontrado al usuario: " + userToFollowId);
-        }
-
-        User user = optionalUser.get();
-        User userToFollow = optionalUserToFollow.get();
+        User userToFollow = userRepository.findById(userToFollowId)
+                .orElseThrow(()-> new UserNotFoundException("No se ha encontrado al usuario: " + userToFollowId));
 
         List<User> userFollowedList = user.getFollowed();
         List<User> userToFollowFollowersList = userToFollow.getFollowers();
 
-        if(userFollowedList.stream().anyMatch(u -> u.getId().equals(userToFollowId))) {
+        if (userFollowedList.stream().anyMatch(u -> u.getId().equals(userToFollowId))) {
             throw new BadRequestException("El usuario " + user.getUsername() + " ya sigue al usuario " + userToFollow.getUsername());
         } else if (userToFollowFollowersList.stream().anyMatch(u -> u.getId().equals(userId))) {
             throw new BadRequestException("El usuario " + user.getUsername() + " ya se encuentra en la lista de seguidores de: " + userToFollow.getUsername());
@@ -69,27 +65,20 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String unfollowUser(Long userId, Long userToFollowId) {
-        if(userId.equals(userToFollowId)) {
+        if (userId.equals(userToFollowId)) {
             throw new BadRequestException("El usuario no puede dejarse de seguir a si mismo.");
         }
 
-        Optional<User> optionalUser = userRepository.findById(userId);
-        Optional<User> optionalUserToFollow = userRepository.findById(userToFollowId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
 
-        if(optionalUser.isEmpty()) {
-            throw new UserNotFoundException("No se ha encontrado al usuario: " + userId);
-        }
+        User userToUnfollow = userRepository.findById(userToFollowId)
+                .orElseThrow(()-> new UserNotFoundException("No se ha encontrado al usuario: " + userToFollowId));
 
-        if(optionalUserToFollow.isEmpty()) {
-            throw new UserNotFoundException("No se ha encontrado al usuario: " + userToFollowId);
-        }
-
-        User user = optionalUser.get();
-        User userToUnfollow = optionalUserToFollow.get();
         List<User> userFollowedList = user.getFollowed();
         List<User> userToUnfollowFollowersList = userToUnfollow.getFollowers();
 
-        if(userFollowedList.stream().noneMatch(u -> u.getId().equals(userToFollowId))) {
+        if (userFollowedList.stream().noneMatch(u -> u.getId().equals(userToFollowId))) {
             throw new BadRequestException("El usuario " + user.getUsername() + " no sigue al usuario " + userToUnfollow.getUsername());
         } else if (userToUnfollowFollowersList.stream().noneMatch(u -> u.getId().equals(userId))) {
             throw new BadRequestException("El usuario " + user.getUsername() + " no se encuentra en la lista de seguidores de: " + userToUnfollow.getUsername());
@@ -102,7 +91,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowersListDTO findFollowersList(String userId) {
+    public FollowersListDTO findFollowersList(String userId, String order) {
         Long idLong;
 
         try {
@@ -111,29 +100,37 @@ public class UserServiceImpl implements IUserService {
             throw new BadRequestException("El ID del usuario debe ser un número entero");
         }
 
-        Optional<User> user = userRepository.findById(idLong);
-        if(user.isEmpty()){
-            throw new UserNotFoundException("El usuario no existe");
-        }
+        User user = userRepository.findById(idLong)
+                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
 
-        List<User> followersList = user.get().getFollowers();
+        List<User> followersList = user.getFollowers();
+
+        if (order != null && !order.isEmpty()) {
+            if (order.equals("name_asc")) {
+                followersList.sort(Comparator
+                        .comparing(User::getUsername));
+            } else if (order.equals("name_desc")) {
+                followersList.sort(Comparator
+                        .comparing(User::getUsername)
+                        .reversed());
+            } else {
+                throw new BadRequestException("El parámetro 'order' no es válido. Los valores aceptables son 'name_asc' o 'name_desc'.");
+            }
+        }
 
         List<SimpleUserDTO> followersDtos = followersList.stream()
                 .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
                 .toList();
 
         FollowersListDTO followersDTO = new FollowersListDTO();
-
-        followersDTO.setUser_id(user.get().getId());
-        followersDTO.setUser_name(user.get().getUsername());
+        followersDTO.setUser_id(user.getId());
+        followersDTO.setUser_name(user.getUsername());
         followersDTO.setFollowers(followersDtos);
 
         return followersDTO;
-    
     }
-
     @Override
-    public FollowedListDTO findFollowedList(String userId) {
+    public FollowedListDTO findFollowedList(String userId, String order) {
         Long idLong;
 
         try {
@@ -142,12 +139,23 @@ public class UserServiceImpl implements IUserService {
             throw new BadRequestException("El ID del usuario debe ser un número entero");
         }
 
-        Optional<User> user = userRepository.findById(idLong);
-        if(user.isEmpty()){
-            throw new UserNotFoundException("El usuario no existe");
-        }
+        User user = userRepository.findById(idLong)
+                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
 
-        List<User> followedList = user.get().getFollowed();
+        List<User> followedList = user.getFollowed();
+
+        if (order != null && !order.isEmpty()) {
+            if (order.equals("name_asc")) {
+                followedList.sort(Comparator
+                        .comparing(User::getUsername));
+            } else if (order.equals("name_desc")) {
+                followedList.sort(Comparator
+                        .comparing(User::getUsername)
+                        .reversed());
+            } else {
+                throw new BadRequestException("El parámetro 'order' no es válido. Los valores aceptables son 'name_asc' o 'name_desc'.");
+            }
+        }
 
         List<SimpleUserDTO> followedDtos = followedList.stream()
                 .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
@@ -155,8 +163,8 @@ public class UserServiceImpl implements IUserService {
 
         FollowedListDTO followedDTO = new FollowedListDTO();
 
-        followedDTO.setUser_id(user.get().getId());
-        followedDTO.setUser_name(user.get().getUsername());
+        followedDTO.setUser_id(user.getId());
+        followedDTO.setUser_name(user.getUsername());
         followedDTO.setFollowed(followedDtos);
 
         return followedDTO;
@@ -164,11 +172,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     public FollowerCountResponse getFollowerCount(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isEmpty()) {
-            throw new UserNotFoundException("No se ha encontrado al usuario: " + userId);
-        }
-        User user = optionalUser.get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
         Long followersCount = (long) user.getFollowers().size();
         FollowerCountResponse followerCountResponse = new FollowerCountResponse();
         followerCountResponse.setUser_id(userId);
