@@ -13,9 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Post {
     private Long id;
-    //private User creatorUser;
-    @JsonProperty("user_id")
-    private Long userId;
+    private User creatorUser;
     @JsonProperty("date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate createDate;

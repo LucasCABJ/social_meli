@@ -35,6 +35,6 @@ public class ProductRepositoryImpl implements IProductRepository {
 
     @Override
     public void save(Product obj) {
-
+        productList.add(obj);
     }
 }

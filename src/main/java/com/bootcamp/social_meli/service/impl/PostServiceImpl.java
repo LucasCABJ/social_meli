@@ -7,6 +7,7 @@ import com.bootcamp.social_meli.exception.UserNotFoundException;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
+import com.bootcamp.social_meli.repository.IProductRepository;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.service.IPostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,20 +23,28 @@ public class PostServiceImpl implements IPostService {
     @Autowired
     private IUserRepository userRepository;
     @Autowired
+    private IProductRepository productRepository;
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Override
     public UserPostResponse createPost(PostDTO postDTO) {
         Optional<User> optionalUser = userRepository.findById(postDTO.getUserId());
+
         if(optionalUser.isEmpty()) {
             throw new UserNotFoundException("No se ha encontrado al usuario: " + postDTO.getUserId());
         }
 
-        if(postRepository.findAll().stream().anyMatch(p->p.getUserId().equals(postDTO.getUserId()) && p.getProduct().getId().equals(postDTO.getProduct().getId()))){
+        if(postRepository.findAll().stream().anyMatch(p->p.getCreatorUser().getId().equals(postDTO.getUserId()) && p.getProduct().getId().equals(postDTO.getProduct().getId()))){
             throw new BadRequestException("Post ya existente para el usuario "+postDTO.getUserId());
         }
 
-        postRepository.save(objectMapper.convertValue(postDTO,Post.class));
+        Post post = objectMapper.convertValue(postDTO,Post.class);
+        post.setCreatorUser(optionalUser.get());
+
+        postRepository.save(post);
+        productRepository.save(postDTO.getProduct());
+
         UserPostResponse createPostResponse = new UserPostResponse();
         createPostResponse.setMessage("Post creado exitosamente!");
         createPostResponse.setPostDTO(postDTO);
