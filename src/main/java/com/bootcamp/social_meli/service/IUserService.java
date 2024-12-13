@@ -18,5 +18,4 @@ public interface IUserService {
     FollowersListDTO findFollowersList(String userId, String order);
     FollowedListDTO findFollowedList(String userId, String order);
     FollowerCountResponse getFollowerCount(Long userId);
-    List<User> findFollowedUserList(Long userId);
 }

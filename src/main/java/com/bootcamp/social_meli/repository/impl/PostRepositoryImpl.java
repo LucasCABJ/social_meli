@@ -4,6 +4,7 @@ import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.repository.IPostRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,12 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public List<Post> findByUserId(Long id) {
         return postsList.stream().filter(p -> p.getCreatorUser().getId().equals(id)).toList();
+    }
+
+    @Override
+    public List<Post> findByUserIdFilteredByLastTwoWeeks(Long id) {
+        return findByUserId(id).stream().filter(post -> post.getCreateDate().isAfter(LocalDate.now().minusWeeks(2))).toList();
+
     }
 
     @Override

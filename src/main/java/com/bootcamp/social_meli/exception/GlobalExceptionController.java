@@ -13,8 +13,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionController {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionDTO> handleUserNotFoundException(UserNotFoundException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ExceptionDTO> handleUserNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(new ExceptionDTO("404", e.getMessage()), HttpStatus.NOT_FOUND);
     }
 

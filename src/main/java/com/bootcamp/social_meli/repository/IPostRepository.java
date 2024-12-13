@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IPostRepository extends ICrudRepository<Post, Long> {
     List<Post> findByUserId(Long id);
+    List<Post> findByUserIdFilteredByLastTwoWeeks(Long id);
 }

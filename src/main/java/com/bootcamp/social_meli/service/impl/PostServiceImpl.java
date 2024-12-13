@@ -3,7 +3,7 @@ package com.bootcamp.social_meli.service.impl;
 import com.bootcamp.social_meli.dto.PostDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
-import com.bootcamp.social_meli.exception.UserNotFoundException;
+import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
@@ -32,7 +32,7 @@ public class PostServiceImpl implements IPostService {
         Optional<User> optionalUser = userRepository.findById(postDTO.getUserId());
 
         if(optionalUser.isEmpty()) {
-            throw new UserNotFoundException("No se ha encontrado al usuario: " + postDTO.getUserId());
+            throw new NotFoundException("No se ha encontrado al usuario: " + postDTO.getUserId());
         }
 
         if(postRepository.findAll().stream().anyMatch(p->p.getCreatorUser().getId().equals(postDTO.getUserId()) && p.getProduct().getId().equals(postDTO.getProduct().getId()))){
