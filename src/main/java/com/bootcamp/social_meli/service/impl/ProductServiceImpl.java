@@ -25,22 +25,16 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public AmountOfPromosDTO getAmountOfPromosByUser(Long user_id) {
         Optional<User> user = userRepository.findById(user_id);
-
-        System.out.println("USER " + user);
-
         if (user.isEmpty()){
             throw new UserNotFoundException("Usuario no encontrado");
         }
-        List<Post> posts = postRepository.findPostsByUserId(user.get());
-        posts = posts.stream().filter(Post::getHasDiscount).toList();
+        List<Post> amountOfPromos = postRepository.findAmountOfPromosByUserId(user.get());
 
         AmountOfPromosDTO amountOfPromosDTO = new AmountOfPromosDTO();
-        amountOfPromosDTO.setAmountOfPromos(posts.size());
+        amountOfPromosDTO.setAmountOfPromos(amountOfPromos.size());
         amountOfPromosDTO.setUser_id(user.get().getId());
         amountOfPromosDTO.setUser_name(user.get().getUsername());
 
-        System.out.println("RESPONSE " + amountOfPromosDTO.getUser_id());
-        System.out.println("RESPONSE " + amountOfPromosDTO);
         return amountOfPromosDTO;
     }
 }

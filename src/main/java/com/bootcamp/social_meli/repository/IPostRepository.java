@@ -6,5 +6,5 @@ import com.bootcamp.social_meli.model.User;
 import java.util.List;
 
 public interface IPostRepository extends ICrudRepository<Post, Long> {
-    List<Post> findPostsByUserId(User user);
+    List<Post> findAmountOfPromosByUserId(User user);
 }

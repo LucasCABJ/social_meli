@@ -34,8 +34,9 @@ public class PostRepositoryImpl implements IPostRepository {
         return null;
     }
 
+
     @Override
-    public List<Post> findPostsByUserId(User user) {
-        return List.of();
+    public List<Post> findAmountOfPromosByUserId(User user) {
+        return postsList.stream().filter(post -> post.getCreatorUser().equals(user) && post.getHasDiscount()).toList();
     }
 }
