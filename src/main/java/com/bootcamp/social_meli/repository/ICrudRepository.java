@@ -8,4 +8,5 @@ public interface ICrudRepository <T, K> {
     Optional<T> findById(K id);
     T create(T obj);
     T delete(T obj);
+    void save(T obj);
 }

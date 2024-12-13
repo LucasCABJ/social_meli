@@ -32,4 +32,9 @@ public class ProductRepositoryImpl implements IProductRepository {
     public Product delete(Product obj) {
         return null;
     }
+
+    @Override
+    public void save(Product obj) {
+
+    }
 }

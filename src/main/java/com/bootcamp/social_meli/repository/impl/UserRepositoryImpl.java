@@ -40,6 +40,11 @@ public class UserRepositoryImpl implements IUserRepository {
         return null;
     }
 
+    @Override
+    public void save(User obj) {
+
+    }
+
     @PostConstruct
     private void loadData() {
         String DATA_FILE = "src/main/resources/users.json";
