@@ -5,16 +5,12 @@ import com.bootcamp.social_meli.dto.response.FollowedListDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import com.bootcamp.social_meli.dto.SimpleMessageDTO;
 import com.bootcamp.social_meli.service.IUserService;
 import com.bootcamp.social_meli.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,8 +20,6 @@ public class UserRestController {
 
     @Autowired
     private IUserService userService;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
@@ -43,13 +37,15 @@ public class UserRestController {
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId) {
-        return ResponseEntity.ok(userService.findFollowersList(userId));
+    public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId,
+                                                             @RequestParam(required = false) String order) {
+        return ResponseEntity.ok(userService.findFollowersList(userId, order));
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<FollowedListDTO> findFollowedList(@PathVariable String userId) {
-        return ResponseEntity.ok(userService.findFollowedList(userId));
+    public ResponseEntity<FollowedListDTO> findFollowedList(@PathVariable String userId,
+                                                            @RequestParam(required = false) String order) {
+        return ResponseEntity.ok(userService.findFollowedList(userId, order));
     }
 
     @GetMapping("{userId}/followers/count")
