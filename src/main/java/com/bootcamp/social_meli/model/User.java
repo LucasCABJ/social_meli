@@ -21,8 +21,10 @@ public class User {
     private String lastName;
     @JsonAlias({"user_name", "username"})
     private String username;
+
     @JsonIgnore
     private List<User> followed;
+
     @JsonIgnore
     private List<User> followers;
 }

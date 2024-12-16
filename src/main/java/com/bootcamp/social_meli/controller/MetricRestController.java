@@ -3,15 +3,13 @@ package com.bootcamp.social_meli.controller;
 import com.bootcamp.social_meli.dto.response.MostFollowersResponseDTO;
 import com.bootcamp.social_meli.dto.response.MostProductsResponseDTO;
 import com.bootcamp.social_meli.dto.response.MostPostsUsersResponseDTO;
+import com.bootcamp.social_meli.dto.response.UserDetailsDTO;
 import com.bootcamp.social_meli.service.IProductService;
 import com.bootcamp.social_meli.service.IPostService;
 import com.bootcamp.social_meli.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/metrics")
@@ -35,6 +33,10 @@ public class MetricRestController {
         } else {
             return ResponseEntity.ok(userService.mostFollowers());
         }
+    }
+    @GetMapping("/{userId}/details")
+    public ResponseEntity<UserDetailsDTO> getUserDetails(@PathVariable Long userId) {
+            return ResponseEntity.ok(userService.metricsUserDetails(userId));
     }
 
     @GetMapping("/top/most_products")
