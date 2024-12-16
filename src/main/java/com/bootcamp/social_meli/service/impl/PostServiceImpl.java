@@ -2,6 +2,8 @@ package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.PostDTO;
 import com.bootcamp.social_meli.dto.PromoPostDTO;
+import com.bootcamp.social_meli.dto.response.MostPostsUsersResponseDTO;
+import com.bootcamp.social_meli.dto.response.SimpleUserWithPostsCountDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
@@ -15,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -84,5 +88,46 @@ public class PostServiceImpl implements IPostService {
             userPostResponse.setDiscount(post.getDiscountPercentage());
 
         return userPostResponse;
+    }
+
+    @Override
+    public MostPostsUsersResponseDTO mostPostsUsers() {
+        return mostPostsUsers(5);
+    }
+
+    @Override
+    public MostPostsUsersResponseDTO mostPostsUsers(Integer rank) {
+        if(rank <= 0) {
+            throw new BadRequestException("'rank' no puede ser <= 0");
+        }
+
+        HashMap<Long, SimpleUserWithPostsCountDTO> usersWithProducts = new HashMap<>();
+
+        postRepository.findAll().forEach(p -> {
+            // 1. Obtengo el creador del posteo
+            User postCreator = p.getCreatorUser();
+            // 2. Me fijo si ya lo incluí en el HashMap "usersWithProducts"
+            if(usersWithProducts.containsKey(postCreator.getId())) {
+                // 3a. Lo obtengo, incrementó en 1 y actualizo en el mapa
+                SimpleUserWithPostsCountDTO user = usersWithProducts.get(postCreator.getId());
+                user.setPosts_amount(user.getPosts_amount() + 1);
+                usersWithProducts.replace(postCreator.getId(), user);
+            } else {
+                // 3b. Lo agregó por primera vez y setteo en 1
+                usersWithProducts.put(postCreator.getId(),
+                        new SimpleUserWithPostsCountDTO(postCreator.getId(),
+                            postCreator.getUsername(),
+                            1));
+            }
+        });
+
+        List<SimpleUserWithPostsCountDTO> result;
+        if(usersWithProducts.size() < rank) {
+            result = usersWithProducts.values().stream().toList();
+        } else {
+            result = usersWithProducts.values().stream().toList().subList(0, rank);
+        }
+
+        return new MostPostsUsersResponseDTO(result);
     }
 }
