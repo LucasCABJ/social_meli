@@ -20,10 +20,14 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements IUserService {
 
-    @Autowired
     private IUserRepository userRepository;
-    @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    public UserServiceImpl(IUserRepository userRepository, ObjectMapper objectMapper) {
+        this.userRepository = userRepository;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public List<UserDTO> findAll() {

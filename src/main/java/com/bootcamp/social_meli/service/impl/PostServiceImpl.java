@@ -23,14 +23,18 @@ import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements IPostService {
-    @Autowired
     private IPostRepository postRepository;
-    @Autowired
     private IUserRepository userRepository;
-    @Autowired
     private IProductRepository productRepository;
-    @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    public PostServiceImpl(IPostRepository postRepository, IUserRepository userRepository, IProductRepository productRepository, ObjectMapper objectMapper) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public UserPostResponse createPost(PostDTO postDTO) {
