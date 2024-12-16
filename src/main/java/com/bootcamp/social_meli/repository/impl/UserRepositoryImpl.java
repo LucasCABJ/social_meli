@@ -41,18 +41,14 @@ public class UserRepositoryImpl implements IUserRepository {
         return null;
     }
 
-    @PostConstruct
-    private void loadData() {
-        String DATA_FILE = "src/main/resources/users.json";
-        try {
-            usersList = objectMapper.readValue(new File(DATA_FILE), new TypeReference<List<User>>(){});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public List<User> findFollowsByUserId(Long id) {
         return findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + id)).getFollowed();
     }
+
+    @Override
+    public void createBatch(List<User> users) {
+        usersList.addAll(users);
+    }
+
 }
