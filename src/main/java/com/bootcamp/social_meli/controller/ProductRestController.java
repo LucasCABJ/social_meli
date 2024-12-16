@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/products")
 public class ProductRestController {
 
-    @Autowired
     private IPostService postService;
-    @Autowired
     private IProductService productService;
-    @Autowired
     private IProductService userService;
+
+    @Autowired
+    public ProductRestController(IPostService postService, IProductService productService, IProductService userService) {
+        this.postService = postService;
+        this.productService = productService;
+        this.userService = userService;
+    }
 
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> getAllPostsFollowsLastTwoWeeks(@PathVariable Long userId,

@@ -17,9 +17,13 @@ import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
-    @Autowired
     private ObjectMapper objectMapper;
     private List<User> usersList = new ArrayList<>();
+
+    @Autowired
+    public UserRepositoryImpl(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public User create(User user) {

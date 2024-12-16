@@ -26,7 +26,7 @@ public class UserServiceImpl implements IUserService {
     private final IUserRepository userRepository;
     private final IPostRepository postRepository;
     private final ObjectMapper objectMapper;
-
+    @Autowired
     public UserServiceImpl(IPostRepository postRepository, IUserRepository userRepository, ObjectMapper objectMapper) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;

@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/metrics")
 public class MetricRestController {
 
-    @Autowired
     private IUserService userService;
+
+    @Autowired
+    public MetricRestController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/top/most_followers")
     public ResponseEntity<MostFollowersResponseDTO> getMostFollowersUsers(@RequestParam(required = false) Integer rank) {
