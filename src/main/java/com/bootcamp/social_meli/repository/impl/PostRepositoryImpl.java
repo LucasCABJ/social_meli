@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
     private long currentPostId = 0;
-
     private final List<Post> postsList = new ArrayList<>();
 
     @Override

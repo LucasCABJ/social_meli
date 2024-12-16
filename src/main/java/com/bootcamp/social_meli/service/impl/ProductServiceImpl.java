@@ -9,6 +9,7 @@ import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.dto.response.AmountOfPromosDTO;
 import com.bootcamp.social_meli.service.IProductService;
 import io.micrometer.common.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class ProductServiceImpl implements IProductService {
     private final IUserRepository userRepository;
     private final IPostRepository postRepository ;
 
+    @Autowired
     public ProductServiceImpl(IUserRepository userRepository, IPostRepository postRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
