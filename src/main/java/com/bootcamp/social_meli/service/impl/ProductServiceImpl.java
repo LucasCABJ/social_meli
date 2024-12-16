@@ -103,6 +103,8 @@ public class ProductServiceImpl implements IProductService {
             }
         }
 
+        productList.sort((p1, p2) -> Long.compare(p2.getProducts_count(), p1.getProducts_count()));
+
         return new MostProductsResponseDTO(productList);
     }
 
