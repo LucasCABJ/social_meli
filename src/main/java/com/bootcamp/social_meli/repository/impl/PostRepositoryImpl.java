@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.repository.impl;
 
 import com.bootcamp.social_meli.model.Post;
+import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +42,6 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public List<Post> findByUserIdFilteredByLastTwoWeeks(Long id) {
         return findByUserId(id).stream().filter(post -> post.getCreateDate().isAfter(LocalDate.now().minusWeeks(2))).toList();
-
     }
 
     @Override
@@ -49,4 +49,8 @@ public class PostRepositoryImpl implements IPostRepository {
         return null;
     }
 
+    @Override
+    public List<Post> findAmountOfPromosByUserId(User user) {
+        return postsList.stream().filter(post -> post.getCreatorUser().equals(user) && post.getHasDiscount()).toList();
+    }
 }
