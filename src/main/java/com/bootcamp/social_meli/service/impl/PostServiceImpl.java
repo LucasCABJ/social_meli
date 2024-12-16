@@ -109,19 +109,20 @@ public class PostServiceImpl implements IPostService {
 
         postRepository.findAll().forEach(p -> {
             // 1. Obtengo el creador del posteo
-            User postCreator = p.getCreatorUser();
+            Long postCreatorId = p.getCreatorUser().getId();
+            String postCreatorUsername = p.getCreatorUser().getUsername();
             // 2. Me fijo si ya lo incluí en el HashMap "usersWithProducts"
-            if(usersWithProducts.containsKey(postCreator.getId())) {
+            if(usersWithProducts.containsKey(postCreatorId)) {
                 // 3a. Lo obtengo, incrementó en 1 y actualizo en el mapa
-                SimpleUserWithPostsCountDTO user = usersWithProducts.get(postCreator.getId());
+                SimpleUserWithPostsCountDTO user = usersWithProducts.get(postCreatorId);
                 user.setPosts_amount(user.getPosts_amount() + 1);
-                usersWithProducts.replace(postCreator.getId(), user);
+                usersWithProducts.replace(postCreatorId, user);
             } else {
                 // 3b. Lo agregó por primera vez y setteo en 1
-                usersWithProducts.put(postCreator.getId(),
-                        new SimpleUserWithPostsCountDTO(postCreator.getId(),
-                            postCreator.getUsername(),
-                            1));
+                usersWithProducts.put(postCreatorId,
+                        new SimpleUserWithPostsCountDTO(postCreatorId,
+                                postCreatorUsername,
+                                1));
             }
         });
 
