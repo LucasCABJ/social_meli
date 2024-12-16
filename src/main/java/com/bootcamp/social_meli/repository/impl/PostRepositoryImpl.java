@@ -49,4 +49,8 @@ public class PostRepositoryImpl implements IPostRepository {
         return null;
     }
 
+    @Override
+    public void createBatch(List<Post> posts) {
+        postsList.addAll(posts);
+    }
 }
