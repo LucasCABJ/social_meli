@@ -5,10 +5,7 @@ import com.bootcamp.social_meli.service.IUserService;
 import com.bootcamp.social_meli.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/metrics")
@@ -24,6 +21,10 @@ public class MetricRestController {
         } else {
             return ResponseEntity.ok(userService.mostFollowers());
         }
+    }
+    @GetMapping("/{userId}/details")
+    public ResponseEntity<?> getUserDetails(@PathVariable Long userId) {
+            return ResponseEntity.ok(userService.metricsUserDetails(userId));
     }
 
 }

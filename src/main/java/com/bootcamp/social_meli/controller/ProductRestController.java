@@ -23,7 +23,8 @@ public class ProductRestController {
     private IProductService userService;
 
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<PostsFromFollowsDTO> getAllPostsFollowsLastTwoWeeks(@PathVariable Long userId, @RequestParam(defaultValue = "date_asc") String order)
+    public ResponseEntity<?> getAllPostsFollowsLastTwoWeeks(@PathVariable Long userId,
+                                                            @RequestParam(defaultValue = "date_asc") String order)
     {
         return new ResponseEntity<>(productService.getAllPostsFollowsLastTwoWeeks(userId, order), HttpStatus.OK);
     }
