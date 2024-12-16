@@ -1,21 +1,19 @@
 package com.bootcamp.social_meli.service.impl;
 
-
 import com.bootcamp.social_meli.dto.response.*;
 import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
 import com.bootcamp.social_meli.repository.IUserRepository;
+import com.bootcamp.social_meli.dto.response.AmountOfPromosDTO;
 import com.bootcamp.social_meli.service.IProductService;
-import com.bootcamp.social_meli.service.IUserService;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -34,7 +32,7 @@ public class ProductServiceImpl implements IProductService {
         List<PostNoDiscountDTO> postsNoDiscountFromFollowsDTOSList = new ArrayList<>();
 
         for (User user : followedList) {
-            List<PostNoDiscountDTO> postNoDiscountDTOList = new ArrayList<>();
+            List<PostNoDiscountDTO> postNoDiscountDTOList;
 
             List<Post> lastTwoWeeksPosts = postRepository.findByUserIdFilteredByLastTwoWeeks(user.getId());
 
@@ -70,4 +68,19 @@ public class ProductServiceImpl implements IProductService {
         return new PostsFromFollowsDTO(userId, posts);
     }
 
+
+
+    @Override
+    public AmountOfPromosDTO getAmountOfPromosByUser(Long user_id) {
+        Optional<User> user = userRepository.findById(user_id);
+        if (user.isEmpty()){
+            throw new NotFoundException("Usuario no encontrado");
+        }
+        List<Post> amountOfPromos = postRepository.findAmountOfPromosByUserId(user.get());
+        AmountOfPromosDTO amountOfPromosDTO = new AmountOfPromosDTO(amountOfPromos.size());
+        amountOfPromosDTO.setUser_id(user.get().getId());
+        amountOfPromosDTO.setUser_name(user.get().getUsername());
+
+        return amountOfPromosDTO;
+    }
 }

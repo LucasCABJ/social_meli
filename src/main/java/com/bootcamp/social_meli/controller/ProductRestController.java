@@ -3,7 +3,6 @@ package com.bootcamp.social_meli.controller;
 import com.bootcamp.social_meli.dto.PostDTO;
 import com.bootcamp.social_meli.dto.PromoPostDTO;
 import com.bootcamp.social_meli.dto.response.PostsFromFollowsDTO;
-import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.service.IPostService;
 import com.bootcamp.social_meli.service.IProductService;
 import jakarta.validation.Valid;
@@ -20,6 +19,8 @@ public class ProductRestController {
     private IPostService postService;
     @Autowired
     private IProductService productService;
+    @Autowired
+    private IProductService userService;
 
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<PostsFromFollowsDTO> getAllPostsFollowsLastTwoWeeks(@PathVariable Long userId, @RequestParam(defaultValue = "date_asc") String order)
@@ -35,5 +36,10 @@ public class ProductRestController {
     @PostMapping("/promo-post")
     public ResponseEntity<?> createPromoPost(@Valid @RequestBody PromoPostDTO promoPostDTO){
         return ResponseEntity.ok(postService.createPromoPost(promoPostDTO));
+    }
+
+    @GetMapping("/promo-post/count")
+    public ResponseEntity<?> getAmountOfPromosByUser(@RequestParam Long user_id){
+        return ResponseEntity.ok(userService.getAmountOfPromosByUser(user_id));
     }
 }
