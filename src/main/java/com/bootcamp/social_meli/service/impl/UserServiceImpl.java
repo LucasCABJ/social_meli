@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Comparator;
 import java.util.List;
 
-import com.bootcamp.social_meli.exception.UserNotFoundException;
+import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.service.IUserService;
@@ -43,10 +43,10 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         User userToFollow = userRepository.findById(userToFollowId)
-                .orElseThrow(()-> new UserNotFoundException("No se ha encontrado al usuario: " + userToFollowId));
+                .orElseThrow(()-> new NotFoundException("No se ha encontrado al usuario: " + userToFollowId));
 
         List<User> userFollowedList = user.getFollowed();
         List<User> userToFollowFollowersList = userToFollow.getFollowers();
@@ -70,10 +70,10 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         User userToUnfollow = userRepository.findById(userToFollowId)
-                .orElseThrow(()-> new UserNotFoundException("No se ha encontrado al usuario: " + userToFollowId));
+                .orElseThrow(()-> new NotFoundException("No se ha encontrado al usuario: " + userToFollowId));
 
         List<User> userFollowedList = user.getFollowed();
         List<User> userToUnfollowFollowersList = userToUnfollow.getFollowers();
@@ -101,7 +101,7 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = userRepository.findById(idLong)
-                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followersList = user.getFollowers();
 
@@ -127,7 +127,7 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = userRepository.findById(idLong)
-                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followedList = user.getFollowed();
 
@@ -155,7 +155,7 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = userRepository.findById(idLong)
-                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followersList = user.getFollowers();
 
@@ -194,7 +194,7 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = userRepository.findById(idLong)
-                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followedList = user.getFollowed();
 
@@ -227,7 +227,7 @@ public class UserServiceImpl implements IUserService {
 
     public FollowerCountResponse getFollowerCount(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("No se ha encontrado al usuario: " + userId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
         Long followersCount = (long) user.getFollowers().size();
         FollowerCountResponse followerCountResponse = new FollowerCountResponse();
         followerCountResponse.setUser_id(userId);

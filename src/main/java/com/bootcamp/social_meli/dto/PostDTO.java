@@ -1,5 +1,6 @@
 package com.bootcamp.social_meli.dto;
 
+import com.bootcamp.social_meli.dto.response.ProductDTO;
 import com.bootcamp.social_meli.model.Product;
 import com.bootcamp.social_meli.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,7 +26,7 @@ public class PostDTO {
     private LocalDate createDate;
     @NotNull(message = "Producto no puede ser nulo")
     @Valid
-    private Product product;
+    private ProductDTO product;
     @NotNull(message = "Categoria no puede ser nulo")
     private Integer category;
     @NotNull(message = "El precio no puede ser nulo")
