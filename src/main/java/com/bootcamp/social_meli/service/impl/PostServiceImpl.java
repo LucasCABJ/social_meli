@@ -4,6 +4,7 @@ import com.bootcamp.social_meli.dto.PostDTO;
 import com.bootcamp.social_meli.dto.PromoPostDTO;
 import com.bootcamp.social_meli.dto.response.MostPostsUsersResponseDTO;
 import com.bootcamp.social_meli.dto.response.SimpleUserWithPostsCountDTO;
+import com.bootcamp.social_meli.dto.response.PostsWithProductDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
@@ -76,6 +77,11 @@ public class PostServiceImpl implements IPostService {
         postRepository.create(post);
 
         return createUserResponse(post);
+    }
+
+    @Override
+    public PostsWithProductDTO getPostsWithProduct(String productName) {
+        return new PostsWithProductDTO(productName, postRepository.getPostsWithProduct(productName));
     }
 
     public UserPostResponse createUserResponse(Post post){
