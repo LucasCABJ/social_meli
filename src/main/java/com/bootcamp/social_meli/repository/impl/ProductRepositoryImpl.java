@@ -33,4 +33,8 @@ public class ProductRepositoryImpl implements IProductRepository {
         return null;
     }
 
+    @Override
+    public void createBatch(List<Product> products) {
+        productList.addAll(products);
+    }
 }

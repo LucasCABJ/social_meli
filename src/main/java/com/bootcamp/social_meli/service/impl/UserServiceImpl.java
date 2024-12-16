@@ -1,10 +1,7 @@
 package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.UserDTO;
-import com.bootcamp.social_meli.dto.response.FollowedListDTO;
-import com.bootcamp.social_meli.dto.response.FollowersListDTO;
-import com.bootcamp.social_meli.dto.response.SimpleUserDTO;
-import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
+import com.bootcamp.social_meli.dto.response.*;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -234,5 +231,58 @@ public class UserServiceImpl implements IUserService {
         followerCountResponse.setUser_name(user.getUsername());
         followerCountResponse.setFollowers_count(followersCount);
         return followerCountResponse;
+    }
+
+    @Override
+    public MostFollowersResponseDTO mostFollowers() {
+        List<User> users = userRepository.findAll();
+        List<User> usersSortedByFollowers = userRepository.findAll()
+                .stream()
+                .sorted((a, b) -> -(a.getFollowers().size() - b.getFollowers().size()))
+                .toList();
+
+        List<User> results;
+        if (usersSortedByFollowers.size() < 5) {
+            results = usersSortedByFollowers;
+        } else {
+            results = usersSortedByFollowers.subList(0, 5);
+        }
+
+        List<SimpleUserWithFollowersCountDTO> mappedResults = results
+                .stream()
+                .map(u -> new SimpleUserWithFollowersCountDTO(u.getId(), u.getUsername(), u.getFollowers().size()))
+                .toList();
+
+        MostFollowersResponseDTO mostFollowersResponseDTO = new MostFollowersResponseDTO();
+        mostFollowersResponseDTO.setMost_followers(mappedResults);
+        return mostFollowersResponseDTO;
+    }
+
+    @Override
+    public MostFollowersResponseDTO mostFollowers(Integer rank) {
+        if(rank <= 0) {
+            throw new BadRequestException("\"rank\" no puede ser <= 0");
+        }
+
+        List<User> usersSortedByFollowers = userRepository.findAll()
+                .stream()
+                .sorted((a, b) -> -(a.getFollowers().size() - b.getFollowers().size()))
+                .toList();
+
+        List<User> results;
+        if (usersSortedByFollowers.size() < rank) {
+            results = usersSortedByFollowers;
+        } else {
+            results = usersSortedByFollowers.subList(0, rank);
+        }
+
+        List<SimpleUserWithFollowersCountDTO> mappedResults = results
+                .stream()
+                .map(u -> new SimpleUserWithFollowersCountDTO(u.getId(), u.getUsername(), u.getFollowers().size()))
+                .toList();
+
+        MostFollowersResponseDTO mostFollowersResponseDTO = new MostFollowersResponseDTO();
+        mostFollowersResponseDTO.setMost_followers(mappedResults);
+        return mostFollowersResponseDTO;
     }
 }
