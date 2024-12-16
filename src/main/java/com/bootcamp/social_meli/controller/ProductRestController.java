@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.controller;
 
 import com.bootcamp.social_meli.dto.PostDTO;
+import com.bootcamp.social_meli.dto.PromoPostDTO;
 import com.bootcamp.social_meli.dto.response.PostsFromFollowsDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.service.IPostService;
@@ -29,5 +30,10 @@ public class ProductRestController {
     @PostMapping("/post")
     public ResponseEntity<?> postProduct(@Valid @RequestBody PostDTO postDTO) {
         return ResponseEntity.ok(postService.createPost(postDTO));
+    }
+
+    @PostMapping("/promo-post")
+    public ResponseEntity<?> createPromoPost(@Valid @RequestBody PromoPostDTO promoPostDTO){
+        return ResponseEntity.ok(postService.createPromoPost(promoPostDTO));
     }
 }
