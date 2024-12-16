@@ -45,6 +45,23 @@ public class PostRepositoryImpl implements IPostRepository {
     }
 
     @Override
+    public void update(Post post) {
+        for (int i = 0; i < postsList.size(); i++) {
+            if (postsList.get(i).getId().equals(post.getId())) {
+                postsList.set(i, post);
+            }
+        }
+    }
+
+    @Override
+    public Optional<Post> findByUserIdAndProductId(Long userId, Long productId) {
+        return postsList.stream()
+                .filter(post -> post.getCreatorUser().getId().equals(userId) &&
+                        post.getProduct().getId().equals(productId))
+                .findFirst();
+    }
+
+    @Override
     public Post delete(Post obj) {
         return null;
     }
