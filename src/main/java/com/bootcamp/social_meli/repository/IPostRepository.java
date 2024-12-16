@@ -8,4 +8,5 @@ public interface IPostRepository extends ICrudRepository<Post, Long> {
     List<Post> findAmountOfPromosByUserId(User user);
     List<Post> findByUserId(Long id);
     List<Post> findByUserIdFilteredByLastTwoWeeks(Long id);
+    void createBatch(List<Post> posts);
 }
