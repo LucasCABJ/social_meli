@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
     private long currentPostId = 0;
-
     private final List<Post> postsList = new ArrayList<>();
 
     @Override
@@ -73,4 +72,10 @@ public class PostRepositoryImpl implements IPostRepository {
     public void createBatch(List<Post> posts) {
         postsList.addAll(posts);
     }
+
+    @Override
+    public List<Post> getPostsWithProduct(String productName) {
+        return postsList.stream().filter(post -> post.hasProductName(productName)).toList();
+    }
+
 }

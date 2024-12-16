@@ -2,6 +2,9 @@ package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.PostDTO;
 import com.bootcamp.social_meli.dto.PromoPostDTO;
+import com.bootcamp.social_meli.dto.response.MostPostsUsersResponseDTO;
+import com.bootcamp.social_meli.dto.response.SimpleUserWithPostsCountDTO;
+import com.bootcamp.social_meli.dto.response.PostsWithProductDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
@@ -15,18 +18,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements IPostService {
-    @Autowired
     private IPostRepository postRepository;
-    @Autowired
     private IUserRepository userRepository;
-    @Autowired
     private IProductRepository productRepository;
-    @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    public PostServiceImpl(IPostRepository postRepository, IUserRepository userRepository, IProductRepository productRepository, ObjectMapper objectMapper) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public UserPostResponse createPost(PostDTO postDTO) {
@@ -78,6 +87,11 @@ public class PostServiceImpl implements IPostService {
         return createUserResponse(post,"Post creado exitosamente!");
     }
 
+    @Override
+    public PostsWithProductDTO getPostsWithProduct(String productName) {
+        return new PostsWithProductDTO(productName, postRepository.getPostsWithProduct(productName));
+    }
+
     public UserPostResponse createUserResponse(Post post, String message){
         UserPostResponse userPostResponse = new UserPostResponse();
         userPostResponse.setMessage(message);
@@ -92,5 +106,47 @@ public class PostServiceImpl implements IPostService {
             userPostResponse.setDiscount(post.getDiscountPercentage());
 
         return userPostResponse;
+    }
+
+    @Override
+    public MostPostsUsersResponseDTO mostPostsUsers() {
+        return mostPostsUsers(5);
+    }
+
+    @Override
+    public MostPostsUsersResponseDTO mostPostsUsers(Integer rank) {
+        if(rank <= 0) {
+            throw new BadRequestException("'rank' no puede ser <= 0");
+        }
+
+        HashMap<Long, SimpleUserWithPostsCountDTO> usersWithProducts = new HashMap<>();
+
+        postRepository.findAll().forEach(p -> {
+            // 1. Obtengo el creador del posteo
+            Long postCreatorId = p.getCreatorUser().getId();
+            String postCreatorUsername = p.getCreatorUser().getUsername();
+            // 2. Me fijo si ya lo incluí en el HashMap "usersWithProducts"
+            if(usersWithProducts.containsKey(postCreatorId)) {
+                // 3a. Lo obtengo, incrementó en 1 y actualizo en el mapa
+                SimpleUserWithPostsCountDTO user = usersWithProducts.get(postCreatorId);
+                user.setPosts_amount(user.getPosts_amount() + 1);
+                usersWithProducts.replace(postCreatorId, user);
+            } else {
+                // 3b. Lo agregó por primera vez y setteo en 1
+                usersWithProducts.put(postCreatorId,
+                        new SimpleUserWithPostsCountDTO(postCreatorId,
+                                postCreatorUsername,
+                                1));
+            }
+        });
+
+        List<SimpleUserWithPostsCountDTO> result;
+        if(usersWithProducts.size() < rank) {
+            result = usersWithProducts.values().stream().toList();
+        } else {
+            result = usersWithProducts.values().stream().toList().subList(0, rank);
+        }
+
+        return new MostPostsUsersResponseDTO(result);
     }
 }

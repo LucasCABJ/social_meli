@@ -12,4 +12,5 @@ public interface IPostRepository extends ICrudRepository<Post, Long> {
     void update(Post post);
     Optional<Post> findByUserIdAndProductId(Long userId, Long productId);
     void createBatch(List<Post> posts);
+    List<Post> getPostsWithProduct(String productName);
 }

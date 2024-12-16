@@ -58,6 +58,9 @@ public class JsonReader {
             followUser(usersList.get(2), usersList.get(1));
             followUser(usersList.get(2), usersList.get(3));
 
+            followUser(usersList.get(3), usersList.get(1));
+            followUser(usersList.get(3), usersList.get(2));
+            followUser(usersList.get(3), usersList.get(4));
 
             userRepository.createBatch(usersList);
         } catch (IOException e) {
