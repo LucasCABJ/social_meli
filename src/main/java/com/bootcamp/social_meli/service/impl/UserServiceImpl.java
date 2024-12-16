@@ -246,33 +246,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public MostFollowersResponseDTO mostFollowers() {
-        List<User> users = userRepository.findAll();
-        List<User> usersSortedByFollowers = userRepository.findAll()
-                .stream()
-                .sorted((a, b) -> -(a.getFollowers().size() - b.getFollowers().size()))
-                .toList();
-
-        List<User> results;
-        if (usersSortedByFollowers.size() < 5) {
-            results = usersSortedByFollowers;
-        } else {
-            results = usersSortedByFollowers.subList(0, 5);
-        }
-
-        List<SimpleUserWithFollowersCountDTO> mappedResults = results
-                .stream()
-                .map(u -> new SimpleUserWithFollowersCountDTO(u.getId(), u.getUsername(), u.getFollowers().size()))
-                .toList();
-
-        MostFollowersResponseDTO mostFollowersResponseDTO = new MostFollowersResponseDTO();
-        mostFollowersResponseDTO.setMost_followers(mappedResults);
-        return mostFollowersResponseDTO;
+        return mostFollowers(5);
     }
 
     @Override
     public MostFollowersResponseDTO mostFollowers(Integer rank) {
-        if (rank <= 0) {
-            throw new BadRequestException("\"rank\" no puede ser <= 0");
+        if(rank <= 0) {
+            throw new BadRequestException("'rank' no puede ser <= 0");
         }
 
         List<User> usersSortedByFollowers = userRepository.findAll()

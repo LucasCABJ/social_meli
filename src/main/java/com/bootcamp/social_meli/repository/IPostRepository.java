@@ -9,4 +9,5 @@ public interface IPostRepository extends ICrudRepository<Post, Long> {
     List<Post> findByUserId(Long id);
     List<Post> findByUserIdFilteredByLastTwoWeeks(Long id);
     void createBatch(List<Post> posts);
+    List<Post> getPostsWithProduct(String productName);
 }

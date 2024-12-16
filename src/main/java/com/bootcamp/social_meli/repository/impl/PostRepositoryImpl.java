@@ -55,4 +55,10 @@ public class PostRepositoryImpl implements IPostRepository {
     public void createBatch(List<Post> posts) {
         postsList.addAll(posts);
     }
+
+    @Override
+    public List<Post> getPostsWithProduct(String productName) {
+        return postsList.stream().filter(post -> post.hasProductName(productName)).toList();
+    }
+
 }
