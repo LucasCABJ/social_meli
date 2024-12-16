@@ -18,8 +18,12 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserRestController {
 
-    @Autowired
     private IUserService userService;
+
+    @Autowired
+    public UserRestController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
