@@ -16,4 +16,5 @@ public interface IPostService {
     PostsWithProductDTO getPostsWithProduct(String productName);
     MostPostsUsersResponseDTO mostPostsUsers();
     MostPostsUsersResponseDTO mostPostsUsers(Integer rank);
+    UserPostResponse updatePromoPost(PromoPostDTO promoPostDTO);
 }

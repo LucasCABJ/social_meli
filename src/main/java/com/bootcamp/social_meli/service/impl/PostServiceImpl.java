@@ -67,16 +67,15 @@ public class PostServiceImpl implements IPostService {
         Long productId = promoPostDTO.getProduct().getProduct_id();
 
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
-        Optional<Post> existingPostOpt = postRepository.findByUserIdAndProductId(userId,productId);
+        Optional<Post> postOptional = postRepository.findByUserIdAndProductId(userId,productId);
+
+        if(postOptional.isPresent()){
+            return updatePromoPost(promoPostDTO);
+        }
 
         Post post = objectMapper.convertValue(promoPostDTO,Post.class);
         post.setCreatorUser(user);
 
-        if(existingPostOpt.isPresent()){
-            post.setId(existingPostOpt.get().getId());
-            postRepository.update(post);
-            return createUserResponse(post,"Post actualizado exitosamente!");
-        }
 
         if(productRepository.findAll().stream().noneMatch(product -> product.getId().equals(post.getProduct().getId()))){
             productRepository.create(post.getProduct());
@@ -85,6 +84,20 @@ public class PostServiceImpl implements IPostService {
         postRepository.create(post);
 
         return createUserResponse(post,"Post creado exitosamente!");
+    }
+
+    @Override
+    public UserPostResponse updatePromoPost(PromoPostDTO promoPostDTO) {
+        Post existingPost = postRepository.findByUserIdAndProductId(promoPostDTO.getUserId(), promoPostDTO.getProduct().getProduct_id())
+                .orElseThrow(() -> new BadRequestException("Post no encontrado para actualizar"));
+
+        Post post = objectMapper.convertValue(promoPostDTO,Post.class);
+        post.setCreatorUser(existingPost.getCreatorUser());
+        post.setId(existingPost.getId());
+
+        postRepository.update(post);
+
+        return createUserResponse(post,"Post actualizado exitosamente!");
     }
 
     @Override

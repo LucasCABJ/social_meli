@@ -44,12 +44,13 @@ public class PostRepositoryImpl implements IPostRepository {
     }
 
     @Override
-    public void update(Post post) {
+    public Post update(Post post) {
         for (int i = 0; i < postsList.size(); i++) {
             if (postsList.get(i).getId().equals(post.getId())) {
                 postsList.set(i, post);
             }
         }
+        return post;
     }
 
     @Override
