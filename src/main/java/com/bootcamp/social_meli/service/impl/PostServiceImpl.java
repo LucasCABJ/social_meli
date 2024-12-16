@@ -2,6 +2,7 @@ package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.PostDTO;
 import com.bootcamp.social_meli.dto.PromoPostDTO;
+import com.bootcamp.social_meli.dto.response.PostsWithProductDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class PostServiceImpl implements IPostService {
@@ -68,6 +69,11 @@ public class PostServiceImpl implements IPostService {
         postRepository.create(post);
 
         return createUserResponse(post);
+    }
+
+    @Override
+    public PostsWithProductDTO getPostsWithProduct(String productName) {
+        return new PostsWithProductDTO(productName, postRepository.getPostsWithProduct(productName));
     }
 
     public UserPostResponse createUserResponse(Post post){

@@ -42,4 +42,9 @@ public class ProductRestController {
     public ResponseEntity<?> getAmountOfPromosByUser(@RequestParam Long user_id){
         return ResponseEntity.ok(userService.getAmountOfPromosByUser(user_id));
     }
+
+    @GetMapping("/posts/search")
+    public ResponseEntity<?> getPostsWithProduct(@RequestParam String name){
+        return ResponseEntity.ok(postService.getPostsWithProduct(name));
+    }
 }

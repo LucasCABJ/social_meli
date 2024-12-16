@@ -24,4 +24,8 @@ public class Post {
     private Boolean hasDiscount;
     @JsonProperty("discount")
     private Double discountPercentage;
+
+    public boolean hasProductName(String productName) {
+        return product.getName().equals(productName);
+    }
 }
