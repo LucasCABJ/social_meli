@@ -5,6 +5,7 @@ import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,7 @@ public class UserRepositoryImpl implements IUserRepository {
     @Autowired
     public UserRepositoryImpl(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+        this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     @Override

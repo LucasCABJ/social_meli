@@ -315,6 +315,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserDTO createUser(UserDTO userDto) {
+        if(userDto.getUsername() == null || userDto.getUsername().isEmpty() || userDto.getFirst_name() == null || userDto.getFirst_name().isEmpty() || userDto.getLast_name() == null ||userDto.getLast_name().isEmpty()){
+            throw new BadRequestException("Faltan datos del nuevo usuario.");
+        }
         if(userRepository.findByUsername(userDto.getUsername()) != null){
             throw new ConflictException("Ya existe un usuario con ese 'username'");
         }
