@@ -68,8 +68,6 @@ public class ProductServiceImpl implements IProductService {
         return new PostsFromFollowsDTO(userId, posts);
     }
 
-
-
     @Override
     public AmountOfPromosDTO getAmountOfPromosByUser(Long user_id) {
         Optional<User> user = userRepository.findById(user_id);

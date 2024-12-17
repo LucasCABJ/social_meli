@@ -25,7 +25,8 @@ public class Post {
     @JsonProperty("discount")
     private Double discountPercentage;
 
-    public boolean hasProductName(String productName) {
-        return product.getName().equals(productName);
+    public boolean productNameContains(String productName) {
+        String postProductName = product.getName().toLowerCase();
+        return postProductName.contains(productName.toLowerCase());
     }
 }
