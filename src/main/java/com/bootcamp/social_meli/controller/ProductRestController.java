@@ -55,4 +55,9 @@ public class ProductRestController {
     public ResponseEntity<PostsWithProductDTO> getPostsWithProduct(@RequestParam String name){
         return ResponseEntity.ok(postService.getPostsWithProduct(name));
     }
+
+    @GetMapping("/posts/prices")
+    public ResponseEntity<?> getPostsByPriceRange(@RequestParam String min, @RequestParam String max){
+        return ResponseEntity.ok(postService.getPostsByPriceRange(min,max));
+    }
 }
