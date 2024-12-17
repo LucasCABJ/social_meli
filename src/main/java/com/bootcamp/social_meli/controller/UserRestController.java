@@ -18,21 +18,27 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserRestController {
 
-    @Autowired
     private IUserService userService;
 
+    @Autowired
+    public UserRestController(IUserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
+    public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(userService.findAll());
     }
 
     @PostMapping("{userId}/follow/{userToFollowId}")
-    public ResponseEntity<SimpleMessageDTO> followUser(@PathVariable Long userId, @PathVariable Long userToFollowId) {
+    public ResponseEntity<SimpleMessageDTO> followUser(@PathVariable Long userId,
+                                        @PathVariable Long userToFollowId) {
         return ResponseEntity.ok(new SimpleMessageDTO(userService.followUser(userId, userToFollowId)));
     }
 
     @PostMapping("{userId}/unfollow/{userToFollowId}")
-    public ResponseEntity<SimpleMessageDTO> unfollowUser(@PathVariable Long userId, @PathVariable Long userToFollowId) {
+    public ResponseEntity<SimpleMessageDTO> unfollowUser(@PathVariable Long userId,
+                                          @PathVariable Long userToFollowId) {
         return ResponseEntity.ok(new SimpleMessageDTO(userService.unfollowUser(userId, userToFollowId)));
     }
 
@@ -59,7 +65,6 @@ public class UserRestController {
 
     @GetMapping("{userId}/followers/count")
     public ResponseEntity<FollowerCountResponse> getFollowersCount(@PathVariable Long userId) {
-        FollowerCountResponse response = userService.getFollowerCount(userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(userService.getFollowerCount(userId));
     }
 }

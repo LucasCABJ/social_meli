@@ -3,8 +3,11 @@ package com.bootcamp.social_meli.service.impl;
 import com.bootcamp.social_meli.dto.UserDTO;
 import com.bootcamp.social_meli.dto.response.*;
 import com.bootcamp.social_meli.exception.BadRequestException;
+import com.bootcamp.social_meli.model.Post;
+import com.bootcamp.social_meli.repository.IPostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,10 +23,15 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements IUserService {
 
+    private final IUserRepository userRepository;
+    private final IPostRepository postRepository;
+    private final ObjectMapper objectMapper;
     @Autowired
-    private IUserRepository userRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
+    public UserServiceImpl(IPostRepository postRepository, IUserRepository userRepository, ObjectMapper objectMapper) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public List<UserDTO> findAll() {
@@ -43,7 +51,7 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         User userToFollow = userRepository.findById(userToFollowId)
-                .orElseThrow(()-> new NotFoundException("No se ha encontrado al usuario: " + userToFollowId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userToFollowId));
 
         List<User> userFollowedList = user.getFollowed();
         List<User> userToFollowFollowersList = userToFollow.getFollowers();
@@ -70,7 +78,7 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         User userToUnfollow = userRepository.findById(userToFollowId)
-                .orElseThrow(()-> new NotFoundException("No se ha encontrado al usuario: " + userToFollowId));
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userToFollowId));
 
         List<User> userFollowedList = user.getFollowed();
         List<User> userToUnfollowFollowersList = userToUnfollow.getFollowers();
@@ -113,6 +121,7 @@ public class UserServiceImpl implements IUserService {
 
         return followersDTO;
     }
+
     @Override
     public FollowedListDTO findFollowedList(String userId) {
         Long idLong;
@@ -141,6 +150,7 @@ public class UserServiceImpl implements IUserService {
         return followedDTO;
 
     }
+
     @Override
     public FollowersListDTO findFollowersList(String userId, String order) {
         Long idLong;
@@ -180,6 +190,7 @@ public class UserServiceImpl implements IUserService {
 
         return followersDTO;
     }
+
     @Override
     public FollowedListDTO findFollowedList(String userId, String order) {
         Long idLong;
@@ -235,33 +246,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public MostFollowersResponseDTO mostFollowers() {
-        List<User> users = userRepository.findAll();
-        List<User> usersSortedByFollowers = userRepository.findAll()
-                .stream()
-                .sorted((a, b) -> -(a.getFollowers().size() - b.getFollowers().size()))
-                .toList();
-
-        List<User> results;
-        if (usersSortedByFollowers.size() < 5) {
-            results = usersSortedByFollowers;
-        } else {
-            results = usersSortedByFollowers.subList(0, 5);
-        }
-
-        List<SimpleUserWithFollowersCountDTO> mappedResults = results
-                .stream()
-                .map(u -> new SimpleUserWithFollowersCountDTO(u.getId(), u.getUsername(), u.getFollowers().size()))
-                .toList();
-
-        MostFollowersResponseDTO mostFollowersResponseDTO = new MostFollowersResponseDTO();
-        mostFollowersResponseDTO.setMost_followers(mappedResults);
-        return mostFollowersResponseDTO;
+        return mostFollowers(5);
     }
 
     @Override
     public MostFollowersResponseDTO mostFollowers(Integer rank) {
         if(rank <= 0) {
-            throw new BadRequestException("\"rank\" no puede ser <= 0");
+            throw new BadRequestException("'rank' no puede ser <= 0");
         }
 
         List<User> usersSortedByFollowers = userRepository.findAll()
@@ -285,4 +276,38 @@ public class UserServiceImpl implements IUserService {
         mostFollowersResponseDTO.setMost_followers(mappedResults);
         return mostFollowersResponseDTO;
     }
-}
+
+    @Override
+    public UserDetailsDTO metricsUserDetails(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
+
+        List<User> followers = user.getFollowers();
+        List<User> followed = user.getFollowed();
+
+        Integer countPost = postRepository.findAmountOfPromosByUserId(user).size();
+
+        List<User> notFollowedBack = new ArrayList<>(followed);
+        notFollowedBack.removeAll(followers);
+        List<SimpleUserDTO> followerNotFollowed =
+                notFollowedBack.stream()
+                        .map(u -> new SimpleUserDTO(u.getId(),u.getUsername()))
+                        .toList();
+
+        List<User> notFollowingBack = new ArrayList<>(followers);
+        notFollowingBack.removeAll(followed);
+        List<SimpleUserDTO> followedNotFollower =
+                notFollowingBack.stream()
+                        .map(u -> new SimpleUserDTO(u.getId(),u.getUsername()))
+                        .toList();
+
+        return new UserDetailsDTO(
+                userId,
+                user.getUsername(),
+                followers.size(),
+                followed.size(),
+                countPost,
+                followerNotFollowed,
+                followedNotFollower
+        );
+    }}

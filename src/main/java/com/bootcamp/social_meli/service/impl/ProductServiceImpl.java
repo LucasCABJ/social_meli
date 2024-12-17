@@ -1,28 +1,33 @@
 package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.response.*;
+import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.Post;
+import com.bootcamp.social_meli.model.Product;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
+import com.bootcamp.social_meli.repository.IProductRepository;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.dto.response.AmountOfPromosDTO;
 import com.bootcamp.social_meli.service.IProductService;
 import io.micrometer.common.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
-import java.util.ArrayList;
-import java.util.Comparator;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements IProductService {
     private final IUserRepository userRepository;
     private final IPostRepository postRepository ;
+    private final IProductRepository productRepository ;
 
-    public ProductServiceImpl(IUserRepository userRepository, IPostRepository postRepository) {
+    public ProductServiceImpl(IUserRepository userRepository, IPostRepository postRepository, IProductRepository productRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
+        this.productRepository = productRepository;
     }
     @Override
     public PostsFromFollowsDTO getAllPostFollowsLastTwoWeeksUnordered(Long userId) {
@@ -66,6 +71,88 @@ public class ProductServiceImpl implements IProductService {
         }
 
         return new PostsFromFollowsDTO(userId, posts);
+    }
+
+    @Override
+    public MostProductsResponseDTO getMostProducts() {
+        List<Post> posts = postRepository.findAll();
+        Map<Long, Integer> productPostCounts = new HashMap<>();
+
+        for (Post post : posts) {
+            long productId = post.getProduct().getId();
+            productPostCounts.put(productId, productPostCounts.getOrDefault(productId, 0) + 1);
+        }
+
+        List<ProductWithPostCountDTO> productList = new ArrayList<>();
+        for (Map.Entry<Long, Integer> entry : productPostCounts.entrySet()) {
+            long productId = entry.getKey();
+            Integer postCount = entry.getValue();
+
+            Optional<Product> productOpt = productRepository.findById(productId);
+            if (productOpt.isPresent()) {
+                Product product = productOpt.get();
+                productList.add(new ProductWithPostCountDTO(
+                        product.getId(),
+                        product.getName(),
+                        product.getType(),
+                        product.getBrand(),
+                        product.getColor(),
+                        product.getNotes(),
+                        postCount
+                ));
+            }
+        }
+
+        productList.sort((p1, p2) -> Long.compare(p2.getProducts_count(), p1.getProducts_count()));
+
+        return new MostProductsResponseDTO(productList);
+    }
+
+    @Override
+    public MostProductsResponseDTO getMostProducts(String rank) {
+        int rankInt;
+
+        try {
+            rankInt = Integer.parseInt(rank);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("El rank debe ser un valor numerico.");
+        }
+
+        List<Post> posts = postRepository.findAll();
+        Map<Long, Integer> productPostCounts = new HashMap<>();
+
+        for (Post post : posts) {
+            long productId = post.getProduct().getId();
+            productPostCounts.put(productId, productPostCounts.getOrDefault(productId, 0) + 1);
+        }
+
+        List<ProductWithPostCountDTO> productList = new ArrayList<>();
+        for (Map.Entry<Long, Integer> entry : productPostCounts.entrySet()) {
+            long productId = entry.getKey();
+            Integer postCount = entry.getValue();
+
+            Optional<Product> productOpt = productRepository.findById(productId);
+            if (productOpt.isPresent()) {
+                Product product = productOpt.get();
+                productList.add(new ProductWithPostCountDTO(
+                        product.getId(),
+                        product.getName(),
+                        product.getType(),
+                        product.getBrand(),
+                        product.getColor(),
+                        product.getNotes(),
+                        postCount
+                ));
+            }
+        }
+
+        productList.sort((p1, p2) -> Long.compare(p2.getProducts_count(), p1.getProducts_count()));
+
+        List<ProductWithPostCountDTO> limitedProductList = productList.stream()
+                .limit(rankInt)
+                .collect(Collectors.toList());
+
+        return new MostProductsResponseDTO(limitedProductList);
     }
 
     @Override
