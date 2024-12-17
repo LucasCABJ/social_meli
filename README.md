@@ -38,7 +38,7 @@ Para probar los endpoints, se puede usar la colección de Postman proporcionada 
 ### **Importar la colección en Postman**
 1. Abrir Postman.
 2. Ir a File > Import.
-3. Seleccionar el archivo `api-collection.postman.json` ubicado en la carpeta `resources`.
+3. Seleccionar el archivo `social_meli.postman_collection.json` ubicado en la carpeta `resources`.
 4. Ejecutar las solicitudes incluidas en la colección para interactuar con los endpoints de la API.
 
 ## **Notas adicionales**
