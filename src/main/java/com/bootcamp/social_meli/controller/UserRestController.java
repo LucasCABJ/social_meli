@@ -67,4 +67,9 @@ public class UserRestController {
     public ResponseEntity<FollowerCountResponse> getFollowersCount(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getFollowerCount(userId));
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){
+        return ResponseEntity.ok(userService.createUser(user));
+    }
 }
