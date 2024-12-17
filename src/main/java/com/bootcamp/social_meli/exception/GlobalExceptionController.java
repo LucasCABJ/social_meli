@@ -24,7 +24,7 @@ public class GlobalExceptionController {
     }
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ExceptionDTO> handleBadRequestException(ConflictException e) {
+    public ResponseEntity<ExceptionDTO> handleConflictException(ConflictException e) {
         return new ResponseEntity<>(new ExceptionDTO("409", e.getMessage()), HttpStatus.CONFLICT);
     }
 

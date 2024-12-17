@@ -316,7 +316,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO createUser(UserDTO userDto) {
         if(userRepository.findByUsername(userDto.getUsername()) != null){
-            throw new ConflictException("Este Username ya existe");
+            throw new ConflictException("Ya existe un usuario con ese 'username'");
         }
 
         User user = userRepository.create(objectMapper.convertValue(userDto, User.class));
