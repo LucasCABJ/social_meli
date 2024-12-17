@@ -3,6 +3,7 @@ package com.bootcamp.social_meli.repository.impl;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
+import org.springframework.boot.LazyInitializationBeanFactoryPostProcessor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -77,6 +78,13 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public List<Post> getPostsWithProduct(String productName) {
         return postsList.stream().filter(post -> post.productNameContains(productName)).toList();
+    }
+
+    @Override
+    public List<Post> getPostsByPriceRange(Double min, Double max) {
+        return postsList.stream()
+                .filter(post-> post.getPrice() >= min && post.getPrice() <= max)
+                .sorted((p1,p2)->Double.compare(p1.getPrice(),p2.getPrice())).toList();
     }
 
 }

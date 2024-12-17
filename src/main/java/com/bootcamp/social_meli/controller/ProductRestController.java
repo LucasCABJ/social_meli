@@ -19,6 +19,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 @Tag(name = "Gestión de Productos", description = "Operaciones relacionadas con los productos.")
@@ -127,5 +129,27 @@ public class ProductRestController {
     public ResponseEntity<PostsWithProductDTO> getPostsWithProduct(
             @Parameter(description = "Nombre del producto a buscar") @RequestParam String name) {
         return ResponseEntity.ok(postService.getPostsWithProduct(name));
+    }
+
+    @Operation(summary = "Obtener publicaciones por rango de precio",
+            description = "Devuelve una lista de publicaciones cuyos precios se encuentran dentro del rango especificado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listado de publicaciones con el producto encontrado", content = {
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostsWithProductDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos proporcionados", content = {
+                    @io.swagger.v3.oas.annotations.media.Content(schema =
+                    @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Rango de precio inválido\"}"))
+            }),
+            @ApiResponse(responseCode = "404", description = "No se encontró el producto asociado", content = {
+                    @io.swagger.v3.oas.annotations.media.Content(schema =
+                    @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Productos no encontrados\"}"))
+            })
+    })
+    @GetMapping("/posts/prices")
+    public ResponseEntity<List<PostDTO>> getPostsByPriceRange(
+            @Parameter(description = "Minimo precio a buscar") @RequestParam String min,
+            @Parameter(description = "Maximo precio a buscar") @RequestParam String max) {
+        return ResponseEntity.ok(postService.getPostsByPriceRange(min, max));
     }
 }

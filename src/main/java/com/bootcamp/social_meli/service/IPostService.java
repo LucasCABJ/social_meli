@@ -17,4 +17,5 @@ public interface IPostService {
     MostPostsUsersResponseDTO mostPostsUsers();
     MostPostsUsersResponseDTO mostPostsUsers(Integer rank);
     UserPostResponse updatePromoPost(PromoPostDTO promoPostDTO);
+    List<PostDTO> getPostsByPriceRange(String min, String max);
 }

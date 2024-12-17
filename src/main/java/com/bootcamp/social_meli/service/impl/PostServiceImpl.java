@@ -162,4 +162,34 @@ public class PostServiceImpl implements IPostService {
 
         return new MostPostsUsersResponseDTO(result);
     }
+
+    @Override
+    public List<PostDTO> getPostsByPriceRange(String min, String max) {
+        Double minPrice = parseStringToDouble(min).orElseThrow(() -> new BadRequestException("Formato precio minimo invalido"));
+        Double maxPrice = parseStringToDouble(max).orElseThrow(() -> new BadRequestException("Formato precio maximo invalido"));
+
+        if(minPrice > maxPrice){
+            throw new BadRequestException("El precio maximo no puede ser menor que el precio minimo");
+        }
+        return postRepository.getPostsByPriceRange(minPrice, maxPrice).stream().map(this::convertToPostDTO).toList();
+    }
+
+    public Optional<Double> parseStringToDouble(String price) {
+        try {
+            double value = Double.parseDouble(price);
+            if (value <= 0)
+                throw new BadRequestException("El precio debe ser mayor a 0");
+
+            return Optional.of(value);
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
+    public PostDTO convertToPostDTO(Post post){
+        PostDTO postDTO = objectMapper.convertValue(post,PostDTO.class);
+        postDTO.setUserId(post.getCreatorUser().getId());
+        return postDTO;
+    }
+
+
 }
