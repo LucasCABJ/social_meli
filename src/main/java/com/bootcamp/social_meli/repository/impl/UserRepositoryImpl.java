@@ -27,7 +27,18 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public User create(User user) {
-        return null;
+        user.setFollowers(new ArrayList<>());
+        user.setFollowed(new ArrayList<>());
+        user.setId((long) usersList.size() + 1);
+        usersList.add(user);
+
+        String DATA_FILE = "src/main/resources/users.json";
+        try{    
+            objectMapper.writeValue(new File(DATA_FILE), usersList);
+        }catch(IOException e){
+            throw new RuntimeException("Error guardando la lista", e);
+        }
+        return user;
     }
 
     @Override
@@ -53,6 +64,14 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public void createBatch(List<User> users) {
         usersList.addAll(users);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return usersList.stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
     }
 
 }

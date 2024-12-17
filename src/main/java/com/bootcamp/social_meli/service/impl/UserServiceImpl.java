@@ -3,6 +3,7 @@ package com.bootcamp.social_meli.service.impl;
 import com.bootcamp.social_meli.dto.UserDTO;
 import com.bootcamp.social_meli.dto.response.*;
 import com.bootcamp.social_meli.exception.BadRequestException;
+import com.bootcamp.social_meli.exception.ConflictException;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.repository.IPostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -310,4 +311,16 @@ public class UserServiceImpl implements IUserService {
                 followerNotFollowed,
                 followedNotFollower
         );
-    }}
+    }
+
+    @Override
+    public UserDTO createUser(UserDTO userDto) {
+        if(userRepository.findByUsername(userDto.getUsername()) != null){
+            throw new ConflictException("Este Username ya existe");
+        }
+
+        User user = userRepository.create(objectMapper.convertValue(userDto, User.class));
+
+        return objectMapper.convertValue(user, UserDTO.class);
+    }
+}

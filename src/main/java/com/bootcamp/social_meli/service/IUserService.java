@@ -19,4 +19,5 @@ public interface IUserService {
     MostFollowersResponseDTO mostFollowers();
     MostFollowersResponseDTO mostFollowers(Integer rank);
     UserDetailsDTO metricsUserDetails(Long userId);
+    UserDTO createUser(UserDTO userDto);
 }

@@ -23,6 +23,11 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(new ExceptionDTO("400", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ExceptionDTO> handleBadRequestException(ConflictException e) {
+        return new ResponseEntity<>(new ExceptionDTO("409", e.getMessage()), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
