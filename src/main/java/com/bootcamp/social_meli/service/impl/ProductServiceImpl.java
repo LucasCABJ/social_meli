@@ -155,7 +155,6 @@ public class ProductServiceImpl implements IProductService {
         return new MostProductsResponseDTO(limitedProductList);
     }
 
-
     @Override
     public AmountOfPromosDTO getAmountOfPromosByUser(Long user_id) {
         Optional<User> user = userRepository.findById(user_id);

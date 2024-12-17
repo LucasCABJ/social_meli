@@ -76,7 +76,7 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public List<Post> getPostsWithProduct(String productName) {
-        return postsList.stream().filter(post -> post.hasProductName(productName)).toList();
+        return postsList.stream().filter(post -> post.productNameContains(productName)).toList();
     }
 
 }
