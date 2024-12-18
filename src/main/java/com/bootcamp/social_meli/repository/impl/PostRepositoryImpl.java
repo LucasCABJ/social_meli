@@ -3,9 +3,12 @@ package com.bootcamp.social_meli.repository.impl;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
-import org.springframework.boot.LazyInitializationBeanFactoryPostProcessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +16,9 @@ import java.util.Optional;
 
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
-    private long currentPostId = 0;
+    private long currentPostId;
     private final List<Post> postsList = new ArrayList<>();
+
 
     @Override
     public Post create(Post obj) {
@@ -73,6 +77,7 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public void createBatch(List<Post> posts) {
         postsList.addAll(posts);
+        this.currentPostId = postsList.size();
     }
 
     @Override
@@ -86,5 +91,4 @@ public class PostRepositoryImpl implements IPostRepository {
                 .filter(post-> post.getPrice() >= min && post.getPrice() <= max)
                 .sorted((p1,p2)->Double.compare(p1.getPrice(),p2.getPrice())).toList();
     }
-
 }

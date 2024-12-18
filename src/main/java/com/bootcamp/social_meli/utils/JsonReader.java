@@ -89,7 +89,7 @@ public class JsonReader {
             });
             postConvertList.forEach(postConvert -> {
                 User user = userRepository.findById(postConvert.getUserId()).orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario:" + " " + postConvert.getUserId()));
-                Product product = productRepository.findById(postConvert.getUserId()).orElseThrow(() -> new NotFoundException("No se ha encontrado al " + "product: " + postConvert.getProductId()));
+                Product product = productRepository.findById(postConvert.getProductId()).orElseThrow(() -> new NotFoundException("No se ha encontrado al " + "product: " + postConvert.getProductId()));
                 Post post = objectMapper.convertValue(postConvert, Post.class);
                 post.setCreatorUser(user);
                 post.setProduct(product);
