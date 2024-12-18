@@ -51,6 +51,8 @@ public class PostServiceImpl implements IPostService {
 
         Post post = objectMapper.convertValue(postDTO,Post.class);
         post.setCreatorUser(user);
+        post.setHasDiscount(false);
+        post.setDiscountPercentage(0.00);
 
         if(productRepository.findAll().stream().noneMatch(product -> product.getId().equals(post.getProduct().getId()))){
             productRepository.create(post.getProduct());
