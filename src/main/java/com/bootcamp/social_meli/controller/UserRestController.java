@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @Tag(name = "Gestión de Usuarios", description = "Operaciones relacionadas con los usuarios.")
@@ -25,6 +27,17 @@ public class UserRestController {
     @Autowired
     public UserRestController(IUserService userService) {
         this.userService = userService;
+    }
+
+    @Operation(summary = "Obtener todos los usuarios", description = "Permite obtener un listado de todos los usuarios en el sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuarios obtenidos", content = {
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = UserDTO.class))
+            })
+    })
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> findAll() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @Operation(summary = "Seguir a un usuario", description = "Permite a un usuario seguir a otro.")
