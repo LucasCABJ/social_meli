@@ -1,4 +1,4 @@
-package com.bootcamp.social_meli.model;
+package com.bootcamp.social_meli.utils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,22 +11,19 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class PostConvert {
     private Long id;
-    private User creatorUser;
+    @JsonProperty("user_id")
+    private Long userId;
     @JsonProperty("date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate createDate;
-    private Product product;
+    @JsonProperty("product_id")
+    private Long productId;
     private Integer category;
-    private Double price;
     @JsonProperty("has_promo")
     private Boolean hasDiscount;
     @JsonProperty("discount")
     private Double discountPercentage;
-
-    public boolean productNameContains(String productName) {
-        String postProductName = product.getName().toLowerCase();
-        return postProductName.contains(productName.toLowerCase());
-    }
+    private Double price;
 }
