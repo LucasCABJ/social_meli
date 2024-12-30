@@ -2,6 +2,7 @@ package com.bootcamp.social_meli.controller.swagger;
 
 import com.bootcamp.social_meli.dto.SimpleMessageDTO;
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.request.CreateUserRequestDTO;
 import com.bootcamp.social_meli.dto.response.FollowedListDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
@@ -114,5 +115,5 @@ public interface IUserRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Error al crear el usuario\"}"))
             })
     })
-    ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user);
+    ResponseEntity<UserDTO> createUser(@RequestBody CreateUserRequestDTO user);
 }
