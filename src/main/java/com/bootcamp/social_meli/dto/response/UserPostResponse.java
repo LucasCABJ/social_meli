@@ -1,14 +1,7 @@
 package com.bootcamp.social_meli.dto.response;
 
-import com.bootcamp.social_meli.dto.PostDTO;
-import com.bootcamp.social_meli.dto.PromoPostDTO;
 import com.bootcamp.social_meli.model.Product;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

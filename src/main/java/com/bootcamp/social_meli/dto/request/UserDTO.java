@@ -1,4 +1,4 @@
-package com.bootcamp.social_meli.dto;
+package com.bootcamp.social_meli.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

@@ -10,5 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MostFollowersResponseDTO {
-    private List<SimpleUserWithFollowersCountDTO> most_followers;
+    private List<SimpleUserWithFollowersCountResponseDTO> most_followers;
 }

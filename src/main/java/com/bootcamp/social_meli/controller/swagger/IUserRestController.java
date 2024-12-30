@@ -1,11 +1,11 @@
 package com.bootcamp.social_meli.controller.swagger;
 
-import com.bootcamp.social_meli.dto.SimpleMessageDTO;
-import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.response.SimpleMessageResponseDTO;
+import com.bootcamp.social_meli.dto.request.UserDTO;
 import com.bootcamp.social_meli.dto.request.CreateUserRequestDTO;
-import com.bootcamp.social_meli.dto.response.FollowedListDTO;
+import com.bootcamp.social_meli.dto.response.FollowedListResponseDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
-import com.bootcamp.social_meli.dto.response.FollowersListDTO;
+import com.bootcamp.social_meli.dto.response.FollowersListResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,7 +27,7 @@ public interface IUserRestController {
     @Operation(summary = "Seguir a un usuario", description = "Permite a un usuario seguir a otro.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario seguido exitosamente", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = SimpleMessageDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = SimpleMessageResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetros inválidos\"}"))
@@ -36,7 +36,7 @@ public interface IUserRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"No se encontró el usuario\"}"))
             })
     })
-    ResponseEntity<SimpleMessageDTO> followUser(
+    ResponseEntity<SimpleMessageResponseDTO> followUser(
             @Parameter(description = "ID del usuario que sigue") @PathVariable Long userId,
             @Parameter(description = "ID del usuario a seguir") @PathVariable Long userToFollowId);
 
@@ -58,7 +58,7 @@ public interface IUserRestController {
     @Operation(summary = "Obtener lista de seguidores", description = "Devuelve la lista de seguidores de un usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de seguidores encontrada", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = FollowersListDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = FollowersListResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetros inválidos\"}"))
@@ -67,14 +67,14 @@ public interface IUserRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"No se encontró el usuario\"}"))
             })
     })
-    ResponseEntity<FollowersListDTO> findFollowerList(
+    ResponseEntity<FollowersListResponseDTO> findFollowerList(
             @Parameter(description = "ID del usuario para obtener la lista de seguidores") @PathVariable String userId,
             @Parameter(description = "Orden de la lista (opcional)") @RequestParam(required = false) String order);
 
     @Operation(summary = "Obtener lista de usuarios seguidos", description = "Devuelve la lista de usuarios que sigue un usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de usuarios seguidos encontrada", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = FollowedListDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = FollowedListResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetros inválidos\"}"))
@@ -83,14 +83,14 @@ public interface IUserRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"No se encontró el usuario\"}"))
             })
     })
-    ResponseEntity<FollowedListDTO> findFollowedList(
+    ResponseEntity<FollowedListResponseDTO> findFollowedList(
             @Parameter(description = "ID del usuario para obtener la lista de usuarios seguidos") @PathVariable String userId,
             @Parameter(description = "Orden de la lista (opcional)") @RequestParam(required = false) String order);
 
     @Operation(summary = "Dejar de seguir a un usuario", description = "Permite a un usuario dejar de seguir a otro.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario dejado de seguir exitosamente", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = SimpleMessageDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = SimpleMessageResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetros inválidos\"}"))
@@ -99,7 +99,7 @@ public interface IUserRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"No se encontró el usuario\"}"))
             })
     })
-    ResponseEntity<SimpleMessageDTO> unfollowUser(
+    ResponseEntity<SimpleMessageResponseDTO> unfollowUser(
             @Parameter(description = "ID del usuario que deja de seguir") @PathVariable Long userId,
             @Parameter(description = "ID del usuario a dejar de seguir") @PathVariable Long userToUnfollowId);
 

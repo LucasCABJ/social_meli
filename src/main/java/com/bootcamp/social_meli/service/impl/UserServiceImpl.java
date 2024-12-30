@@ -1,6 +1,6 @@
 package com.bootcamp.social_meli.service.impl;
 
-import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.request.UserDTO;
 import com.bootcamp.social_meli.dto.request.CreateUserRequestDTO;
 import com.bootcamp.social_meli.dto.response.*;
 import com.bootcamp.social_meli.exception.BadRequestException;
@@ -95,7 +95,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowersListDTO findFollowersList(String userId) {
+    public FollowersListResponseDTO findFollowersList(String userId) {
         Long idLong;
 
         try {
@@ -109,11 +109,11 @@ public class UserServiceImpl implements IUserService {
 
         List<User> followersList = user.getFollowers();
 
-        List<SimpleUserDTO> followersDtos = followersList.stream()
-                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+        List<SimpleUserResponseDTO> followersDtos = followersList.stream()
+                .map(follower -> new SimpleUserResponseDTO(follower.getId(), follower.getUsername()))
                 .toList();
 
-        FollowersListDTO followersDTO = new FollowersListDTO();
+        FollowersListResponseDTO followersDTO = new FollowersListResponseDTO();
         followersDTO.setUser_id(user.getId());
         followersDTO.setUser_name(user.getUsername());
         followersDTO.setFollowers(followersDtos);
@@ -122,7 +122,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowedListDTO findFollowedList(String userId) {
+    public FollowedListResponseDTO findFollowedList(String userId) {
         Long idLong;
 
         try {
@@ -136,11 +136,11 @@ public class UserServiceImpl implements IUserService {
 
         List<User> followedList = user.getFollowed();
 
-        List<SimpleUserDTO> followedDtos = followedList.stream()
-                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+        List<SimpleUserResponseDTO> followedDtos = followedList.stream()
+                .map(follower -> new SimpleUserResponseDTO(follower.getId(), follower.getUsername()))
                 .toList();
 
-        FollowedListDTO followedDTO = new FollowedListDTO();
+        FollowedListResponseDTO followedDTO = new FollowedListResponseDTO();
 
         followedDTO.setUser_id(user.getId());
         followedDTO.setUser_name(user.getUsername());
@@ -151,7 +151,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowersListDTO findFollowersList(String userId, String order) {
+    public FollowersListResponseDTO findFollowersList(String userId, String order) {
         Long idLong;
 
         try {
@@ -178,11 +178,11 @@ public class UserServiceImpl implements IUserService {
             }
         }
 
-        List<SimpleUserDTO> followersDtos = followersList.stream()
-                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+        List<SimpleUserResponseDTO> followersDtos = followersList.stream()
+                .map(follower -> new SimpleUserResponseDTO(follower.getId(), follower.getUsername()))
                 .toList();
 
-        FollowersListDTO followersDTO = new FollowersListDTO();
+        FollowersListResponseDTO followersDTO = new FollowersListResponseDTO();
         followersDTO.setUser_id(user.getId());
         followersDTO.setUser_name(user.getUsername());
         followersDTO.setFollowers(followersDtos);
@@ -191,7 +191,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowedListDTO findFollowedList(String userId, String order) {
+    public FollowedListResponseDTO findFollowedList(String userId, String order) {
         Long idLong;
 
         try {
@@ -218,11 +218,11 @@ public class UserServiceImpl implements IUserService {
             }
         }
 
-        List<SimpleUserDTO> followedDtos = followedList.stream()
-                .map(follower -> new SimpleUserDTO(follower.getId(), follower.getUsername()))
+        List<SimpleUserResponseDTO> followedDtos = followedList.stream()
+                .map(follower -> new SimpleUserResponseDTO(follower.getId(), follower.getUsername()))
                 .toList();
 
-        FollowedListDTO followedDTO = new FollowedListDTO();
+        FollowedListResponseDTO followedDTO = new FollowedListResponseDTO();
 
         followedDTO.setUser_id(user.getId());
         followedDTO.setUser_name(user.getUsername());
@@ -266,9 +266,9 @@ public class UserServiceImpl implements IUserService {
             results = usersSortedByFollowers.subList(0, rank);
         }
 
-        List<SimpleUserWithFollowersCountDTO> mappedResults = results
+        List<SimpleUserWithFollowersCountResponseDTO> mappedResults = results
                 .stream()
-                .map(u -> new SimpleUserWithFollowersCountDTO(u.getId(), u.getUsername(), u.getFollowers().size()))
+                .map(u -> new SimpleUserWithFollowersCountResponseDTO(u.getId(), u.getUsername(), u.getFollowers().size()))
                 .toList();
 
         MostFollowersResponseDTO mostFollowersResponseDTO = new MostFollowersResponseDTO();
@@ -277,7 +277,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDetailsDTO metricsUserDetails(Long userId) {
+    public UserDetailsResponseDTO metricsUserDetails(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
@@ -288,19 +288,19 @@ public class UserServiceImpl implements IUserService {
 
         List<User> notFollowedBack = new ArrayList<>(followed);
         notFollowedBack.removeAll(followers);
-        List<SimpleUserDTO> followerNotFollowed =
+        List<SimpleUserResponseDTO> followerNotFollowed =
                 notFollowedBack.stream()
-                        .map(u -> new SimpleUserDTO(u.getId(),u.getUsername()))
+                        .map(u -> new SimpleUserResponseDTO(u.getId(),u.getUsername()))
                         .toList();
 
         List<User> notFollowingBack = new ArrayList<>(followers);
         notFollowingBack.removeAll(followed);
-        List<SimpleUserDTO> followedNotFollower =
+        List<SimpleUserResponseDTO> followedNotFollower =
                 notFollowingBack.stream()
-                        .map(u -> new SimpleUserDTO(u.getId(),u.getUsername()))
+                        .map(u -> new SimpleUserResponseDTO(u.getId(),u.getUsername()))
                         .toList();
 
-        return new UserDetailsDTO(
+        return new UserDetailsResponseDTO(
                 userId,
                 user.getUsername(),
                 followers.size(),
