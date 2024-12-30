@@ -3,7 +3,6 @@ package com.bootcamp.social_meli.exception;
 import com.bootcamp.social_meli.dto.response.ExceptionResponseDTO;
 import com.bootcamp.social_meli.dto.response.ParsingErrorResponseDTO;
 import com.bootcamp.social_meli.dto.response.ValidationErrorResponseDTO;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
