@@ -1,6 +1,7 @@
 package com.bootcamp.social_meli.exception;
 
 import com.bootcamp.social_meli.dto.ExceptionDTO;
+import com.bootcamp.social_meli.dto.response.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,9 +30,13 @@ public class GlobalExceptionController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        ErrorResponseDTO response = new ErrorResponseDTO();
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        response.setMessage("Se encontrarón errores en algunos campos.");
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setErrors(errors);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,11 +1,10 @@
 package com.bootcamp.social_meli.dto;
 
 import com.bootcamp.social_meli.dto.response.ProductDTO;
-import com.bootcamp.social_meli.model.Product;
-import com.bootcamp.social_meli.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +18,7 @@ import java.time.LocalDate;
 public class PostDTO {
     @JsonProperty("user_id")
     @NotNull(message = "El user_id no puede ser nulo")
+    @Min(1)
     private Long userId;
     @JsonProperty("date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
