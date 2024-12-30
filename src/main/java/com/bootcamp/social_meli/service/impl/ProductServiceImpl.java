@@ -10,7 +10,6 @@ import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IPostRepository;
 import com.bootcamp.social_meli.repository.IProductRepository;
 import com.bootcamp.social_meli.repository.IUserRepository;
-import com.bootcamp.social_meli.dto.response.AmountOfPromosResponseDTO;
 import com.bootcamp.social_meli.service.IProductService;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
