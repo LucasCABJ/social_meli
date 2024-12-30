@@ -1,11 +1,13 @@
 package com.bootcamp.social_meli.controller;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.request.CreateUserRequestDTO;
 import com.bootcamp.social_meli.dto.response.FollowedListDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
 import com.bootcamp.social_meli.dto.SimpleMessageDTO;
 import com.bootcamp.social_meli.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -151,7 +153,7 @@ public class UserRestController {
             })
     })
     @PostMapping("/create")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserRequestDTO user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
 }

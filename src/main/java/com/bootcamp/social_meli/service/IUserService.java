@@ -1,9 +1,8 @@
 package com.bootcamp.social_meli.service;
 
 import com.bootcamp.social_meli.dto.UserDTO;
-import com.bootcamp.social_meli.dto.SimpleMessageDTO;
+import com.bootcamp.social_meli.dto.request.CreateUserRequestDTO;
 import com.bootcamp.social_meli.dto.response.*;
-import com.bootcamp.social_meli.model.User;
 
 import java.util.List;
 
@@ -19,5 +18,5 @@ public interface IUserService {
     MostFollowersResponseDTO mostFollowers();
     MostFollowersResponseDTO mostFollowers(Integer rank);
     UserDetailsDTO metricsUserDetails(Long userId);
-    UserDTO createUser(UserDTO userDto);
+    UserDTO createUser(CreateUserRequestDTO userDto);
 }

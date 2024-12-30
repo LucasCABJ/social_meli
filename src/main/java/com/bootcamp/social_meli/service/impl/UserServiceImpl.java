@@ -1,10 +1,10 @@
 package com.bootcamp.social_meli.service.impl;
 
 import com.bootcamp.social_meli.dto.UserDTO;
+import com.bootcamp.social_meli.dto.request.CreateUserRequestDTO;
 import com.bootcamp.social_meli.dto.response.*;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.ConflictException;
-import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.repository.IPostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,8 +18,6 @@ import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -314,10 +312,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDto) {
-        if(userDto.getUsername() == null || userDto.getUsername().isEmpty() || userDto.getFirst_name() == null || userDto.getFirst_name().isEmpty() || userDto.getLast_name() == null ||userDto.getLast_name().isEmpty()){
-            throw new BadRequestException("Faltan datos del nuevo usuario.");
-        }
+    public UserDTO createUser(CreateUserRequestDTO userDto) {
         if(userRepository.findByUsername(userDto.getUsername()) != null){
             throw new ConflictException("Ya existe un usuario con ese 'username'");
         }
