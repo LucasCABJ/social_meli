@@ -7,6 +7,7 @@ import com.bootcamp.social_meli.dto.response.UserDetailsResponseDTO;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.User;
+import com.bootcamp.social_meli.repository.IPostRepository;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.service.impl.UserServiceImpl;
 import com.bootcamp.social_meli.helpers.UserGenerator;
@@ -29,6 +30,8 @@ import static org.mockito.Mockito.when;
 class UserServiceTest {
     @Mock
     IUserRepository userRepository;
+    @Mock
+    IPostRepository postRepository;
 
     @InjectMocks
     UserServiceImpl userService;
@@ -446,6 +449,8 @@ class UserServiceTest {
                 new ArrayList<>(List.of(new User(4L, "Carlos", "Sánchez", "CarlosSan_15", new ArrayList<>(), new ArrayList<>()))));
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+        when(postRepository.findAmountOfPromosByUserId(mockUser)).thenReturn(List.of());
+
         UserDetailsResponseDTO expectedResult = new UserDetailsResponseDTO(5L, "LauLopez87", mockUser.getFollowers().size(),
                 mockUser.getFollowed().size(), 0, new ArrayList<>(), new ArrayList<>(List.of(new SimpleUserResponseDTO(4L, "CarlosSan_15"))));
         //Act
