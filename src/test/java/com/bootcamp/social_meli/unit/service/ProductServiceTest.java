@@ -2,6 +2,8 @@ package com.bootcamp.social_meli.unit.service;
 
 import com.bootcamp.social_meli.dto.response.MostProductsResponseDTO;
 import com.bootcamp.social_meli.dto.response.ProductWithPostCountDTO;
+import com.bootcamp.social_meli.exception.BadRequestException;
+import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.Product;
 import com.bootcamp.social_meli.model.User;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -62,13 +65,11 @@ class ProductServiceTest {
         LocalDate date1 = LocalDate.parse("30-11-2024", formatter);
         LocalDate date2 = LocalDate.parse("12-12-2024", formatter);
         LocalDate date3 = LocalDate.parse("02-12-2024", formatter);
-        LocalDate date4 = LocalDate.parse("03-12-2024", formatter);
-        LocalDate date5 = LocalDate.parse("04-12-2024", formatter);
 
         // Crea instancias de Post
         Post post1 = new Post(1L, user1, date1, product1, 100, 1500.50, true, 0.25);
         Post post2 = new Post(2L, user1, date2, product2, 112, 120.00, false, 0.0);
-        Post post3 = new Post(3L, user1, date3, product2, 102, 80.75, true, 0.15);
+        Post post3 = new Post(3L, user2, date3, product2, 102, 80.75, true, 0.15);
 
         when(postRepository.findAll()).thenReturn(Arrays.asList(post1, post2, post3));
         when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
@@ -79,7 +80,7 @@ class ProductServiceTest {
         MostProductsResponseDTO expectedResponse = new MostProductsResponseDTO(Arrays.asList(expectedProduct1, expectedProduct2));
 
         // ACT
-        MostProductsResponseDTO actualResponse = productService.getMostProducts("a");
+        MostProductsResponseDTO actualResponse = productService.getMostProducts(rankParam);
 
         // ASS
         Assertions.assertEquals(expectedResponse, actualResponse);
@@ -100,13 +101,11 @@ class ProductServiceTest {
         LocalDate date1 = LocalDate.parse("30-11-2024", formatter);
         LocalDate date2 = LocalDate.parse("12-12-2024", formatter);
         LocalDate date3 = LocalDate.parse("02-12-2024", formatter);
-        LocalDate date4 = LocalDate.parse("03-12-2024", formatter);
-        LocalDate date5 = LocalDate.parse("04-12-2024", formatter);
 
         // Crea instancias de Post
         Post post1 = new Post(1L, user1, date1, product1, 100, 1500.50, true, 0.25);
         Post post2 = new Post(2L, user1, date2, product2, 112, 120.00, false, 0.0);
-        Post post3 = new Post(3L, user1, date3, product2, 102, 80.75, true, 0.15);
+        Post post3 = new Post(3L, user2, date3, product2, 102, 80.75, true, 0.15);
 
         when(postRepository.findAll()).thenReturn(Arrays.asList(post1, post2, post3));
         when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
@@ -121,6 +120,20 @@ class ProductServiceTest {
 
         // ASS
         Assertions.assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    @DisplayName("Arroja BadRequest si rank no es un número")
+    public void getMostProductsTestThrowsExceptionIfBadRequest() {
+        // ARR
+        String rankParam = "not_a_number";
+
+        // ACT & ASSERT
+        BadRequestException exception = Assertions.assertThrows(BadRequestException.class, () -> {
+            productService.getMostProducts(rankParam);
+        });
+
+        Assertions.assertEquals("El rank debe ser un valor numerico.", exception.getMessage());
     }
 
     @Test
