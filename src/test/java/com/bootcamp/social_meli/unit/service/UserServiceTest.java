@@ -222,7 +222,29 @@ class UserServiceTest {
     }
 
     @Test
-    void testFindFollowersList() {
+    @DisplayName("findFollowersList: El usuario debe poder obtener la lista de seguidores")
+    void  testFindFollowersList() {
+        // Arrange
+        Long userId = 1L;
+        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        // Act
+        FollowersListResponseDTO followersList = userService.findFollowersList(userId);
+        // Assert
+        Assertions.assertEquals(3, followersList.getFollowers().size());
+    }
+
+    @Test
+    @DisplayName("findFollowersList: Debe arrojar NotFoundException si no " +
+            "encuentra al usuario")
+    void  testFindFollowersListUserNotFound() {
+        // Arrange
+        Long userId = 3L;
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.empty());
+        // Act & Assert
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            userService.findFollowersList(userId);
+        });
     }
 
     @Test
@@ -288,8 +310,32 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
+            "ordenada desendente")
     void findFollowedList() {
+        // Arrange
+        Long userId = 1L;
+        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        // Act
+        FollowedListResponseDTO followedList = userService.findFollowedList(userId);
+        // Assert
+        Assertions.assertEquals(3, followedList.getFollowed().size());
     }
+
+    @Test
+    @DisplayName("findFollowedListOrdered: Debe arrojar NotFoundException si no " +
+            "encuentra al usuario")
+    void findFollowedListUserNotFound() {
+        // Arrange
+        Long userId = 3L;
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.empty());
+        // Act & Assert
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            userService.findFollowedList(userId);
+        });
+    }
+
     @Test
     @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
             "ordenada asendente")
