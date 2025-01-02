@@ -1,6 +1,9 @@
 package com.bootcamp.social_meli.unit.service;
 
+import com.bootcamp.social_meli.dto.request.ProductDTO;
 import com.bootcamp.social_meli.dto.response.MostProductsResponseDTO;
+import com.bootcamp.social_meli.dto.response.PostNoDiscountResponseDTO;
+import com.bootcamp.social_meli.dto.response.PostsFromFollowsResponseDTO;
 import com.bootcamp.social_meli.dto.response.ProductWithPostCountDTO;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
@@ -17,15 +20,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +49,73 @@ class ProductServiceTest {
     }
 
     @Test
-    void getAllPostsFollowsLastTwoWeeks() {
+    @DisplayName("Verificar el correcto ordenamiento ascendente y descendente por fecha")
+    void testGetPostsSortedByDate() {
+        // ARR
+        User user = new User(1L, "TestUser", "First", "Last", new ArrayList<>(), new ArrayList<>());
+        User followedUser = new User(2L, "FollowedUser", "First", "Last", new ArrayList<>(), new ArrayList<>());
+        user.getFollowed().add(followedUser);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        ProductDTO productDto = new ProductDTO(1L, "ProductName", "ProductType", "ProductBrand", "ProductColor", "ProductNotes");
+        Product mockProduct = new Product(1L, "ProductName", "ProductType", "ProductBrand", "ProductColor", "ProductNotes");
+
+        Post post1 = new Post(1L, followedUser, LocalDate.parse("01-12-2024", formatter), mockProduct, null, null, false, null);
+        Post post2 = new Post(2L, followedUser, LocalDate.parse("05-12-2024", formatter), mockProduct, null, null, false, null);
+        Post post3 = new Post(3L, followedUser, LocalDate.parse("03-12-2024", formatter), mockProduct, null, null, false, null);
+
+        PostNoDiscountResponseDTO postDto1 = new PostNoDiscountResponseDTO(1L, post1.getId(), post1.getCreateDate(), productDto, null, null);
+        PostNoDiscountResponseDTO postDto2 = new PostNoDiscountResponseDTO(1L, post2.getId(), post2.getCreateDate(), productDto, null, null);
+        PostNoDiscountResponseDTO postDto3 = new PostNoDiscountResponseDTO(1L, post3.getId(), post3.getCreateDate(), productDto, null, null);
+
+        when(userRepository.findFollowsByUserId(1L)).thenReturn(Arrays.asList(followedUser));
+        when(postRepository.findByUserIdFilteredByLastTwoWeeks(2L)).thenReturn(Arrays.asList(post1, post2, post3));
+
+        // ACT
+        PostsFromFollowsResponseDTO responseAsc = productService.getAllPostsFollowsLastTwoWeeks(1L, "date_asc");
+        PostsFromFollowsResponseDTO responseDesc = productService.getAllPostsFollowsLastTwoWeeks(1L, "date_desc");
+
+        // ASSERT ASCENDING
+        List<LocalDate> datesAsc = responseAsc.getPosts().stream()
+                .map(PostNoDiscountResponseDTO::getCreateDate)
+                .collect(Collectors.toList());
+        assertEquals(Arrays.asList(postDto1.getCreateDate(), postDto3.getCreateDate(), postDto2.getCreateDate()), datesAsc);
+
+        // ASSERT DESCENDING
+        List<LocalDate> datesDesc = responseDesc.getPosts().stream()
+                .map(PostNoDiscountResponseDTO::getCreateDate)
+                .collect(Collectors.toList());
+        assertEquals(Arrays.asList(postDto2.getCreateDate(), postDto3.getCreateDate(), postDto1.getCreateDate()), datesDesc);
+    }
+
+    @Test
+    @DisplayName("Verificar que las publicaciones sean de las últimas dos semanas")
+    void testGetPostsFromLastTwoWeeks() {
+        // ARR
+        User user = new User(1L, "TestUser", "First", "Last", new ArrayList<>(), new ArrayList<>());
+        User followedUser = new User(2L, "FollowedUser", "First", "Last", new ArrayList<>(), new ArrayList<>());
+        user.getFollowed().add(followedUser);
+
+        LocalDate now = LocalDate.now();
+        LocalDate twoWeeksAgo = now.minusWeeks(2);
+
+        Product mockProduct = new Product(1L, "ProductName", "ProductType", "ProductBrand", "ProductColor", "ProductNotes");
+
+        Post recentPost1 = new Post(1L, followedUser, now.minusDays(3), mockProduct, null, null, false, null);
+        Post recentPost2 = new Post(2L, followedUser, now.minusDays(10), mockProduct, null, null, false, null);
+
+        when(postRepository.findByUserIdFilteredByLastTwoWeeks(2L))
+                .thenReturn(Arrays.asList(recentPost1, recentPost2));
+
+        when(userRepository.findFollowsByUserId(1L))
+                .thenReturn(Arrays.asList(followedUser));
+
+        // ACT
+        PostsFromFollowsResponseDTO response = productService.getAllPostFollowsLastTwoWeeksUnordered(1L);
+
+        // ASSERT
+        assertEquals(2, response.getPosts().size());
+        assertTrue(response.getPosts().stream().allMatch(post -> !post.getCreateDate().isBefore(twoWeeksAgo)));
     }
 
     @Test
@@ -82,8 +151,8 @@ class ProductServiceTest {
         // ACT
         MostProductsResponseDTO actualResponse = productService.getMostProducts(rankParam);
 
-        // ASS
-        Assertions.assertEquals(expectedResponse, actualResponse);
+        // ASSERT
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -119,7 +188,7 @@ class ProductServiceTest {
         MostProductsResponseDTO actualResponse = productService.getMostProducts();
 
         // ASS
-        Assertions.assertEquals(expectedResponse, actualResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -133,7 +202,7 @@ class ProductServiceTest {
             productService.getMostProducts(rankParam);
         });
 
-        Assertions.assertEquals("El rank debe ser un valor numerico.", exception.getMessage());
+        assertEquals("El rank debe ser un valor numerico.", exception.getMessage());
     }
 
     @Test
