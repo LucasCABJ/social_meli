@@ -442,49 +442,42 @@ class UserServiceTest {
         // ARR
         Integer rankParam = 2;
 
-        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(
-                new User(2L, "MartinG24", "Martín", "Gómez", new ArrayList<>(), new ArrayList<>())
-        ), List.of());
+        // Crear usuarios con sus seguidores
+        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(), new ArrayList<>());
+        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", new ArrayList<>(), List.of(user1));
+        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", new ArrayList<>(), List.of(user1, user2));
+        User user4 = new User(4L, "CarlosSainz_33", "Carlos", "Sainz", new ArrayList<>(), List.of(user1, user2, user3));
 
-        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", List.of(
-                new User(3L, "AnaPerezzzz", "Ana", "Pérez", new ArrayList<>(), new ArrayList<>()),
-                new User(4L, "CarlosSainz_33", "Carlos", "Sainz", new ArrayList<>(), new ArrayList<>())
-        ), List.of());
+        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2, user3, user4));
 
-        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", List.of(), List.of());
-
-        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2, user3));
-
-        // ACT && ASSERT
+        // ACT
         MostFollowersResponseDTO result = userService.mostFollowers(rankParam);
 
-        assertEquals(2, result.getMost_followers().size());
-        assertEquals("Colapinto", result.getMost_followers().get(0).getUser_name());
-        assertEquals("Gómez", result.getMost_followers().get(1).getUser_name());
+        // ASS
+        assertEquals(2, result.getMost_followers().size(), "La lista debe contener los dos usuarios con más seguidores.");
+        assertEquals("Sainz", result.getMost_followers().getFirst().getUser_name(), "El primer usuario debería ser Sainz.");
+        assertEquals("Pérez", result.getMost_followers().get(1).getUser_name(), "El segundo usuario debería ser Pérez.");
     }
 
     @Test
     void mostFollowersTest() {
-        // ARR
-        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(
-                new User(2L, "MartinG24", "Martín", "Gómez", new ArrayList<>(), new ArrayList<>())
-        ), List.of());
+        // Crear usuarios con sus seguidores
+        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(), new ArrayList<>());
+        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", new ArrayList<>(), List.of(user1));
+        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", new ArrayList<>(), List.of(user1, user2));
+        User user4 = new User(4L, "CarlosSainz_33", "Carlos", "Sainz", new ArrayList<>(), List.of(user1, user2, user3));
 
-        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", List.of(
-                new User(3L, "AnaPerezzzz", "Ana", "Pérez", new ArrayList<>(), new ArrayList<>()),
-                new User(4L, "CarlosSainz_33", "Carlos", "Sainz", new ArrayList<>(), new ArrayList<>())
-        ), List.of());
+        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2, user3, user4));
 
-        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", List.of(), List.of());
-
-        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2, user3));
-
-        // ACT && ASSERT
+        // ACT
         MostFollowersResponseDTO result = userService.mostFollowers();
 
-        assertEquals(3, result.getMost_followers().size());
-        assertEquals("Colapinto", result.getMost_followers().get(0).getUser_name());
-        assertEquals("Gómez", result.getMost_followers().get(1).getUser_name());
+        // ASS
+        assertEquals(4, result.getMost_followers().size(), "La lista debe contener los dos usuarios con más seguidores.");
+        assertEquals("Sainz", result.getMost_followers().getFirst().getUser_name(), "El primer usuario debería ser Sainz.");
+        assertEquals("Pérez", result.getMost_followers().get(1).getUser_name(), "El segundo usuario debería ser Pérez.");
+        assertEquals("Gómez", result.getMost_followers().get(2).getUser_name(), "El tercer usuario debería ser Gómez.");
+        assertEquals("Colapinto", result.getMost_followers().get(3).getUser_name(), "El cuarto usuario debería ser Colapinto.");
     }
 
     @Test
