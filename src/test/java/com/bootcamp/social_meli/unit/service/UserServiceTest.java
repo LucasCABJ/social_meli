@@ -1,5 +1,7 @@
 package com.bootcamp.social_meli.unit.service;
 
+import com.bootcamp.social_meli.dto.response.SimpleUserResponseDTO;
+import com.bootcamp.social_meli.dto.response.UserDetailsResponseDTO;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.User;
@@ -279,7 +281,34 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Debe retornar los detalles del usuario con sus metricas cuando existe")
     void metricsUserDetails() {
+        //Arrange
+        Long userId = 5L;
+        User mockUser = new User(userId,"Laura","López", "LauLopez87", new ArrayList<>(),
+                new ArrayList<>(List.of(new User(4L,"Carlos","Sánchez", "CarlosSan_15", new ArrayList<>(), new ArrayList<>()))));
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+        UserDetailsResponseDTO expectedResult = new UserDetailsResponseDTO(5L,"LauLopez87",mockUser.getFollowers().size(),
+                mockUser.getFollowed().size(),0,new ArrayList<>(),new ArrayList<>(List.of(new SimpleUserResponseDTO(4L,"CarlosSan_15"))));
+        //Act
+        UserDetailsResponseDTO result = userService.metricsUserDetails(userId);
+        //Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result,expectedResult);
+
+    }
+    @Test
+    @DisplayName("Debe arrojar NotFoundException si no encuentra al usuario")
+    void testMetricsUserDetailsUserNotFound() {
+        // Configurar el mock para que no encuentre al usuario
+        Long userId = 1L;
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        // Verificar que lanza la excepción
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            userService.metricsUserDetails(userId);
+        });
     }
 
     @Test
