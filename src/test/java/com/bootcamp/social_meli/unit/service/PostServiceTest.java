@@ -116,7 +116,7 @@ class PostServiceTest {
         MostPostsUsersResponseDTO result = postService.mostPostsUsers();
 
         // ASERTS
-        assertEquals(2, result.getMost_posts().size(), "La lista debe contener 3 usuarios.");
+        assertEquals(2, result.getMost_posts().size(), "La lista debe contener 2 usuarios.");
         assertEquals("Francol43", result.getMost_posts().get(0).getUser_name(), "El primer usuario debería ser Franco."); // Debe ser el que más publicaciones tiene
         assertEquals("MartinG24", result.getMost_posts().get(1).getUser_name(), "El segundo usuario debería ser Martín."); // El siguiente
     }
