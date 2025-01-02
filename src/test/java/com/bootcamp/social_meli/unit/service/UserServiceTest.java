@@ -13,11 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.ArrayList;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.Optional;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -235,7 +235,39 @@ class UserServiceTest {
     }
 
     @Test
-    void getFollowerCount() {
+    @DisplayName("La cantidad de seguidores de un usuario sin seguidores es 0")
+    void getFollowerCountOfUserWithoutFollowersReturnsZero() {
+        Long expectedAmount = 0L;
+        User user = new User(1L, "Juan", "Juan", "juancito", List.of(), List.of());
+        when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(user));
+
+        Long amount = userService.getFollowerCount(1L).getFollowers_count();
+
+        Assertions.assertEquals(expectedAmount, amount);
+    }
+
+    @Test
+    @DisplayName("La cantidad de seguidores de un usuario con dos seguidores es 2")
+    void getFollowerCountOfUserWithTwoFollowersReturnsTwo() {
+        Long expectedAmount = 2L;
+        User follower1 = new User(3L, "Tom", "Tom", "tomito", List.of(), List.of());
+        User follower2 = new User(2L, "Mati", "Mati", "mati123", List.of(), List.of());
+        User user = new User(1L, "Juan", "Juan", "juancito", List.of(), List.of(follower1,follower2));
+        when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(user));
+
+        Long amount = userService.getFollowerCount(1L).getFollowers_count();
+
+        Assertions.assertEquals(expectedAmount, amount);
+    }
+
+    @Test
+    @DisplayName("Se arroja una excepcion al no se encontrar al usuario")
+    void getFollowerCountOfInexistentUserThrowsException(){
+        Long userId = 0L;
+        when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            userService.getFollowerCount(userId);
+        });
     }
 
     @Test
