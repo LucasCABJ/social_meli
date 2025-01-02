@@ -16,10 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -223,7 +224,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("findFollowersList: El usuario debe poder obtener la lista de seguidores")
-    void  testFindFollowersList() {
+    void testFindFollowersList() {
         // Arrange
         Long userId = 1L;
         User user = UserGenerator.userWithFollowersAndeFollowed(userId);
@@ -235,9 +236,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findFollowersList: Debe arrojar NotFoundException si no " +
-            "encuentra al usuario")
-    void  testFindFollowersListUserNotFound() {
+    @DisplayName("findFollowersList: Debe arrojar NotFoundException si no encuentra al usuario")
+    void testFindFollowersListUserNotFound() {
         // Arrange
         Long userId = 3L;
         Mockito.when(userRepository.findById(3L)).thenReturn(Optional.empty());
@@ -245,10 +245,6 @@ class UserServiceTest {
         Assertions.assertThrows(NotFoundException.class, () -> {
             userService.findFollowersList(userId);
         });
-    }
-
-    @Test
-    void findFollowersList() {
     }
 
     @Test
@@ -266,6 +262,7 @@ class UserServiceTest {
         Assertions.assertEquals("msalah", followersList.getFollowers().get(1).getUser_name());
         Assertions.assertEquals("tarnold", followersList.getFollowers().get(2).getUser_name());
     }
+
     @Test
     @DisplayName("findFollowersListOrdered: El usuario debe poder obtener la lista de seguidores " +
             "ordenada desendente")
@@ -310,8 +307,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
-            "ordenada desendente")
+    @DisplayName("findFollowedList: El usuario debe poder obtener la lista de seguidores")
     void findFollowedList() {
         // Arrange
         Long userId = 1L;
@@ -324,7 +320,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findFollowedListOrdered: Debe arrojar NotFoundException si no " +
+    @DisplayName("findFollowedList: Debe arrojar NotFoundException si no " +
             "encuentra al usuario")
     void findFollowedListUserNotFound() {
         // Arrange
@@ -351,6 +347,7 @@ class UserServiceTest {
         Assertions.assertEquals("msalah", followedList.getFollowed().get(1).getUser_name());
         Assertions.assertEquals("smane", followedList.getFollowed().get(2).getUser_name());
     }
+
     @Test
     @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
             "ordenada desendente")
@@ -395,10 +392,6 @@ class UserServiceTest {
     }
 
     @Test
-    void testFindFollowedList() {
-    }
-
-    @Test
     @DisplayName("La cantidad de seguidores de un usuario sin seguidores es 0")
     void getFollowerCountOfUserWithoutFollowersReturnsZero() {
         Long expectedAmount = 0L;
@@ -416,7 +409,7 @@ class UserServiceTest {
         Long expectedAmount = 2L;
         User follower1 = new User(3L, "Tom", "Tom", "tomito", List.of(), List.of());
         User follower2 = new User(2L, "Mati", "Mati", "mati123", List.of(), List.of());
-        User user = new User(1L, "Juan", "Juan", "juancito", List.of(), List.of(follower1,follower2));
+        User user = new User(1L, "Juan", "Juan", "juancito", List.of(), List.of(follower1, follower2));
         when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(user));
 
         Long amount = userService.getFollowerCount(1L).getFollowers_count();
@@ -426,7 +419,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Se arroja una excepcion al no se encontrar al usuario")
-    void getFollowerCountOfInexistentUserThrowsException(){
+    void getFollowerCountOfInexistentUserThrowsException() {
         Long userId = 0L;
         when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(NotFoundException.class, () -> {
