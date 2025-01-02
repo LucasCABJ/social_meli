@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Validated
 public interface IMetricRestController {
 
     @Operation(summary = "Obtener los usuarios con más seguidores", description = "Devuelve una lista de los usuarios más seguidos en la plataforma.")
@@ -40,7 +42,8 @@ public interface IMetricRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Usuario no encontrado\"}"))
             })
     })
-    ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable @Min(1) Long userId);
+    ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId);
 
     @Operation(summary = "Obtener los productos más publicados", description = "Devuelve una lista de los productos más publicados por los usuarios.")
     @ApiResponses(value = {

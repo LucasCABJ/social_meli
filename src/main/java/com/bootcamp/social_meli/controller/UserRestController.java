@@ -37,31 +37,36 @@ public class UserRestController implements IUserRestController {
     }
 
     @PostMapping("{userId}/follow/{userToFollowId}")
-    public ResponseEntity<SimpleMessageResponseDTO> followUser(@PathVariable @Min(1) Long userId, @PathVariable Long userToFollowId) {
+    public ResponseEntity<SimpleMessageResponseDTO> followUser(@PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId, @PathVariable Long userToFollowId) {
         return ResponseEntity.ok(new SimpleMessageResponseDTO(userService.followUser(userId, userToFollowId)));
     }
 
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<FollowerCountResponse> getFollowersCount(@PathVariable @Min(1) Long userId) {
+    public ResponseEntity<FollowerCountResponse> getFollowersCount(@PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId) {
         return ResponseEntity.ok(userService.getFollowerCount(userId));
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<FollowersListResponseDTO> findFollowerList(@PathVariable  @Min(1) Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<FollowersListResponseDTO> findFollowerList(@PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId, @RequestParam(required = false) String order) {
         return order != null && !order.isEmpty() ?
                 ResponseEntity.ok(userService.findFollowersList(userId, order)) :
                 ResponseEntity.ok(userService.findFollowersList(userId));
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<FollowedListResponseDTO> findFollowedList(@PathVariable  @Min(1) Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<FollowedListResponseDTO> findFollowedList(@PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId, @RequestParam(required = false) String order) {
         return order != null && !order.isEmpty() ?
                 ResponseEntity.ok(userService.findFollowedList(userId, order)) :
                 ResponseEntity.ok(userService.findFollowedList(userId));
     }
 
     @PostMapping("{userId}/unfollow/{userToUnfollowId}")
-    public ResponseEntity<SimpleMessageResponseDTO> unfollowUser(@PathVariable @Min(1) Long userId, @PathVariable Long userToUnfollowId) {
+    public ResponseEntity<SimpleMessageResponseDTO> unfollowUser(@PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId, @PathVariable Long userToUnfollowId) {
         return ResponseEntity.ok(new SimpleMessageResponseDTO(userService.unfollowUser(userId, userToUnfollowId)));
     }
 

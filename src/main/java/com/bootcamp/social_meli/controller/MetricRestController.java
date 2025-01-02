@@ -42,7 +42,8 @@ public class MetricRestController implements IMetricRestController {
     }
 
     @GetMapping("/{userId}/details")
-    public ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable @Min(1) Long userId) {
+    public ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId) {
         return ResponseEntity.ok(userService.metricsUserDetails(userId));
     }
 

@@ -32,7 +32,8 @@ public interface IProductRestController {
             })
     })
     ResponseEntity<PostsFromFollowsResponseDTO> getAllPostsFollowsLastTwoWeeks(
-            @Parameter(description = "ID del usuario actual") @PathVariable @Min(1) Long userId,
+            @Parameter(description = "ID del usuario actual") @PathVariable @Min(value = 1,
+            message = "userId debe ser mayor que o igual a 1") Long userId,
             @RequestParam(defaultValue = "date_asc") String order);
 
     @Operation(summary = "Publicar un producto",

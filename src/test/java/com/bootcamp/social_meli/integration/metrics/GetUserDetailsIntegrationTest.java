@@ -1,4 +1,4 @@
-package com.bootcamp.social_meli.integration;
+package com.bootcamp.social_meli.integration.metrics;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MetricRestControllerTest {
+public class GetUserDetailsIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -51,6 +51,6 @@ public class MetricRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.status").value("400"))
-                .andExpect(jsonPath("$.message").value("userId: must be greater than or equal to 1"));
+                .andExpect(jsonPath("$.message").value("userId debe ser mayor que o igual a 1"));
     }
 }

@@ -45,9 +45,8 @@ public class GlobalExceptionController {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponseDTO> handleValidationExceptions(ConstraintViolationException ex) {
-        String[] parts = ex.getMessage().split("\\.");
-        String lastPart = parts[parts.length - 1].trim();
-        return new ResponseEntity<>(new ExceptionResponseDTO("400", lastPart),
+        String errorMessage = ex.getConstraintViolations().iterator().next().getMessage();
+        return new ResponseEntity<>(new ExceptionResponseDTO("400", errorMessage),
                 HttpStatus.BAD_REQUEST);
     }
 
