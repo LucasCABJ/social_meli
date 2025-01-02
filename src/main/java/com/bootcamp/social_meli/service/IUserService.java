@@ -10,10 +10,10 @@ public interface IUserService {
     List<UserDTO> findAll();
     String followUser(Long userId, Long userToFollowId);
     String unfollowUser(Long userId, Long userToFollowId);
-    FollowersListResponseDTO findFollowersList(String userId);
-    FollowedListResponseDTO findFollowedList(String userId);
-    FollowersListResponseDTO findFollowersList(String userId, String order);
-    FollowedListResponseDTO findFollowedList(String userId, String order);
+    FollowersListResponseDTO findFollowersList(Long userId);
+    FollowedListResponseDTO findFollowedList(Long userId);
+    FollowersListResponseDTO findFollowersList(Long userId, String order);
+    FollowedListResponseDTO findFollowedList(Long userId, String order);
     FollowerCountResponse getFollowerCount(Long userId);
     MostFollowersResponseDTO mostFollowers();
     MostFollowersResponseDTO mostFollowers(Integer rank);

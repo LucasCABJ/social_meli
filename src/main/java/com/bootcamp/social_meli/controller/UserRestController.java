@@ -44,14 +44,14 @@ public class UserRestController implements IUserRestController {
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<FollowersListResponseDTO> findFollowerList(@PathVariable String userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<FollowersListResponseDTO> findFollowerList(@PathVariable  Long userId, @RequestParam(required = false) String order) {
         return order != null && !order.isEmpty() ?
                 ResponseEntity.ok(userService.findFollowersList(userId, order)) :
                 ResponseEntity.ok(userService.findFollowersList(userId));
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<FollowedListResponseDTO> findFollowedList(@PathVariable String userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<FollowedListResponseDTO> findFollowedList(@PathVariable  Long userId, @RequestParam(required = false) String order) {
         return order != null && !order.isEmpty() ?
                 ResponseEntity.ok(userService.findFollowedList(userId, order)) :
                 ResponseEntity.ok(userService.findFollowedList(userId));
