@@ -10,12 +10,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 public interface IUserRestController {
     @Operation(summary = "Obtener todos los usuarios", description = "Permite obtener un listado de todos los usuarios en el sistema.")
     @ApiResponses(value = {
@@ -116,5 +117,5 @@ public interface IUserRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Error al crear el usuario\"}"))
             })
     })
-    ResponseEntity<UserDTO> createUser(@RequestBody CreateUserRequestDTO user);
+    ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserRequestDTO user);
 }
