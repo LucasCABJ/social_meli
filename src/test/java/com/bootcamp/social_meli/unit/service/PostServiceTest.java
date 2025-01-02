@@ -75,7 +75,7 @@ class PostServiceTest {
         when(postRepository.getPostsWithProduct(Mockito.anyString())).thenReturn(List.of(post));
 
         PostsWithProductResponseDTO response = postService.getPostsWithProduct(productName);
-        Post postTaza = response.getPosts().getFirst();
+        Post postTaza = response.getPosts().get(0);
 
         Assertions.assertEquals(productName, response.getName());
         Assertions.assertTrue(postTaza.productNameContains(productName));
