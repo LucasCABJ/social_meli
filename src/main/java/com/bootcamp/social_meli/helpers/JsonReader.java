@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -20,6 +21,9 @@ import java.util.List;
 
 @Component
 public class JsonReader {
+
+    @Value("${api.scope}")
+    private String SCOPE;
 
     private IPostRepository postRepository = null;
     private IUserRepository userRepository = null;
@@ -35,7 +39,7 @@ public class JsonReader {
     }
 
     private void loadUsers() {
-        String DATA_FILE = "src/main/resources/users.json";
+        String DATA_FILE = "src/" + SCOPE + "/resources/users.json";
         try {
             List<User> usersList = objectMapper.readValue(new File(DATA_FILE), new TypeReference<List<User>>() {
             });
@@ -68,7 +72,7 @@ public class JsonReader {
     }
 
     private void loadProducts() {
-        String DATA_FILE = "src/main/resources/products.json";
+        String DATA_FILE = "src/" + SCOPE + "/resources/products.json";
         try {
 
             productRepository.createBatch(objectMapper.readValue(new File(DATA_FILE), new TypeReference<List<Product>>() {
@@ -81,7 +85,7 @@ public class JsonReader {
     }
 
     private void loadPosts() {
-        String DATA_FILE = "src/main/resources/posts.json";
+        String DATA_FILE = "src/" + SCOPE + "/resources/posts.json";
         try {
             List<Post> postList = new ArrayList<>();
             List<PostConvert> postConvertList = objectMapper.readValue(new File(DATA_FILE), new TypeReference<List<PostConvert>>() {
