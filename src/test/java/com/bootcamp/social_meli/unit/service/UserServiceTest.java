@@ -9,7 +9,7 @@ import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.User;
 import com.bootcamp.social_meli.repository.IUserRepository;
 import com.bootcamp.social_meli.service.impl.UserServiceImpl;
-import com.bootcamp.social_meli.utils.UserGenerator;
+import com.bootcamp.social_meli.helpers.UserGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
