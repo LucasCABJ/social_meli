@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MostFollowersResponseDTO {
-    private List<SimpleUserWithFollowersCountResponseDTO> most_followers;
+public class AmountOfPromosResponseDTO extends SimpleUserResponseDTO {
+    Integer amountOfPromos;
 }

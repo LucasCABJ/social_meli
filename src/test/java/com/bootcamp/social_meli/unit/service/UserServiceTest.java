@@ -2,8 +2,6 @@ package com.bootcamp.social_meli.unit.service;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class UserServiceTest {
 
     @Test

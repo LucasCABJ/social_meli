@@ -4,9 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AmountOfPromosDTO extends SimpleUserDTO{
-    Integer amountOfPromos;
+public class ValidationErrorResponseDTO {
+    private int status;
+    private String message;
+    private Map<String, String> errors;
 }

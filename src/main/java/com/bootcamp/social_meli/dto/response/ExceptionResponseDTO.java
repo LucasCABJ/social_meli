@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SimpleUserDTO {
-    private Long user_id;
-    private String user_name;
+public class ExceptionResponseDTO {
+    private String status;
+    private String message;
 }
