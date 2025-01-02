@@ -95,16 +95,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowersListResponseDTO findFollowersList(String userId) {
-        Long idLong;
-
-        try {
-            idLong = Long.parseLong(userId);
-        } catch (NumberFormatException e) {
-            throw new BadRequestException("El ID del usuario debe ser un número entero");
-        }
-
-        User user = userRepository.findById(idLong)
+    public FollowersListResponseDTO findFollowersList(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followersList = user.getFollowers();
@@ -122,16 +114,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowedListResponseDTO findFollowedList(String userId) {
-        Long idLong;
-
-        try {
-            idLong = Long.parseLong(userId);
-        } catch (NumberFormatException e) {
-            throw new BadRequestException("El ID del usuario debe ser un número entero");
-        }
-
-        User user = userRepository.findById(idLong)
+    public FollowedListResponseDTO findFollowedList(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followedList = user.getFollowed();
@@ -151,16 +135,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowersListResponseDTO findFollowersList(String userId, String order) {
-        Long idLong;
-
-        try {
-            idLong = Long.parseLong(userId);
-        } catch (NumberFormatException e) {
-            throw new BadRequestException("El ID del usuario debe ser un número entero");
-        }
-
-        User user = userRepository.findById(idLong)
+    public FollowersListResponseDTO findFollowersList(Long userId, String order) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followersList = user.getFollowers();
@@ -191,16 +167,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowedListResponseDTO findFollowedList(String userId, String order) {
-        Long idLong;
-
-        try {
-            idLong = Long.parseLong(userId);
-        } catch (NumberFormatException e) {
-            throw new BadRequestException("El ID del usuario debe ser un número entero");
-        }
-
-        User user = userRepository.findById(idLong)
+    public FollowedListResponseDTO findFollowedList(Long userId, String order) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("No se ha encontrado al usuario: " + userId));
 
         List<User> followedList = user.getFollowed();
