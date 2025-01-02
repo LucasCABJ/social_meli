@@ -1,5 +1,6 @@
 package com.bootcamp.social_meli.unit.service;
 
+import com.bootcamp.social_meli.dto.response.FollowedListResponseDTO;
 import com.bootcamp.social_meli.dto.response.FollowersListResponseDTO;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
@@ -221,6 +222,10 @@ class UserServiceTest {
     }
 
     @Test
+    void testFindFollowersList() {
+    }
+
+    @Test
     void findFollowersList() {
     }
 
@@ -285,9 +290,62 @@ class UserServiceTest {
     @Test
     void findFollowedList() {
     }
+    @Test
+    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
+            "ordenada asendente")
+    void findFollowedListOrderedAsc() {
+        Long userId = 1L;
+        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        // Act
+        FollowedListResponseDTO followedList = userService.findFollowedList(userId, "name_asc");
+        // Assert
+        Assertions.assertEquals(3, followedList.getFollowed().size());
+        Assertions.assertEquals("aarnold", followedList.getFollowed().get(0).getUser_name());
+        Assertions.assertEquals("msalah", followedList.getFollowed().get(1).getUser_name());
+        Assertions.assertEquals("smane", followedList.getFollowed().get(2).getUser_name());
+    }
+    @Test
+    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
+            "ordenada desendente")
+    void findFollowedListOrderedDesc() {
+        // Arrange
+        Long userId = 1L;
+        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        // Act
+        FollowedListResponseDTO followedList = userService.findFollowedList(userId, "name_desc");
+        // Assert
+        Assertions.assertEquals(3, followedList.getFollowed().size());
+        Assertions.assertEquals("smane", followedList.getFollowed().get(0).getUser_name());
+        Assertions.assertEquals("msalah", followedList.getFollowed().get(1).getUser_name());
+        Assertions.assertEquals("aarnold", followedList.getFollowed().get(2).getUser_name());
+    }
 
     @Test
-    void testFindFollowersList() {
+    @DisplayName("findFollowedListOrdered: Debe arrojar NotFoundException si no " +
+            "encuentra al usuario")
+    void findFollowedListOrderedUserNotFound() {
+        // Arrange
+        Long userId = 3L;
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.empty());
+        // Act & Assert
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            userService.findFollowedList(userId, "name_asc");
+        });
+    }
+
+    @Test
+    @DisplayName("findFollowedListOrdered: El usuario debe poder dejar de seguir a otros.")
+    void findFollowedListOrderedInvalidOrderParameter() {
+        // Arrange
+        Long userId = 1L;
+        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        // Act & Assert
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            userService.findFollowedList(userId, "asendente");
+        });
     }
 
     @Test
