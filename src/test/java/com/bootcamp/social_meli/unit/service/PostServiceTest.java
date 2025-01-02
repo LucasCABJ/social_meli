@@ -102,21 +102,23 @@ class PostServiceTest {
         LocalDate date1 = LocalDate.parse("30-11-2024", formatter);
         LocalDate date2 = LocalDate.parse("12-12-2024", formatter);
         LocalDate date3 = LocalDate.parse("02-12-2024", formatter);
-        LocalDate date4 = LocalDate.parse("03-12-2024", formatter);
 
-        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(), List.of());
-        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", List.of(), List.of());
-        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", List.of(), List.of());
+        User user1 = new User(1L, "Franco", "Colapinto", "Francol43", List.of(), List.of());
+        User user2 = new User(2L, "Martín", "Gómez", "MartinG24", List.of(), List.of());
 
         Post post1 = new Post(1L, user1, date1, product1, 100, 1500.50, true, 0.25);
         Post post2 = new Post(2L, user1, date2, product2, 112, 120.00, false, 0.0);
         Post post3 = new Post(3L, user2, date3, product2, 102, 80.75, true, 0.15);
-        Post post4 = new Post(4L, user3, date4, product2, 102, 80.75, true, 0.15);
 
-        when(postRepository.findAll()).thenReturn(Arrays.asList(post1, post2, post3, post4));
+        when(postRepository.findAll()).thenReturn(Arrays.asList(post1, post2, post3));
 
         // ACT
         MostPostsUsersResponseDTO result = postService.mostPostsUsers();
+
+        // ASERTS
+        assertEquals(2, result.getMost_posts().size(), "La lista debe contener 3 usuarios.");
+        assertEquals("Francol43", result.getMost_posts().get(0).getUser_name(), "El primer usuario debería ser Franco."); // Debe ser el que más publicaciones tiene
+        assertEquals("MartinG24", result.getMost_posts().get(1).getUser_name(), "El segundo usuario debería ser Martín."); // El siguiente
     }
 
     @Test
@@ -134,9 +136,9 @@ class PostServiceTest {
         LocalDate date3 = LocalDate.parse("02-12-2024", formatter);
         LocalDate date4 = LocalDate.parse("03-12-2024", formatter);
 
-        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(), List.of());
-        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", List.of(), List.of());
-        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", List.of(), List.of());
+        User user1 = new User(1L, "Franco", "Colapinto", "Francol43", List.of(), List.of());
+        User user2 = new User(2L, "Martín", "Gómez", "MartinG24", List.of(), List.of());
+        User user3 = new User(3L, "Ana", "Pérez", "AnaPerezzzz", List.of(), List.of());
 
         Post post1 = new Post(1L, user1, date1, product1, 100, 1500.50, true, 0.25);
         Post post2 = new Post(2L, user1, date2, product2, 112, 120.00, false, 0.0);
@@ -147,6 +149,11 @@ class PostServiceTest {
 
         // ACT
         MostPostsUsersResponseDTO result = postService.mostPostsUsers(rankParam);
+
+        assertEquals(3, result.getMost_posts().size(), "La lista debe contener 3 usuarios.");
+        assertEquals("Francol43", result.getMost_posts().get(0).getUser_name(), "El primer usuario debería ser Franco."); // Debe tener más publicaciones
+        assertEquals("MartinG24", result.getMost_posts().get(1).getUser_name(), "El segundo usuario debería ser Martín."); // Siguiente
+        assertEquals("AnaPerezzzz", result.getMost_posts().get(2).getUser_name(), "El tercer usuario debería ser Ana."); // Tercero
     }
 
     @Test
