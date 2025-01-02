@@ -13,7 +13,4 @@ import java.util.List;
 public class PostsWithProductResponseDTO {
     private String name;
     private List<Post> posts;
-
-    public PostsWithProductResponseDTO(List<Post> postsWithProduct) {
-    }
 }

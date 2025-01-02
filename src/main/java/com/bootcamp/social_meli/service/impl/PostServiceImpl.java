@@ -107,22 +107,6 @@ public class PostServiceImpl implements IPostService {
         return new PostsWithProductResponseDTO(productName, postRepository.getPostsWithProduct(productName));
     }
 
-    public UserPostResponse createUserResponse(Post post, String message){
-        UserPostResponse userPostResponse = new UserPostResponse();
-        userPostResponse.setMessage(message);
-        userPostResponse.setUser_id(post.getCreatorUser().getId());
-        userPostResponse.setDate(post.getCreateDate());
-        userPostResponse.setProduct(post.getProduct());
-        userPostResponse.setCategory(post.getCategory());
-        userPostResponse.setPrice(post.getPrice());
-        if(post.getHasDiscount() != null)
-            userPostResponse.setHas_promo(post.getHasDiscount());
-        if(post.getDiscountPercentage() != null)
-            userPostResponse.setDiscount(post.getDiscountPercentage());
-
-        return userPostResponse;
-    }
-
     @Override
     public MostPostsUsersResponseDTO mostPostsUsers() {
         return mostPostsUsers(5);
@@ -176,7 +160,23 @@ public class PostServiceImpl implements IPostService {
         return postRepository.getPostsByPriceRange(minPrice, maxPrice).stream().map(this::convertToPostDTO).toList();
     }
 
-    public Optional<Double> parseStringToDouble(String price) {
+    private UserPostResponse createUserResponse(Post post, String message){
+        UserPostResponse userPostResponse = new UserPostResponse();
+        userPostResponse.setMessage(message);
+        userPostResponse.setUser_id(post.getCreatorUser().getId());
+        userPostResponse.setDate(post.getCreateDate());
+        userPostResponse.setProduct(post.getProduct());
+        userPostResponse.setCategory(post.getCategory());
+        userPostResponse.setPrice(post.getPrice());
+        if(post.getHasDiscount() != null)
+            userPostResponse.setHas_promo(post.getHasDiscount());
+        if(post.getDiscountPercentage() != null)
+            userPostResponse.setDiscount(post.getDiscountPercentage());
+
+        return userPostResponse;
+    }
+
+    private Optional<Double> parseStringToDouble(String price) {
         try {
             double value = Double.parseDouble(price);
             if (value <= 0)
@@ -187,7 +187,7 @@ public class PostServiceImpl implements IPostService {
             return Optional.empty();
         }
     }
-    public PostDTO convertToPostDTO(Post post){
+    private PostDTO convertToPostDTO(Post post){
         PostDTO postDTO = objectMapper.convertValue(post,PostDTO.class);
         postDTO.setUserId(post.getCreatorUser().getId());
         return postDTO;
