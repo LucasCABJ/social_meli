@@ -82,4 +82,11 @@
   "notes" : "Special Edition",
   "product_id" : 11,
   "product_name" : "Silla Gamer"
+}, {
+  "type" : "Monitor",
+  "brand" : "Asus",
+  "color" : "Negro",
+  "notes" : "Altamente recomendado para gaming",
+  "product_id" : 25,
+  "product_name" : "Monitor Gamer 244hz"
 } ]
