@@ -1,17 +1,16 @@
 package com.bootcamp.social_meli.controller.swagger;
 
-import com.bootcamp.social_meli.dto.PostDTO;
-import com.bootcamp.social_meli.dto.PromoPostDTO;
-import com.bootcamp.social_meli.dto.response.AmountOfPromosDTO;
-import com.bootcamp.social_meli.dto.response.PostsFromFollowsDTO;
-import com.bootcamp.social_meli.dto.response.PostsWithProductDTO;
+import com.bootcamp.social_meli.dto.request.PostDTO;
+import com.bootcamp.social_meli.dto.request.PromoPostDTO;
+import com.bootcamp.social_meli.dto.response.AmountOfPromosResponseDTO;
+import com.bootcamp.social_meli.dto.response.PostsFromFollowsResponseDTO;
+import com.bootcamp.social_meli.dto.response.PostsWithProductResponseDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ public interface IProductRestController {
             description = "Devuelve todas las publicaciones de los usuarios que se siguen en un intervalo de dos semanas.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de publicaciones de usuarios seguidos encontrado", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostsFromFollowsDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostsFromFollowsResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetro userId inválido\"}"))
@@ -31,7 +30,7 @@ public interface IProductRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Usuario no encontrado\"}"))
             })
     })
-    ResponseEntity<PostsFromFollowsDTO> getAllPostsFollowsLastTwoWeeks(
+    ResponseEntity<PostsFromFollowsResponseDTO> getAllPostsFollowsLastTwoWeeks(
             @Parameter(description = "ID del usuario actual") @PathVariable Long userId,
             @RequestParam(defaultValue = "date_asc") String order);
 
@@ -69,7 +68,7 @@ public interface IProductRestController {
             description = "Devuelve la cantidad total de publicaciones promocionales asociadas a un usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cantidad de promociones devuelta", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AmountOfPromosDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AmountOfPromosResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos proporcionados", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetro user_id inválido\"}"))
@@ -78,14 +77,14 @@ public interface IProductRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Usuario no encontrado\"}"))
             })
     })
-    ResponseEntity<AmountOfPromosDTO> getAmountOfPromosByUser(
+    ResponseEntity<AmountOfPromosResponseDTO> getAmountOfPromosByUser(
             @Parameter(description = "ID del usuario para contar promociones") @RequestParam Long user_id);
 
     @Operation(summary = "Buscar publicaciones por producto",
             description = "Devuelve las publicaciones que contienen el producto especificado por nombre.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de publicaciones con el producto encontrado", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostsWithProductDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostsWithProductResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos proporcionados", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetro name inválido\"}"))
@@ -94,14 +93,14 @@ public interface IProductRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Producto no encontrado\"}"))
             })
     })
-    ResponseEntity<PostsWithProductDTO> getPostsWithProduct(
+    ResponseEntity<PostsWithProductResponseDTO> getPostsWithProduct(
             @Parameter(description = "Nombre del producto a buscar") @RequestParam String name);
 
     @Operation(summary = "Obtener publicaciones por rango de precio",
             description = "Devuelve una lista de publicaciones cuyos precios se encuentran dentro del rango especificado.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de publicaciones con el producto encontrado", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostsWithProductDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = PostsWithProductResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos proporcionados", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema =

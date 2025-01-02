@@ -4,7 +4,7 @@ import com.bootcamp.social_meli.controller.swagger.IMetricRestController;
 import com.bootcamp.social_meli.dto.response.MostFollowersResponseDTO;
 import com.bootcamp.social_meli.dto.response.MostProductsResponseDTO;
 import com.bootcamp.social_meli.dto.response.MostPostsUsersResponseDTO;
-import com.bootcamp.social_meli.dto.response.UserDetailsDTO;
+import com.bootcamp.social_meli.dto.response.UserDetailsResponseDTO;
 import com.bootcamp.social_meli.service.IProductService;
 import com.bootcamp.social_meli.service.IPostService;
 import com.bootcamp.social_meli.service.IUserService;
@@ -39,7 +39,7 @@ public class MetricRestController implements IMetricRestController {
     }
 
     @GetMapping("/{userId}/details")
-    public ResponseEntity<UserDetailsDTO> getUserDetails(@PathVariable Long userId) {
+    public ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.metricsUserDetails(userId));
     }
 

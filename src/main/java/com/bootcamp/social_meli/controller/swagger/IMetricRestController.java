@@ -3,7 +3,7 @@ package com.bootcamp.social_meli.controller.swagger;
 import com.bootcamp.social_meli.dto.response.MostFollowersResponseDTO;
 import com.bootcamp.social_meli.dto.response.MostPostsUsersResponseDTO;
 import com.bootcamp.social_meli.dto.response.MostProductsResponseDTO;
-import com.bootcamp.social_meli.dto.response.UserDetailsDTO;
+import com.bootcamp.social_meli.dto.response.UserDetailsResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -30,7 +30,7 @@ public interface IMetricRestController {
     @Operation(summary = "Obtener detalles de un usuario", description = "Devuelve las métricas de un usuario específico.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Detalles del usuario encontrados", content = {
-                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = UserDetailsDTO.class))
+                    @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = UserDetailsResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos", content = {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Parámetro userId inválido\"}"))
@@ -39,7 +39,7 @@ public interface IMetricRestController {
                     @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(example = "{\"error\":\"Usuario no encontrado\"}"))
             })
     })
-    ResponseEntity<UserDetailsDTO> getUserDetails(@PathVariable Long userId);
+    ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable Long userId);
 
     @Operation(summary = "Obtener los productos más publicados", description = "Devuelve una lista de los productos más publicados por los usuarios.")
     @ApiResponses(value = {
