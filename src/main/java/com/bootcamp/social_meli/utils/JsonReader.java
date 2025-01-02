@@ -1,6 +1,5 @@
 package com.bootcamp.social_meli.utils;
 
-import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.Product;
