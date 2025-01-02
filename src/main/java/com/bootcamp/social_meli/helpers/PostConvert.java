@@ -1,4 +1,4 @@
-package com.bootcamp.social_meli.utils;
+package com.bootcamp.social_meli.helpers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -68,7 +68,7 @@ public interface IUserRestController {
             })
     })
     ResponseEntity<FollowersListResponseDTO> findFollowerList(
-            @Parameter(description = "ID del usuario para obtener la lista de seguidores") @PathVariable String userId,
+            @Parameter(description = "ID del usuario para obtener la lista de seguidores") @PathVariable  Long userId,
             @Parameter(description = "Orden de la lista (opcional)") @RequestParam(required = false) String order);
 
     @Operation(summary = "Obtener lista de usuarios seguidos", description = "Devuelve la lista de usuarios que sigue un usuario.")
@@ -84,7 +84,7 @@ public interface IUserRestController {
             })
     })
     ResponseEntity<FollowedListResponseDTO> findFollowedList(
-            @Parameter(description = "ID del usuario para obtener la lista de usuarios seguidos") @PathVariable String userId,
+            @Parameter(description = "ID del usuario para obtener la lista de usuarios seguidos") @PathVariable  Long userId,
             @Parameter(description = "Orden de la lista (opcional)") @RequestParam(required = false) String order);
 
     @Operation(summary = "Dejar de seguir a un usuario", description = "Permite a un usuario dejar de seguir a otro.")
