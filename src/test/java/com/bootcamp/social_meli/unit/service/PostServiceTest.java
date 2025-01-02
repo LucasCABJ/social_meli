@@ -2,6 +2,7 @@ package com.bootcamp.social_meli.unit.service;
 
 import com.bootcamp.social_meli.dto.response.PostsWithProductResponseDTO;
 import com.bootcamp.social_meli.model.Post;
+import com.bootcamp.social_meli.model.Product;
 import com.bootcamp.social_meli.repository.impl.PostRepositoryImpl;
 import com.bootcamp.social_meli.service.impl.PostServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -61,6 +62,23 @@ class PostServiceTest {
         PostsWithProductResponseDTO response = postService.getPostsWithProduct(productName);
 
         Assertions.assertEquals(expectedAmount, response.getPosts().size());
+    }
+
+    @Test
+    @DisplayName("Los posts que contienen un producto, son del tipo de producto deseado")
+    void getPostsWithProductReturnsTheProductDesired(){
+        String productName = "Taza";
+        Product product = new Product();
+        product.setName("Taza");
+        Post post = new Post();
+        post.setProduct(product);
+        when(postRepository.getPostsWithProduct(Mockito.anyString())).thenReturn(List.of(post));
+
+        PostsWithProductResponseDTO response = postService.getPostsWithProduct(productName);
+        Post postTaza = response.getPosts().getFirst();
+
+        Assertions.assertEquals(productName, response.getName());
+        Assertions.assertTrue(postTaza.productNameContains(productName));
     }
 
     @Test
