@@ -5,7 +5,7 @@ import com.bootcamp.social_meli.model.User;
 import java.util.ArrayList;
 
 public class UserGenerator {
-    public static User userWithFollowersAndeFollowed(Long userId) {
+    public static User userWithFollowersAndFollowed(Long userId) {
         User user = new User(userId, "Robert", "Firminho", "firminho10", new ArrayList<>(), new ArrayList<>());
 
         User user2 = new User(userId + 1, "Alexander", "Arnold", "aarnold", new ArrayList<>(),

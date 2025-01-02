@@ -229,7 +229,7 @@ class UserServiceTest {
     void testFindFollowersList() {
         // Arrange
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act
         FollowersListResponseDTO followersList = userService.findFollowersList(userId);
@@ -251,10 +251,10 @@ class UserServiceTest {
 
     @Test
     @DisplayName("findFollowersListOrdered: El usuario debe poder obtener la lista de seguidores " +
-            "ordenada asendente")
+            "ordenada ascendente")
     void findFollowersListOrderedAsc() {
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act
         FollowersListResponseDTO followersList = userService.findFollowersList(userId, "name_asc");
@@ -267,11 +267,11 @@ class UserServiceTest {
 
     @Test
     @DisplayName("findFollowersListOrdered: El usuario debe poder obtener la lista de seguidores " +
-            "ordenada desendente")
+            "ordenada descendente")
     void findFollowersListOrderedDesc() {
         // Arrange
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act
         FollowersListResponseDTO followersList = userService.findFollowersList(userId, "name_desc");
@@ -296,24 +296,24 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findFollowersListOrdered: El usuario debe poder dejar de seguir a otros.")
+    @DisplayName("findFollowersListOrdered: Debe arrojar BadRequestException si el parametro order es incorrecto")
     void findFollowersListOrderedInvalidOrderParameter() {
         // Arrange
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act & Assert
         Assertions.assertThrows(BadRequestException.class, () -> {
-            userService.findFollowersList(userId, "asendente");
+            userService.findFollowersList(userId, "ascendente");
         });
     }
 
     @Test
-    @DisplayName("findFollowedList: El usuario debe poder obtener la lista de seguidores")
+    @DisplayName("findFollowedList: El usuario debe poder obtener la lista de seguidos")
     void findFollowedList() {
         // Arrange
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act
         FollowedListResponseDTO followedList = userService.findFollowedList(userId);
@@ -335,11 +335,11 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
-            "ordenada asendente")
+    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidos " +
+            "ordenada ascendente")
     void findFollowedListOrderedAsc() {
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act
         FollowedListResponseDTO followedList = userService.findFollowedList(userId, "name_asc");
@@ -351,12 +351,12 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidores " +
-            "ordenada desendente")
+    @DisplayName("findFollowedListOrdered: El usuario debe poder obtener la lista de seguidos " +
+            "ordenada descendente")
     void findFollowedListOrderedDesc() {
         // Arrange
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act
         FollowedListResponseDTO followedList = userService.findFollowedList(userId, "name_desc");
@@ -381,15 +381,15 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findFollowedListOrdered: El usuario debe poder dejar de seguir a otros.")
+    @DisplayName("findFollowedListOrdered: Debe arrojar BadRequestException si el parametro order es incorrecto")
     void findFollowedListOrderedInvalidOrderParameter() {
         // Arrange
         Long userId = 1L;
-        User user = UserGenerator.userWithFollowersAndeFollowed(userId);
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         // Act & Assert
         Assertions.assertThrows(BadRequestException.class, () -> {
-            userService.findFollowedList(userId, "asendente");
+            userService.findFollowedList(userId, "ascendente");
         });
     }
 
@@ -442,19 +442,20 @@ class UserServiceTest {
     void metricsUserDetails() {
         //Arrange
         Long userId = 5L;
-        User mockUser = new User(userId,"Laura","López", "LauLopez87", new ArrayList<>(),
-                new ArrayList<>(List.of(new User(4L,"Carlos","Sánchez", "CarlosSan_15", new ArrayList<>(), new ArrayList<>()))));
+        User mockUser = new User(userId, "Laura", "López", "LauLopez87", new ArrayList<>(),
+                new ArrayList<>(List.of(new User(4L, "Carlos", "Sánchez", "CarlosSan_15", new ArrayList<>(), new ArrayList<>()))));
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
-        UserDetailsResponseDTO expectedResult = new UserDetailsResponseDTO(5L,"LauLopez87",mockUser.getFollowers().size(),
-                mockUser.getFollowed().size(),0,new ArrayList<>(),new ArrayList<>(List.of(new SimpleUserResponseDTO(4L,"CarlosSan_15"))));
+        UserDetailsResponseDTO expectedResult = new UserDetailsResponseDTO(5L, "LauLopez87", mockUser.getFollowers().size(),
+                mockUser.getFollowed().size(), 0, new ArrayList<>(), new ArrayList<>(List.of(new SimpleUserResponseDTO(4L, "CarlosSan_15"))));
         //Act
         UserDetailsResponseDTO result = userService.metricsUserDetails(userId);
         //Assert
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(result,expectedResult);
+        Assertions.assertEquals(result, expectedResult);
 
     }
+
     @Test
     @DisplayName("Debe arrojar NotFoundException si no encuentra al usuario")
     void testMetricsUserDetailsUserNotFound() {
