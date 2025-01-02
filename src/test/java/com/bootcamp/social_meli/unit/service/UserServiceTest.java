@@ -1,5 +1,6 @@
 package com.bootcamp.social_meli.unit.service;
 
+import com.bootcamp.social_meli.dto.response.MostFollowersResponseDTO;
 import com.bootcamp.social_meli.dto.response.SimpleUserResponseDTO;
 import com.bootcamp.social_meli.dto.response.UserDetailsResponseDTO;
 import com.bootcamp.social_meli.exception.BadRequestException;
@@ -17,8 +18,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,9 +52,9 @@ class UserServiceTest {
         // Act
         String returnedMessage = userService.followUser(userId, userIdToFollow);
         // Assert
-        Assertions.assertEquals(expectedReturnMessage, returnedMessage);
-        Assertions.assertEquals(1, user.getFollowed().size());
-        Assertions.assertEquals(1, userToFollow.getFollowers().size());
+        assertEquals(expectedReturnMessage, returnedMessage);
+        assertEquals(1, user.getFollowed().size());
+        assertEquals(1, userToFollow.getFollowers().size());
     }
 
     @Test
@@ -58,7 +63,7 @@ class UserServiceTest {
         // Arrange
         Long userId = 1L;
         // Act & Assert
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        assertThrows(BadRequestException.class, () -> {
             userService.followUser(userId, userId);
         });
     }
@@ -75,7 +80,7 @@ class UserServiceTest {
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(userToFollow));
         // Act & Assert
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        assertThrows(BadRequestException.class, () -> {
             userService.followUser(userId, userIdToFollow);
         });
     }
@@ -92,7 +97,7 @@ class UserServiceTest {
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(userToFollow));
         // Act & Assert
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        assertThrows(BadRequestException.class, () -> {
             userService.followUser(userId, userIdToFollow);
         });
     }
@@ -105,7 +110,7 @@ class UserServiceTest {
         Long userToFollowId = 3L;
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
         // Act & Assert
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             userService.followUser(userId, userToFollowId);
         });
     }
@@ -120,7 +125,7 @@ class UserServiceTest {
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(3L)).thenReturn(Optional.empty());
         // Act & Assert
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             userService.followUser(userId, userToFollowId);
         });
     }
@@ -141,9 +146,9 @@ class UserServiceTest {
         // Act
         String returnedMessage = userService.unfollowUser(userId, userIdToFollow);
         // Assert
-        Assertions.assertEquals(expectedReturnMessage, returnedMessage);
-        Assertions.assertEquals(0, user.getFollowed().size());
-        Assertions.assertEquals(0, userToUnfollow.getFollowers().size());
+        assertEquals(expectedReturnMessage, returnedMessage);
+        assertEquals(0, user.getFollowed().size());
+        assertEquals(0, userToUnfollow.getFollowers().size());
     }
 
     @Test
@@ -152,7 +157,7 @@ class UserServiceTest {
         // Arrange
         Long userId = 1L;
         // Act & Assert
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        assertThrows(BadRequestException.class, () -> {
             userService.unfollowUser(userId, userId);
         });
     }
@@ -169,7 +174,7 @@ class UserServiceTest {
         Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(userToUnfollow));
 
         // Act & Assert
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        assertThrows(BadRequestException.class, () -> {
             userService.unfollowUser(userId, userToUnfollowId);
         });
     }
@@ -187,7 +192,7 @@ class UserServiceTest {
         Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(userToUnfollow));
 
         // Act & Assert
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        assertThrows(BadRequestException.class, () -> {
             userService.unfollowUser(userId, userToUnfollowId);
         });
     }
@@ -200,7 +205,7 @@ class UserServiceTest {
         Long userToFollowId = 3L;
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
         // Act & Assert
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             userService.unfollowUser(userId, userToFollowId);
         });
     }
@@ -212,10 +217,10 @@ class UserServiceTest {
         Long userId = 1L;
         Long userToFollowId = 3L;
         User user = new User(1L, "Robert", "Firminho", "firminho10", new ArrayList<>(), new ArrayList<>());
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findById(3L)).thenReturn(Optional.empty());
         // Act & Assert
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             userService.unfollowUser(userId, userToFollowId);
         });
     }
@@ -245,7 +250,7 @@ class UserServiceTest {
 
         Long amount = userService.getFollowerCount(1L).getFollowers_count();
 
-        Assertions.assertEquals(expectedAmount, amount);
+        assertEquals(expectedAmount, amount);
     }
 
     @Test
@@ -259,7 +264,7 @@ class UserServiceTest {
 
         Long amount = userService.getFollowerCount(1L).getFollowers_count();
 
-        Assertions.assertEquals(expectedAmount, amount);
+        assertEquals(expectedAmount, amount);
     }
 
     @Test
@@ -267,17 +272,80 @@ class UserServiceTest {
     void getFollowerCountOfInexistentUserThrowsException(){
         Long userId = 0L;
         when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             userService.getFollowerCount(userId);
         });
     }
 
     @Test
-    void mostFollowers() {
+    void mostFollowersTestWithRankParam() {
+        // ARR
+        Integer rankParam = 2;
+
+        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(
+                new User(2L, "MartinG24", "Martín", "Gómez", new ArrayList<>(), new ArrayList<>())
+        ), List.of());
+
+        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", List.of(
+                new User(3L, "AnaPerezzzz", "Ana", "Pérez", new ArrayList<>(), new ArrayList<>()),
+                new User(4L, "CarlosSainz_33", "Carlos", "Sainz", new ArrayList<>(), new ArrayList<>())
+        ), List.of());
+
+        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", List.of(), List.of());
+
+        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2, user3));
+
+        // ACT && ASSERT
+        MostFollowersResponseDTO result = userService.mostFollowers(rankParam);
+
+        assertEquals(2, result.getMost_followers().size());
+        assertEquals("Colapinto", result.getMost_followers().get(0).getUser_name());
+        assertEquals("Gómez", result.getMost_followers().get(1).getUser_name());
     }
 
     @Test
-    void testMostFollowers() {
+    void mostFollowersTest() {
+        // ARR
+        User user1 = new User(1L, "Francol43", "Franco", "Colapinto", List.of(
+                new User(2L, "MartinG24", "Martín", "Gómez", new ArrayList<>(), new ArrayList<>())
+        ), List.of());
+
+        User user2 = new User(2L, "MartinG24", "Martín", "Gómez", List.of(
+                new User(3L, "AnaPerezzzz", "Ana", "Pérez", new ArrayList<>(), new ArrayList<>()),
+                new User(4L, "CarlosSainz_33", "Carlos", "Sainz", new ArrayList<>(), new ArrayList<>())
+        ), List.of());
+
+        User user3 = new User(3L, "AnaPerezzzz", "Ana", "Pérez", List.of(), List.of());
+
+        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2, user3));
+
+        // ACT && ASSERT
+        MostFollowersResponseDTO result = userService.mostFollowers();
+
+        assertEquals(3, result.getMost_followers().size());
+        assertEquals("Colapinto", result.getMost_followers().get(0).getUser_name());
+        assertEquals("Gómez", result.getMost_followers().get(1).getUser_name());
+    }
+
+    @Test
+    @DisplayName("Debería lanzar BadRequestException si rank es 0 o menor")
+    public void testMostFollowersWithRankZeroOrNegative() {
+        // ARR
+        Integer rankParam = -1;
+
+        // ACT & ASSERT
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            userService.mostFollowers(rankParam);
+        });
+
+        assertEquals("'rank' no puede ser <= 0", exception.getMessage());
+
+        // Repetir para cero
+        exception = assertThrows(BadRequestException.class, () -> {
+            userService.mostFollowers(0);
+        });
+
+        assertEquals("'rank' no puede ser <= 0", exception.getMessage());
     }
 
     @Test
@@ -292,10 +360,11 @@ class UserServiceTest {
         UserDetailsResponseDTO expectedResult = new UserDetailsResponseDTO(5L,"LauLopez87",mockUser.getFollowers().size(),
                 mockUser.getFollowed().size(),0,new ArrayList<>(),new ArrayList<>(List.of(new SimpleUserResponseDTO(4L,"CarlosSan_15"))));
         //Act
+
         UserDetailsResponseDTO result = userService.metricsUserDetails(userId);
         //Assert
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(result,expectedResult);
+        assertEquals(result,expectedResult);
 
     }
     @Test
@@ -306,7 +375,7 @@ class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Verificar que lanza la excepción
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             userService.metricsUserDetails(userId);
         });
     }
