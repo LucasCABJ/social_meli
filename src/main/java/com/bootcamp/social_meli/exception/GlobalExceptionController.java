@@ -3,6 +3,7 @@ package com.bootcamp.social_meli.exception;
 import com.bootcamp.social_meli.dto.response.ExceptionResponseDTO;
 import com.bootcamp.social_meli.dto.response.ParsingErrorResponseDTO;
 import com.bootcamp.social_meli.dto.response.ValidationErrorResponseDTO;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -40,6 +41,13 @@ public class GlobalExceptionController {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setErrors(errors);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleValidationExceptions(ConstraintViolationException ex) {
+        String errorMessage = ex.getConstraintViolations().iterator().next().getMessage();
+        return new ResponseEntity<>(new ExceptionResponseDTO("400", errorMessage),
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
