@@ -9,11 +9,14 @@ import com.bootcamp.social_meli.service.IProductService;
 import com.bootcamp.social_meli.service.IPostService;
 import com.bootcamp.social_meli.service.IUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Validated
 @RequestMapping("/metrics")
 @Tag(name = "Métricas", description = "Operaciones relacionadas con métricas de usuarios y productos.")
 public class MetricRestController implements IMetricRestController {
@@ -39,7 +42,7 @@ public class MetricRestController implements IMetricRestController {
     }
 
     @GetMapping("/{userId}/details")
-    public ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable Long userId) {
+    public ResponseEntity<UserDetailsResponseDTO> getUserDetails(@PathVariable @Min(1) Long userId) {
         return ResponseEntity.ok(userService.metricsUserDetails(userId));
     }
 

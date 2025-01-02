@@ -10,9 +10,11 @@ import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.service.IPostService;
 import com.bootcamp.social_meli.service.IProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/products")
 @Tag(name = "Gestión de Productos", description = "Operaciones relacionadas con los productos.")
 public class ProductRestController implements IProductRestController {
@@ -37,7 +40,7 @@ public class ProductRestController implements IProductRestController {
 
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<PostsFromFollowsResponseDTO> getAllPostsFollowsLastTwoWeeks(
-            @Parameter(description = "ID del usuario actual") @PathVariable Long userId,
+            @Parameter(description = "ID del usuario actual") @PathVariable @Min(1) Long userId,
             @RequestParam(defaultValue = "date_asc") String order) {
         return new ResponseEntity<>(productService.getAllPostsFollowsLastTwoWeeks(userId, order), HttpStatus.OK);
     }

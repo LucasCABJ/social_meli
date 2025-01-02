@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public interface IProductRestController {
             })
     })
     ResponseEntity<PostsFromFollowsResponseDTO> getAllPostsFollowsLastTwoWeeks(
-            @Parameter(description = "ID del usuario actual") @PathVariable Long userId,
+            @Parameter(description = "ID del usuario actual") @PathVariable @Min(1) Long userId,
             @RequestParam(defaultValue = "date_asc") String order);
 
     @Operation(summary = "Publicar un producto",
