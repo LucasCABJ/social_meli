@@ -21,10 +21,6 @@ class PostServiceTest {
     }
 
     @Test
-    void createUserResponse() {
-    }
-
-    @Test
     void mostPostsUsers() {
     }
 
@@ -34,13 +30,5 @@ class PostServiceTest {
 
     @Test
     void getPostsByPriceRange() {
-    }
-
-    @Test
-    void parseStringToDouble() {
-    }
-
-    @Test
-    void convertToPostDTO() {
     }
 }
