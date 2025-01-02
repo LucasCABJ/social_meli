@@ -32,7 +32,95 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("El usuario debe poder seguir a otros.")
     void followUser() {
+        // Arrange
+        Long userId = 1L;
+        Long userIdToFollow = 3L;
+        User user = new User(1L, "Robert", "Firminho", "firminho10", new ArrayList<>(), new ArrayList<>());
+        User userToFollow = new User(3L, "Alexander", "Arnold", "aarnold", new ArrayList<>(), new ArrayList<>());
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(userToFollow));
+        String expectedReturnMessage = "¡El usuario " + user.getUsername() + " ha comenzado a seguir a " + userToFollow.getUsername() + " exitosamente!";
+        // Act
+        String returnedMessage = userService.followUser(userId, userIdToFollow);
+        // Assert
+        Assertions.assertEquals(expectedReturnMessage, returnedMessage);
+        Assertions.assertEquals(1, user.getFollowed().size());
+        Assertions.assertEquals(1, userToFollow.getFollowers().size());
+    }
+
+    @Test
+    @DisplayName("El usuario no puede seguirse a si mismo")
+    void followUserThrowsExceptionIfUsersTriesToAutofollow() {
+        // Arrange
+        Long userId = 1L;
+        // Act & Assert
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            userService.followUser(userId, userId);
+        });
+    }
+
+    @Test
+    @DisplayName("El usuario no puede seguir a alguien 2 veces")
+    void followUserThrowsExceptionIfUsersTriesToFollowTwice() {
+        // Arrange
+        Long userId = 1L;
+        Long userIdToFollow = 3L;
+        User user = new User(1L, "Robert", "Firminho", "firminho10", new ArrayList<>(), new ArrayList<>());
+        User userToFollow = new User(3L, "Alexander", "Arnold", "aarnold", new ArrayList<>(), new ArrayList<>());
+        user.getFollowed().add(userToFollow);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(userToFollow));
+        // Act & Assert
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            userService.followUser(userId, userIdToFollow);
+        });
+    }
+
+    @Test
+    @DisplayName("El usuario no puede ser seguido 2 veces por la misma persona")
+    void followUserThrowsExceptionIfUserIsFollowedTwice() {
+        // Arrange
+        Long userId = 1L;
+        Long userIdToFollow = 3L;
+        User user = new User(1L, "Robert", "Firminho", "firminho10", new ArrayList<>(), new ArrayList<>());
+        User userToFollow = new User(3L, "Alexander", "Arnold", "aarnold", new ArrayList<>(), new ArrayList<>());
+        userToFollow.getFollowers().add(user);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(userToFollow));
+        // Act & Assert
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            userService.followUser(userId, userIdToFollow);
+        });
+    }
+
+    @Test
+    @DisplayName("Debe arrojar NotFoundException si no encuentra al usuario")
+    void followUserThrowsExceptionIfUserNotFound() {
+        // Arrange
+        Long userId = 1L;
+        Long userToFollowId = 3L;
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        // Act & Assert
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            userService.followUser(userId, userToFollowId);
+        });
+    }
+
+    @Test
+    @DisplayName("Debe arrojar NotFoundException si no encuentra al usuario a seguir")
+    void followUserThrowsExceptionIfUserToFollowNotFound() {
+        // Arrange
+        Long userId = 1L;
+        Long userToFollowId = 3L;
+        User user = new User(1L, "Robert", "Firminho", "firminho10", new ArrayList<>(), new ArrayList<>());
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.empty());
+        // Act & Assert
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            userService.followUser(userId, userToFollowId);
+        });
     }
 
     @Test
