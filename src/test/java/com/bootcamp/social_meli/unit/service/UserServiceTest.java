@@ -261,8 +261,10 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Se arroja una excepcion al no se encontrar al usuario")
     void getFollowerCountOfInexistentUserThrowsException(){
         Long userId = 0L;
+        when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(NotFoundException.class, () -> {
             userService.getFollowerCount(userId);
         });
