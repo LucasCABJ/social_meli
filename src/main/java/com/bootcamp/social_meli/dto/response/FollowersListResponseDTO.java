@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FollowersListDTO extends SimpleUserDTO {
-    List<SimpleUserDTO> followers;
+public class FollowersListResponseDTO extends SimpleUserResponseDTO {
+    List<SimpleUserResponseDTO> followers;
 }

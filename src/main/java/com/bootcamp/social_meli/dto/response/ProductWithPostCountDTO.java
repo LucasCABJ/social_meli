@@ -1,5 +1,6 @@
 package com.bootcamp.social_meli.dto.response;
 
+import com.bootcamp.social_meli.dto.request.ProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

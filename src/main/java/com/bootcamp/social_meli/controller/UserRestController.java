@@ -1,12 +1,14 @@
 package com.bootcamp.social_meli.controller;
 
 import com.bootcamp.social_meli.controller.swagger.IUserRestController;
-import com.bootcamp.social_meli.dto.UserDTO;
-import com.bootcamp.social_meli.dto.response.FollowedListDTO;
-import com.bootcamp.social_meli.dto.response.FollowersListDTO;
+import com.bootcamp.social_meli.dto.request.UserDTO;
+import com.bootcamp.social_meli.dto.request.CreateUserRequestDTO;
+import com.bootcamp.social_meli.dto.response.FollowedListResponseDTO;
+import com.bootcamp.social_meli.dto.response.FollowersListResponseDTO;
 import com.bootcamp.social_meli.dto.response.FollowerCountResponse;
-import com.bootcamp.social_meli.dto.SimpleMessageDTO;
+import com.bootcamp.social_meli.dto.response.SimpleMessageResponseDTO;
 import com.bootcamp.social_meli.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +34,8 @@ public class UserRestController implements IUserRestController {
     }
 
     @PostMapping("{userId}/follow/{userToFollowId}")
-    public ResponseEntity<SimpleMessageDTO> followUser(@PathVariable Long userId, @PathVariable Long userToFollowId) {
-        return ResponseEntity.ok(new SimpleMessageDTO(userService.followUser(userId, userToFollowId)));
+    public ResponseEntity<SimpleMessageResponseDTO> followUser(@PathVariable Long userId, @PathVariable Long userToFollowId) {
+        return ResponseEntity.ok(new SimpleMessageResponseDTO(userService.followUser(userId, userToFollowId)));
     }
 
     @GetMapping("/{userId}/followers/count")
@@ -42,26 +44,26 @@ public class UserRestController implements IUserRestController {
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<FollowersListDTO> findFollowerList(@PathVariable String userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<FollowersListResponseDTO> findFollowerList(@PathVariable String userId, @RequestParam(required = false) String order) {
         return order != null && !order.isEmpty() ?
                 ResponseEntity.ok(userService.findFollowersList(userId, order)) :
                 ResponseEntity.ok(userService.findFollowersList(userId));
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<FollowedListDTO> findFollowedList( @PathVariable String userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<FollowedListResponseDTO> findFollowedList(@PathVariable String userId, @RequestParam(required = false) String order) {
         return order != null && !order.isEmpty() ?
                 ResponseEntity.ok(userService.findFollowedList(userId, order)) :
                 ResponseEntity.ok(userService.findFollowedList(userId));
     }
 
     @PostMapping("{userId}/unfollow/{userToUnfollowId}")
-    public ResponseEntity<SimpleMessageDTO> unfollowUser(@PathVariable Long userId, @PathVariable Long userToUnfollowId) {
-        return ResponseEntity.ok(new SimpleMessageDTO(userService.unfollowUser(userId, userToUnfollowId)));
+    public ResponseEntity<SimpleMessageResponseDTO> unfollowUser(@PathVariable Long userId, @PathVariable Long userToUnfollowId) {
+        return ResponseEntity.ok(new SimpleMessageResponseDTO(userService.unfollowUser(userId, userToUnfollowId)));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserRequestDTO user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
 }

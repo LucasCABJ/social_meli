@@ -1,11 +1,11 @@
 package com.bootcamp.social_meli.controller;
 
 import com.bootcamp.social_meli.controller.swagger.IProductRestController;
-import com.bootcamp.social_meli.dto.PostDTO;
-import com.bootcamp.social_meli.dto.PromoPostDTO;
-import com.bootcamp.social_meli.dto.response.AmountOfPromosDTO;
-import com.bootcamp.social_meli.dto.response.PostsFromFollowsDTO;
-import com.bootcamp.social_meli.dto.response.PostsWithProductDTO;
+import com.bootcamp.social_meli.dto.request.PostDTO;
+import com.bootcamp.social_meli.dto.request.PromoPostDTO;
+import com.bootcamp.social_meli.dto.response.AmountOfPromosResponseDTO;
+import com.bootcamp.social_meli.dto.response.PostsFromFollowsResponseDTO;
+import com.bootcamp.social_meli.dto.response.PostsWithProductResponseDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.service.IPostService;
 import com.bootcamp.social_meli.service.IProductService;
@@ -36,7 +36,7 @@ public class ProductRestController implements IProductRestController {
     }
 
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<PostsFromFollowsDTO> getAllPostsFollowsLastTwoWeeks(
+    public ResponseEntity<PostsFromFollowsResponseDTO> getAllPostsFollowsLastTwoWeeks(
             @Parameter(description = "ID del usuario actual") @PathVariable Long userId,
             @RequestParam(defaultValue = "date_asc") String order) {
         return new ResponseEntity<>(productService.getAllPostsFollowsLastTwoWeeks(userId, order), HttpStatus.OK);
@@ -54,12 +54,12 @@ public class ProductRestController implements IProductRestController {
     }
 
     @GetMapping("/promo-post/count")
-    public ResponseEntity<AmountOfPromosDTO> getAmountOfPromosByUser(@RequestParam Long user_id) {
+    public ResponseEntity<AmountOfPromosResponseDTO> getAmountOfPromosByUser(@RequestParam Long user_id) {
         return ResponseEntity.ok(userService.getAmountOfPromosByUser(user_id));
     }
 
     @GetMapping("/posts/search")
-    public ResponseEntity<PostsWithProductDTO> getPostsWithProduct(@RequestParam String name) {
+    public ResponseEntity<PostsWithProductResponseDTO> getPostsWithProduct(@RequestParam String name) {
         return ResponseEntity.ok(postService.getPostsWithProduct(name));
     }
 

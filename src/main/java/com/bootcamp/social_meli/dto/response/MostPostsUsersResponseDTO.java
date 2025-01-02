@@ -10,5 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MostPostsUsersResponseDTO {
-    List<SimpleUserWithPostsCountDTO> most_posts;
+    List<SimpleUserWithPostsCountResponseDTO> most_posts;
 }

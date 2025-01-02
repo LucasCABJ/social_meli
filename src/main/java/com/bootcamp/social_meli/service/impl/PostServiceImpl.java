@@ -1,10 +1,10 @@
 package com.bootcamp.social_meli.service.impl;
 
-import com.bootcamp.social_meli.dto.PostDTO;
-import com.bootcamp.social_meli.dto.PromoPostDTO;
+import com.bootcamp.social_meli.dto.request.PostDTO;
+import com.bootcamp.social_meli.dto.request.PromoPostDTO;
 import com.bootcamp.social_meli.dto.response.MostPostsUsersResponseDTO;
-import com.bootcamp.social_meli.dto.response.SimpleUserWithPostsCountDTO;
-import com.bootcamp.social_meli.dto.response.PostsWithProductDTO;
+import com.bootcamp.social_meli.dto.response.SimpleUserWithPostsCountResponseDTO;
+import com.bootcamp.social_meli.dto.response.PostsWithProductResponseDTO;
 import com.bootcamp.social_meli.dto.response.UserPostResponse;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
@@ -103,8 +103,8 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public PostsWithProductDTO getPostsWithProduct(String productName) {
-        return new PostsWithProductDTO(productName, postRepository.getPostsWithProduct(productName));
+    public PostsWithProductResponseDTO getPostsWithProduct(String productName) {
+        return new PostsWithProductResponseDTO(productName, postRepository.getPostsWithProduct(productName));
     }
 
     public UserPostResponse createUserResponse(Post post, String message){
@@ -134,7 +134,7 @@ public class PostServiceImpl implements IPostService {
             throw new BadRequestException("'rank' no puede ser <= 0");
         }
 
-        HashMap<Long, SimpleUserWithPostsCountDTO> usersWithProducts = new HashMap<>();
+        HashMap<Long, SimpleUserWithPostsCountResponseDTO> usersWithProducts = new HashMap<>();
 
         postRepository.findAll().forEach(p -> {
             // 1. Obtengo el creador del posteo
@@ -143,19 +143,19 @@ public class PostServiceImpl implements IPostService {
             // 2. Me fijo si ya lo incluí en el HashMap "usersWithProducts"
             if(usersWithProducts.containsKey(postCreatorId)) {
                 // 3a. Lo obtengo, incrementó en 1 y actualizo en el mapa
-                SimpleUserWithPostsCountDTO user = usersWithProducts.get(postCreatorId);
+                SimpleUserWithPostsCountResponseDTO user = usersWithProducts.get(postCreatorId);
                 user.setPosts_amount(user.getPosts_amount() + 1);
                 usersWithProducts.replace(postCreatorId, user);
             } else {
                 // 3b. Lo agregó por primera vez y setteo en 1
                 usersWithProducts.put(postCreatorId,
-                        new SimpleUserWithPostsCountDTO(postCreatorId,
+                        new SimpleUserWithPostsCountResponseDTO(postCreatorId,
                                 postCreatorUsername,
                                 1));
             }
         });
 
-        List<SimpleUserWithPostsCountDTO> result;
+        List<SimpleUserWithPostsCountResponseDTO> result;
         if(usersWithProducts.size() < rank) {
             result = usersWithProducts.values().stream().toList();
         } else {
