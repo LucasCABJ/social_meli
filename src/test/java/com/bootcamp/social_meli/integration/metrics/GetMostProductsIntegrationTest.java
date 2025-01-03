@@ -50,7 +50,7 @@ public class GetMostProductsIntegrationTest {
 
     @Test
     @DisplayName("Debería lanzar BadRequest si rank no es un número valido")
-    public void getMostFollowersBadRequestForNegativeRank() throws Exception {
+    public void getMostProductsBadRequestForNegativeRank() throws Exception {
         String invalidRank = "not_a_number";
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/metrics/top/most_products")
