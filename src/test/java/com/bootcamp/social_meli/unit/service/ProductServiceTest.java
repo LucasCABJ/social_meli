@@ -7,6 +7,7 @@ import com.bootcamp.social_meli.dto.response.PostsFromFollowsResponseDTO;
 import com.bootcamp.social_meli.dto.response.ProductWithPostCountDTO;
 import com.bootcamp.social_meli.exception.BadRequestException;
 import com.bootcamp.social_meli.exception.NotFoundException;
+import com.bootcamp.social_meli.helpers.UserGenerator;
 import com.bootcamp.social_meli.model.Post;
 import com.bootcamp.social_meli.model.Product;
 import com.bootcamp.social_meli.model.User;
@@ -116,6 +117,48 @@ class ProductServiceTest {
         // ASSERT
         assertEquals(2, response.getPosts().size());
         assertTrue(response.getPosts().stream().allMatch(post -> !post.getCreateDate().isBefore(twoWeeksAgo)));
+    }
+    @Test
+    @DisplayName("Debe retornar los posts ordenados por fecha ascendente")
+    void testGetAllPostsFollowsLastTwoWeeksValidOrder() {
+        // Arrange
+        Long userId = 1L;
+        User user = UserGenerator.userWithFollowersAndFollowed(userId);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        Product mockProduct = new Product(1L, "ProductName", "ProductType", "ProductBrand", "ProductColor", "ProductNotes");
+
+        Post post1 = new Post(1L, user.getFollowers().getFirst(), LocalDate.parse("01-12-2024", formatter), mockProduct, null, null, false, null);
+        Post post2 = new Post(2L, user.getFollowers().getFirst(), LocalDate.parse("05-12-2024", formatter), mockProduct, null, null, false, null);
+        Post post3 = new Post(3L, user.getFollowers().getFirst(), LocalDate.parse("03-12-2024", formatter), mockProduct, null, null, false, null);
+
+        when(userRepository.findFollowsByUserId(1L)).thenReturn(user.getFollowers());
+        when(postRepository.findByUserIdFilteredByLastTwoWeeks(2L)).thenReturn(Arrays.asList(post1, post2, post3));
+
+        // Act
+        PostsFromFollowsResponseDTO result = productService.getAllPostsFollowsLastTwoWeeks(1L, "date_asc");
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(post1.getCreateDate(), result.getPosts().get(0).getCreateDate());
+        assertEquals(post3.getCreateDate(), result.getPosts().get(1).getCreateDate());
+        assertEquals(post2.getCreateDate(), result.getPosts().get(2).getCreateDate());
+    }
+
+
+    @Test
+    @DisplayName("Arroja BadRequest si el orden es invalido")
+    public void testGetAllPostsFollowsLastTwoWeeksInvalidOrder(){
+        // Arrange
+        Long userId = 1L;
+        String invalidOrder = "invalid_order";
+        // Act & Assert
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            productService.getAllPostsFollowsLastTwoWeeks(userId, invalidOrder);
+        });
+
+        assertEquals("Orden no válido: debe ser 'date_asc' o 'date_desc'", exception.getMessage());
+
     }
 
     @Test
