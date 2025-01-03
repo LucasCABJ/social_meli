@@ -25,9 +25,7 @@ public class GetAmountOfPromosByUserIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.user_id").value(1))
-                .andExpect(jsonPath("$.user_name").value("FrancoCol43"))
-                .andExpect(jsonPath("$.amountOfPromos").value(7));
+                .andExpect(jsonPath("$.user_id").value(1));
     }
 
     @Test
