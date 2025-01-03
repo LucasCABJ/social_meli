@@ -1,4 +1,4 @@
-package com.bootcamp.social_meli.integration.product;
+package com.bootcamp.social_meli.integration.products;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,21 +40,21 @@ public class PostProductIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/products/post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(postJson))
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Post creado exitosamente!"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.user_id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.date").value("2025-12-10"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.product.product_id").value(99))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.product.product_name").value("Silla Gamer"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.product.type").value("Gamer"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.product.brand").value("Racer"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.product.color").value("Red and Black"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.product.notes").value("Special Edition"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value(100))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(1500.5))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.has_promo").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.discount").value(0.0));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Post creado exitosamente!"))
+                .andExpect(jsonPath("$.user_id").value(1))
+                .andExpect(jsonPath("$.date").value("2025-12-10"))
+                .andExpect(jsonPath("$.product.product_id").value(99))
+                .andExpect(jsonPath("$.product.product_name").value("Silla Gamer"))
+                .andExpect(jsonPath("$.product.type").value("Gamer"))
+                .andExpect(jsonPath("$.product.brand").value("Racer"))
+                .andExpect(jsonPath("$.product.color").value("Red and Black"))
+                .andExpect(jsonPath("$.product.notes").value("Special Edition"))
+                .andExpect(jsonPath("$.category").value(100))
+                .andExpect(jsonPath("$.price").value(1500.5))
+                .andExpect(jsonPath("$.has_promo").value(false))
+                .andExpect(jsonPath("$.discount").value(0.0));
 
     }
     @Test
