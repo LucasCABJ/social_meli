@@ -455,7 +455,9 @@ class UserServiceTest {
 
         // ASS
         assertEquals(2, result.getMost_followers().size(), "La lista debe contener los dos usuarios con más seguidores.");
-        assertEquals("Sainz", result.getMost_followers().getFirst().getUser_name(), "El primer usuario debería ser Sainz.");
+        assertEquals("Sainz", result.getMost_followers().get(0).getUser_name(), "El primer " +
+                "usuario " +
+                "debería ser Sainz.");
         assertEquals("Pérez", result.getMost_followers().get(1).getUser_name(), "El segundo usuario debería ser Pérez.");
     }
 
@@ -474,7 +476,9 @@ class UserServiceTest {
 
         // ASS
         assertEquals(4, result.getMost_followers().size(), "La lista debe contener los dos usuarios con más seguidores.");
-        assertEquals("Sainz", result.getMost_followers().getFirst().getUser_name(), "El primer usuario debería ser Sainz.");
+        assertEquals("Sainz", result.getMost_followers().get(0).getUser_name(), "El primer " +
+                "usuario " +
+                "debería ser Sainz.");
         assertEquals("Pérez", result.getMost_followers().get(1).getUser_name(), "El segundo usuario debería ser Pérez.");
         assertEquals("Gómez", result.getMost_followers().get(2).getUser_name(), "El tercer usuario debería ser Gómez.");
         assertEquals("Colapinto", result.getMost_followers().get(3).getUser_name(), "El cuarto usuario debería ser Colapinto.");
