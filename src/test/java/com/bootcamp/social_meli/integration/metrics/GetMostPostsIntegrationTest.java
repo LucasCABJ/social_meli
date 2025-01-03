@@ -25,7 +25,7 @@ public class GetMostPostsIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.most_posts", hasSize(4)))
+                .andExpect(jsonPath("$.most_posts", hasSize(5)))
                 .andExpect(jsonPath("$.most_posts[0].user_id").value(1))
                 .andExpect(jsonPath("$.most_posts[0].user_name").value("FrancoCol43"))
                 .andExpect(jsonPath("$.most_posts[0].posts_amount").value(11));
