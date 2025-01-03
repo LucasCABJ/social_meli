@@ -48,6 +48,7 @@ public class GetUserDetailsIntegrationTest {
     @Test
     public void testGetUserDetailsBadRequest() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/metrics/-1/details"))
+                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.status").value("400"))
