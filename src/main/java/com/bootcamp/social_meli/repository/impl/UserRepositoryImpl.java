@@ -6,6 +6,7 @@ import com.bootcamp.social_meli.repository.IUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -16,6 +17,8 @@ import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
+    @Value("${api.scope}")
+    private String SCOPE;
     private ObjectMapper objectMapper;
     private List<User> usersList = new ArrayList<>();
 
@@ -32,9 +35,11 @@ public class UserRepositoryImpl implements IUserRepository {
         user.setId((long) usersList.size() + 1);
         usersList.add(user);
 
-        String DATA_FILE = "src/main/resources/users.json";
-        try{    
-            objectMapper.writeValue(new File(DATA_FILE), usersList);
+        try{
+            if (SCOPE.equalsIgnoreCase("main")) {
+                String DATA_FILE = "src/main/resources/users.json";
+                objectMapper.writeValue(new File(DATA_FILE), usersList);
+            }
         }catch(IOException e){
             throw new RuntimeException("Error guardando la lista", e);
         }

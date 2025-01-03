@@ -62,6 +62,9 @@ public class ProductServiceImpl implements IProductService {
         List<PostNoDiscountResponseDTO> posts = postsFromFollowsDTOSList.getPosts();
 
         if (order != null && !StringUtils.isBlank(order)) {
+            if (!order.equals("date_asc") && !order.equals("date_desc"))
+                throw new BadRequestException("Orden no válido: debe ser 'date_asc' o 'date_desc'");
+
             Comparator<PostNoDiscountResponseDTO> comparator = Comparator.comparing(PostNoDiscountResponseDTO::getCreateDate);
 
             posts = postsFromFollowsDTOSList.getPosts().stream()
