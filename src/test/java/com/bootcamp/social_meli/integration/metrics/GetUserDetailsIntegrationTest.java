@@ -24,7 +24,7 @@ public class GetUserDetailsIntegrationTest {
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.user_id").value(4))
-                .andExpect(jsonPath("$.user_name").value("CarlosSainz_33"))
+                .andExpect(jsonPath("$.user_name").value("CarlosSan_15"))
                 .andExpect(jsonPath("$.count_followers").value(3))
                 .andExpect(jsonPath("$.count_followed").value(3))
                 .andExpect(jsonPath("$.count_post").value(3))
@@ -33,7 +33,7 @@ public class GetUserDetailsIntegrationTest {
                 .andExpect(jsonPath("$.follower_not_followed[0].user_name").value("LauLopez87"))
                 .andExpect(jsonPath("$.followed_not_follower.length()").value(1))
                 .andExpect(jsonPath("$.followed_not_follower[0].user_id").value(1))
-                .andExpect(jsonPath("$.followed_not_follower[0].user_name").value("Francol43"));
+                .andExpect(jsonPath("$.followed_not_follower[0].user_name").value("FrancoCol43"));
     }
 
     @Test
