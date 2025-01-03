@@ -38,6 +38,6 @@ src/main/resources/posts.json
 src/main/resources/products.json
 src/main/resources/users.json
 
-src/test/resources/posts.json
-src/test/resources/products.json
-src/test/resources/users.json
+#src/test/resources/posts.json
+#src/test/resources/products.json
+#src/test/resources/users.json
