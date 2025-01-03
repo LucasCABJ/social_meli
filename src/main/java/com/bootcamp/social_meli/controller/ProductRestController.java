@@ -29,13 +29,11 @@ public class ProductRestController implements IProductRestController {
 
     private final IPostService postService;
     private final IProductService productService;
-    private final IProductService userService;
 
     @Autowired
-    public ProductRestController(IPostService postService, IProductService productService, IProductService userService) {
+    public ProductRestController(IPostService postService, IProductService productService) {
         this.postService = postService;
         this.productService = productService;
-        this.userService = userService;
     }
 
     @GetMapping("/followed/{userId}/list")
@@ -59,7 +57,7 @@ public class ProductRestController implements IProductRestController {
 
     @GetMapping("/promo-post/count")
     public ResponseEntity<AmountOfPromosResponseDTO> getAmountOfPromosByUser(@RequestParam Long user_id) {
-        return ResponseEntity.ok(userService.getAmountOfPromosByUser(user_id));
+        return ResponseEntity.ok(productService.getAmountOfPromosByUser(user_id));
     }
 
     @GetMapping("/posts/search")
