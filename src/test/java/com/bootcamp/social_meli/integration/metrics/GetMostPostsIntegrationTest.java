@@ -28,7 +28,7 @@ public class GetMostPostsIntegrationTest {
                 .andExpect(jsonPath("$.most_posts", hasSize(4)))
                 .andExpect(jsonPath("$.most_posts[0].user_id").value(1))
                 .andExpect(jsonPath("$.most_posts[0].user_name").value("FrancoCol43"))
-                .andExpect(jsonPath("$.most_posts[0].posts_amount").value(10));
+                .andExpect(jsonPath("$.most_posts[0].posts_amount").value(11));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class GetMostPostsIntegrationTest {
                 .andExpect(jsonPath("$.most_posts", hasSize(2)))
                 .andExpect(jsonPath("$.most_posts[0].user_id").value(1))
                 .andExpect(jsonPath("$.most_posts[0].user_name").value("FrancoCol43"))
-                .andExpect(jsonPath("$.most_posts[0].posts_amount").value(10))
+                .andExpect(jsonPath("$.most_posts[0].posts_amount").value(11))
                 .andExpect(jsonPath("$.most_posts[1].user_id").value(2))
                 .andExpect(jsonPath("$.most_posts[1].user_name").value("MartinG23"))
                 .andExpect(jsonPath("$.most_posts[1].posts_amount").value(10));

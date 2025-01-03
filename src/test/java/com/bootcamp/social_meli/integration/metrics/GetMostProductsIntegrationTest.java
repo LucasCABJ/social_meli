@@ -25,7 +25,7 @@ public class GetMostProductsIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.most_products", hasSize(10)))
+                .andExpect(jsonPath("$.most_products", hasSize(12)))
                 .andExpect(jsonPath("$.most_products[0].product_id").value(1))
                 .andExpect(jsonPath("$.most_products[0].product_name").value("Silla Gamer"))
                 .andExpect(jsonPath("$.most_products[0].type").value("Gamer"))
