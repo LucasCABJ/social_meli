@@ -4,6 +4,7 @@ import com.bootcamp.social_meli.model.Product;
 import com.bootcamp.social_meli.repository.IProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -15,6 +16,8 @@ import java.util.Optional;
 @Repository
 public class ProductRepositoryImpl implements IProductRepository {
 
+    @Value("${api.scope}")
+    private String SCOPE;
     private final List<Product> productList = new ArrayList<>();
     private final ObjectMapper objectMapper;
 
@@ -26,9 +29,11 @@ public class ProductRepositoryImpl implements IProductRepository {
     @Override
     public Product create(Product obj) {
         productList.add(obj);
-        String DATA_FILE = "src/main/resources/products.json";
         try{
-            objectMapper.writeValue(new File(DATA_FILE), productList);
+            if (SCOPE.equalsIgnoreCase("main")) {
+                String DATA_FILE = "src/main/resources/products.json";
+                objectMapper.writeValue(new File(DATA_FILE), productList);
+            }
         }catch(IOException e){
             throw new RuntimeException("Error guardando la lista", e);
         }
