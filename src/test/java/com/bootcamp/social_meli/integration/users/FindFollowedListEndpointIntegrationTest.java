@@ -26,12 +26,12 @@ public class FindFollowedListEndpointIntegrationTest {
                 .andExpect(jsonPath("$.user_id").value(4))
                 .andExpect(jsonPath("$.user_name").value("CarlosSan_15"))
                 .andExpect(jsonPath("$.followed.length()").value(3))
-                .andExpect(jsonPath("$.followed[0].user_id").value(3))
-                .andExpect(jsonPath("$.followed[0].user_name").value("AnaPerezzz"))
-                .andExpect(jsonPath("$.followed[1].user_id").value(5))
-                .andExpect(jsonPath("$.followed[1].user_name").value("LauLopez87"))
-                .andExpect(jsonPath("$.followed[2].user_id").value(2))
-                .andExpect(jsonPath("$.followed[2].user_name").value("MartinG23"));
+                .andExpect(jsonPath("$.followed[0].user_id").value(2))
+                .andExpect(jsonPath("$.followed[0].user_name").value("MartinG23"))
+                .andExpect(jsonPath("$.followed[1].user_id").value(3))
+                .andExpect(jsonPath("$.followed[1].user_name").value("AnaPerezzz"))
+                .andExpect(jsonPath("$.followed[2].user_id").value(5))
+                .andExpect(jsonPath("$.followed[2].user_name").value("LauLopez87"));
     }
 
     @Test
