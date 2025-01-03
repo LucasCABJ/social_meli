@@ -31,12 +31,12 @@ public class CreatePromoPostIntegrationTest {
     void createPromoPostShouldReturnStatus200() throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate creationDate = LocalDate.parse("12-09-2024", formatter);
-        ProductDTO productDTO = new ProductDTO(25L,
-                "Monitor Gamer 244hz",
+        ProductDTO productDTO = new ProductDTO(4L,
+                "Monitor CURVO",
                 "Monitor",
-                "Asus",
-                "Negro",
-                "Altamente recomendado para gaming");
+                "Samsung",
+                "Black",
+                "32 pulgadas");
 
         PromoPostDTO postDTO = new PromoPostDTO();
         postDTO.setUserId(1L);
