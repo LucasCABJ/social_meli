@@ -10,7 +10,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,5 +55,51 @@ public class PostProductIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.has_promo").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.discount").value(0.0));
 
+    }
+    @Test
+    public void testPostProductBadRequest() throws Exception{
+        String postJson = "{\n" +
+                "    \"user_id\": 1,\n" +
+                "    \"date\": \"10-12-2025\",\n" +
+                "    \"product\": {\n" +
+                "        \"product_id\": 1,\n" +
+                "        \"product_name\": \"Silla Gamer\",\n" +
+                "        \"type\": \"Gamer\",\n" +
+                "        \"brand\": \"Racer\",\n" +
+                "        \"color\": \"Red and Black\",\n" +
+                "        \"notes\": \"Special Edition\"\n" +
+                "    },\n" +
+                "    \"category\": 100,\n" +
+                "    \"price\": 1500.50\n" +
+                "}";
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/products/post")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(postJson))
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.status").value("400"))
+                .andExpect(jsonPath("$.message").value("Post ya existente para el usuario 1"));
+    }
+    @Test
+    public void testGetUserNotFound() throws Exception {
+        String postJson = "{\n" +
+                "    \"user_id\": 99,\n" +
+                "    \"date\": \"10-12-2025\",\n" +
+                "    \"product\": {\n" +
+                "        \"product_id\": 99,\n" +
+                "        \"product_name\": \"Silla Gamer\",\n" +
+                "        \"type\": \"Gamer\",\n" +
+                "        \"brand\": \"Racer\",\n" +
+                "        \"color\": \"Red and Black\",\n" +
+                "        \"notes\": \"Special Edition\"\n" +
+                "    },\n" +
+                "    \"category\": 100,\n" +
+                "    \"price\": 1500.50\n" +
+                "}";
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/products/post")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(postJson))
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.status").value("404"))
+                .andExpect(jsonPath("$.message").value("No se ha encontrado al usuario: 99"));
     }
 }
