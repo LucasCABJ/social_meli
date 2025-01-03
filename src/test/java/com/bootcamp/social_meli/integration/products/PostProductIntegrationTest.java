@@ -24,10 +24,10 @@ public class PostProductIntegrationTest {
     @Test
     public void testPostProductSucces()throws Exception{
         String postJson = "{\n" +
-                "    \"user_id\": 1,\n" +
+                "    \"user_id\": 6,\n" +
                 "    \"date\": \"10-12-2025\",\n" +
                 "    \"product\": {\n" +
-                "        \"product_id\": 99,\n" +
+                "        \"product_id\": 1,\n" +
                 "        \"product_name\": \"Silla Gamer\",\n" +
                 "        \"type\": \"Gamer\",\n" +
                 "        \"brand\": \"Racer\",\n" +
@@ -43,9 +43,9 @@ public class PostProductIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Post creado exitosamente!"))
-                .andExpect(jsonPath("$.user_id").value(1))
+                .andExpect(jsonPath("$.user_id").value(6))
                 .andExpect(jsonPath("$.date").value("2025-12-10"))
-                .andExpect(jsonPath("$.product.product_id").value(99))
+                .andExpect(jsonPath("$.product.product_id").value(1))
                 .andExpect(jsonPath("$.product.product_name").value("Silla Gamer"))
                 .andExpect(jsonPath("$.product.type").value("Gamer"))
                 .andExpect(jsonPath("$.product.brand").value("Racer"))
