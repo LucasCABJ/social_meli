@@ -27,16 +27,16 @@ public class GetMostFollowersIntegrationTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.most_followers", hasSize(5)))
                 .andExpect(jsonPath("$.most_followers[0].user_id").value(2))
-                .andExpect(jsonPath("$.most_followers[0].user_name").value("MartinG24"))
+                .andExpect(jsonPath("$.most_followers[0].user_name").value("MartinG23"))
                 .andExpect(jsonPath("$.most_followers[0].followers_count").value(3))
                 .andExpect(jsonPath("$.most_followers[1].user_id").value(3))
-                .andExpect(jsonPath("$.most_followers[1].user_name").value("AnaPerezzzz"))
+                .andExpect(jsonPath("$.most_followers[1].user_name").value("AnaPerezzz"))
                 .andExpect(jsonPath("$.most_followers[1].followers_count").value(3))
                 .andExpect(jsonPath("$.most_followers[2].user_id").value(4))
-                .andExpect(jsonPath("$.most_followers[2].user_name").value("CarlosSainz_33"))
+                .andExpect(jsonPath("$.most_followers[2].user_name").value("CarlosSan_15"))
                 .andExpect(jsonPath("$.most_followers[2].followers_count").value(3))
                 .andExpect(jsonPath("$.most_followers[3].user_id").value(1))
-                .andExpect(jsonPath("$.most_followers[3].user_name").value("Francol43"))
+                .andExpect(jsonPath("$.most_followers[3].user_name").value("FrancoCol43"))
                 .andExpect(jsonPath("$.most_followers[3].followers_count").value(2))
                 .andExpect(jsonPath("$.most_followers[4].user_id").value(5))
                 .andExpect(jsonPath("$.most_followers[4].user_name").value("LauLopez87"))
@@ -54,18 +54,18 @@ public class GetMostFollowersIntegrationTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.most_followers", hasSize(3)))
                 .andExpect(jsonPath("$.most_followers[0].user_id").value(2))
-                .andExpect(jsonPath("$.most_followers[0].user_name").value("MartinG24"))
+                .andExpect(jsonPath("$.most_followers[0].user_name").value("MartinG23"))
                 .andExpect(jsonPath("$.most_followers[0].followers_count").value(3))
                 .andExpect(jsonPath("$.most_followers[1].user_id").value(3))
-                .andExpect(jsonPath("$.most_followers[1].user_name").value("AnaPerezzzz"))
+                .andExpect(jsonPath("$.most_followers[1].user_name").value("AnaPerezzz"))
                 .andExpect(jsonPath("$.most_followers[1].followers_count").value(3))
                 .andExpect(jsonPath("$.most_followers[2].user_id").value(4))
-                .andExpect(jsonPath("$.most_followers[2].user_name").value("CarlosSainz_33"))
+                .andExpect(jsonPath("$.most_followers[2].user_name").value("CarlosSan_15"))
                 .andExpect(jsonPath("$.most_followers[2].followers_count").value(3));
     }
 
     @Test
-    @DisplayName("Debería lanzar BadRequest si rank no es un número")
+    @DisplayName("Debería lanzar BadRequest si rank no es un número valido")
     public void getMostFollowersBadRequestForNegativeRank() throws Exception {
         int invalidRank = -1;
 
