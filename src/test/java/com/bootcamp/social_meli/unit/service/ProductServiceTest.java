@@ -128,9 +128,12 @@ class ProductServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         Product mockProduct = new Product(1L, "ProductName", "ProductType", "ProductBrand", "ProductColor", "ProductNotes");
 
-        Post post1 = new Post(1L, user.getFollowers().getFirst(), LocalDate.parse("01-12-2024", formatter), mockProduct, null, null, false, null);
-        Post post2 = new Post(2L, user.getFollowers().getFirst(), LocalDate.parse("05-12-2024", formatter), mockProduct, null, null, false, null);
-        Post post3 = new Post(3L, user.getFollowers().getFirst(), LocalDate.parse("03-12-2024", formatter), mockProduct, null, null, false, null);
+        Post post1 = new Post(1L, user.getFollowers().get(0), LocalDate.parse("01-12-2024",
+                formatter), mockProduct, null, null, false, null);
+        Post post2 = new Post(2L, user.getFollowers().get(0), LocalDate.parse("05-12-2024",
+                formatter), mockProduct, null, null, false, null);
+        Post post3 = new Post(3L, user.getFollowers().get(0), LocalDate.parse("03-12-2024",
+                formatter), mockProduct, null, null, false, null);
 
         when(userRepository.findFollowsByUserId(1L)).thenReturn(user.getFollowers());
         when(postRepository.findByUserIdFilteredByLastTwoWeeks(2L)).thenReturn(Arrays.asList(post1, post2, post3));
